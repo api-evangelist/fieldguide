@@ -1,0 +1,38 @@
+generated: '2026-07-19'
+method: searched
+source: openapi/fieldguide-openapi-original.json
+docs: https://api.fieldguide.io/api
+summary:
+  types:
+  - http
+  http_schemes:
+  - bearer
+  token_formats:
+  - jwt
+  - api-token
+  scoped: true
+  scopes_ref: scopes/fieldguide-scopes.yml
+schemes:
+- name: bearer
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/fieldguide-openapi-original.json
+tokens:
+- type: jwt
+  read_schema: JwtTokenRead
+  note: Short-lived JWT bearer token (user_uuid, created_at, expires_at).
+- type: api
+  read_schema: ApiTokenRead
+  note: >-
+    Named API token (uuid, name, scopes[], expires_at) granted a set of resource
+    scopes. Introspect the current token via GET /v1/token
+    (get_current_token_v1); list available scopes via GET /v1/scopes
+    (list_scopes_v1).
+authorization:
+  model: resource-scopes
+  scopes_ref: scopes/fieldguide-scopes.yml
+  enforcement: >-
+    Operations return 403 naming the missing scope, e.g. "Forbidden (requires
+    scopes `engagements:write`)".
