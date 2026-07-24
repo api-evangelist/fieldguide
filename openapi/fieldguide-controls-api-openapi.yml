@@ -1,0 +1,183 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api controls API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: controls
+  description: Endpoints used to interact with Fieldguide Controls
+paths:
+  /v1/requests/{uuid}/controls:
+    get:
+      operationId: list_controls_by_request_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the request to retrieve controls for
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Controls for the Request
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/ControlRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `controls:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Controls that belong to the specified Request
+      tags:
+      - controls
+      x-required-scopes:
+      - controls:read
+components:
+  schemas:
+    ControlReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Controls within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/controls?client=2&id=09f7eeab-5318-4aff-a2bc-98b21dbe8b60&open=true
+            title: View the Control in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    ControlRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        description:
+          type: string
+          example: Organizational charts are in place to communicate key areas of authority, responsibility, and appropriate lines of reporting to personnel.
+        key:
+          type: string
+          example: FG-6
+        _links:
+          $ref: '#/components/schemas/ControlReadLinks'
+      required:
+      - uuid
+      - description
+      - key
+      - _links
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

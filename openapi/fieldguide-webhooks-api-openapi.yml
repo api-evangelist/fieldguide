@@ -1,0 +1,437 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api webhooks API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: webhooks
+  description: Endpoints used to interact with Fieldguide Webhooks
+paths:
+  /v1/webhooks:
+    get:
+      operationId: list_webhooks_v1
+      parameters:
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Webhooks accessible by the user
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/WebhookRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `webhooks:read`)
+        '429':
+          description: Too many requests
+      summary: List available Fieldguide Webhook subscriptions for the current User
+      tags:
+      - webhooks
+      x-required-scopes:
+      - webhooks:read
+    post:
+      callbacks:
+        onObjectAction:
+          '{$request.body#/url}':
+            post:
+              parameters:
+              - name: X-FG-Signature
+                in: header
+                description: HMAC-SHA256 hex-encoded signature hash of the request body with the webhook {$response.body#/secret}. Your server implementation should hash + encode the request body and compare the resulting signature with this header value to verify the webhook was sent from Fieldguide. See [webhooks.fyi](https://webhooks.fyi/security/hmac) for additional context.
+                required: true
+                schema:
+                  type: string
+              - name: X-FG-Attempt
+                in: header
+                description: Denotes if this is the original notification (`1`) or a retry (`2+`)
+                required: true
+                schema:
+                  type: number
+              requestBody:
+                required: true
+                description: Webhook event payload
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/WebhookPayload'
+              security: []
+              responses:
+                '200':
+                  description: Your server implementation should return a 2xx status code if the webhook was received successfully
+      description: 'Note: Webhooks on a development domain (mockable.io, ngrok-free.app, on.aws, onrender.com, run.app, webhook.site) are automatically deleted when delivery returns a 404, 410, or 501 response. They are also deleted after retries are exhausted on a persistent connection error (timeout, DNS failure, connection refused, or a recognized persistent TLS certificate failure).'
+      operationId: create_webhook_v1
+      parameters: []
+      requestBody:
+        required: true
+        description: Input for Webhook to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreate'
+      responses:
+        '201':
+          description: The newly created Webhook
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WebhookReadWithSecret'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `webhooks:write`)
+        '429':
+          description: Too many requests
+      summary: Create a new Webhook
+      tags:
+      - webhooks
+      x-required-scopes:
+      - webhooks:write
+  /v1/webhooks/{uuid}:
+    delete:
+      operationId: delete_webhook_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Webhook to delete
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: No content. The Webhook was deleted successfully.
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `webhooks:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Delete the specified Webhook
+      tags:
+      - webhooks
+      x-required-scopes:
+      - webhooks:write
+    patch:
+      operationId: update_webhook_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Webhook to update
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        description: Input for Webhook to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdate'
+      responses:
+        '200':
+          description: The updated Webhook
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WebhookRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `webhooks:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Update the specified Webhook
+      tags:
+      - webhooks
+      x-required-scopes:
+      - webhooks:write
+components:
+  schemas:
+    WebhookResource:
+      type: string
+      enum:
+      - comments
+      - companies
+      - engagements
+      - requests
+      - users
+      description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
+    WebhookObjectType:
+      type: string
+      enum:
+      - comments
+      - companies
+      - engagements
+      - requests
+      - users
+    WebhookReadWithSecret:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: d952a7a8-3f88-46d0-b4de-ec690d97105c
+          description: The unique ID for the webhook, referenced as `webhook_uuid` in webhook requests
+        description:
+          type: string
+          description: A human-readable description of the webhook's use
+          example: Firm internal systems
+        scopes:
+          type: array
+          nullable: true
+          description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
+          example:
+          - requests
+          - users
+          items:
+            $ref: '#/components/schemas/WebhookResource'
+        url:
+          type: string
+          format: uri
+          example: https://company-xyz.com/my-webhook-endpoint
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        secret:
+          type: string
+          example: trN7inAfsWlDy8VeqVB3
+          description: A 20-character secret used for HMAC signing
+      required:
+      - uuid
+      - description
+      - scopes
+      - url
+      - created_at
+      - secret
+    WebhookAction:
+      type: string
+      enum:
+      - created
+      - updated
+      - deleted
+    WebhookPayload:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The unique ID for the event
+          example: c7e4afd8-1b56-4621-83ad-86ec735fc23d
+        timestamp:
+          format: date-time
+          type: string
+          description: When the event occurred
+          example: '2023-01-01T12:30:00.000Z'
+        action:
+          allOf:
+          - $ref: '#/components/schemas/WebhookAction'
+        object_type:
+          allOf:
+          - $ref: '#/components/schemas/WebhookObjectType'
+        object_uuid:
+          type: string
+          format: uuid
+          description: The UUID of the specific object for the event
+          example: 80d6783f-575d-4433-9dd8-25b81b2bad85
+        metadata:
+          type: array
+          description: Array of metadata key-value pairs
+          example:
+          - key: company_uuid
+            value: d952a7a8-3f88-46d0-b4de-ec690d97105c
+          - key: engagement_uuid
+            value: 066a9ebd-07cf-458e-b506-dd66fab9cbcc
+          - key: webhook_uuid
+            value: 5c8d4284-84f0-427c-be10-e350f7093a48
+          - key: updated_property
+            value: status
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+      required:
+      - uuid
+      - timestamp
+      - action
+      - object_type
+      - object_uuid
+      - metadata
+    WebhookRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: d952a7a8-3f88-46d0-b4de-ec690d97105c
+          description: The unique ID for the webhook, referenced as `webhook_uuid` in webhook requests
+        description:
+          type: string
+          description: A human-readable description of the webhook's use
+          example: Firm internal systems
+        scopes:
+          type: array
+          nullable: true
+          description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
+          example:
+          - requests
+          - users
+          items:
+            $ref: '#/components/schemas/WebhookResource'
+        url:
+          type: string
+          format: uri
+          example: https://company-xyz.com/my-webhook-endpoint
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+      required:
+      - uuid
+      - description
+      - scopes
+      - url
+      - created_at
+    WebhookUpdate:
+      type: object
+      properties:
+        description:
+          type: string
+          example: Company XYZ Integration
+        scopes:
+          type: array
+          nullable: true
+          description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
+          example:
+          - requests
+          - users
+          items:
+            $ref: '#/components/schemas/WebhookResource'
+    WebhookCreate:
+      type: object
+      properties:
+        description:
+          type: string
+          example: Company XYZ Integration
+        scopes:
+          type: array
+          nullable: true
+          description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
+          example:
+          - requests
+          - users
+          items:
+            $ref: '#/components/schemas/WebhookResource'
+        url:
+          type: string
+          format: uri
+          example: https://company-xyz.com/my-webhook-endpoint
+      required:
+      - description
+      - url
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

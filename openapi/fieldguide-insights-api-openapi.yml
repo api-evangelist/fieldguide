@@ -1,0 +1,210 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api insights API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: insights
+  description: Endpoints used to interact with Fieldguide Insights
+paths:
+  /v1/insights/teams/time-tracking/exports/{uuid}:
+    get:
+      operationId: get_time_tracking_export_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The exported Time Tracking Insights file metadata and download URL
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TimeTrackingFileRead'
+        '204':
+          description: 'No Time Tracking Insights available
+
+
+            No Content (the requested timeframe did not generate any results)'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Forbidden
+
+
+            Forbidden (requires scopes `insights:read`)'
+        '429':
+          description: Too many requests
+      summary: Fetch a generated Insights Time Tracking report
+      tags:
+      - insights
+      x-required-scopes:
+      - insights:read
+  /v1/insights/teams/time-tracking/export:
+    post:
+      description: 'Begins a long-running process that will generate an Insights Time Tracking report in CSV format.
+
+
+        Use the Job ID that this endpoint returns with the appropriate [jobs endpoint](#/jobs/get_job_v1) to check its status and get its result.'
+      operationId: export_time_tracking_report_v1
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeTrackingFileCreate'
+      responses:
+        '202':
+          headers:
+            Location:
+              description: The URI to check the status of the job
+              schema:
+                type: string
+                example: https://api.fieldguide.io/v1/jobs/f2c75e84-6b42-452d-b52f-3bf1854432d6
+            Retry-After:
+              description: A date-time estimate of when the job will complete (if the job is still running)
+              schema:
+                type: string
+                format: date-time
+                example: '2025-04-04T12:30:00.000Z'
+              required: false
+          description: The Job UUID for the time tracking export
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/JobSubmittedRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Forbidden
+
+
+            Forbidden (requires scopes `insights:read`)'
+        '429':
+          description: Too many requests
+      summary: Export an Insights Time Tracking report
+      tags:
+      - insights
+      x-required-scopes:
+      - insights:read
+components:
+  schemas:
+    TimeTrackingFileRead:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Board of Directors.docx
+        size:
+          type: number
+          example: 137437
+        mime_type:
+          type: string
+          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        url:
+          type: string
+          format: uri
+          example: https://example.com/document.docx
+          nullable: true
+        url_expiration:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+        report_data_processed_at:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+        record_count:
+          type: number
+          example: 1000
+          nullable: false
+      required:
+      - name
+      - size
+      - mime_type
+      - url
+      - url_expiration
+      - report_data_processed_at
+      - record_count
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    TimeTrackingFileCreate:
+      type: object
+      properties:
+        report_start:
+          type: string
+          example: '2025-01-01T12:30:00.000Z'
+        report_end:
+          type: string
+          example: '2025-01-01T12:30:00.000Z'
+      required:
+      - report_start
+      - report_end
+    JobSubmittedRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The UUID of the job that was submitted
+        _links:
+          $ref: '#/components/schemas/JobSubmittedReadLinks'
+      required:
+      - uuid
+      - _links
+    JobSubmittedReadLinks:
+      type: object
+      properties:
+        status:
+          description: An API endpoint to retrieve the status of the job
+          example:
+            href: https://api.fieldguide.io/jobs/2d2e102e-f4af-4534-9749-4d9249eca6cc
+            title: Get the status of this job
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - status
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

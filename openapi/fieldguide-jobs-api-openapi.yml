@@ -1,0 +1,148 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api jobs API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: jobs
+  description: Endpoints used to interact with long-running processes (Jobs) in the Fieldguide API
+paths:
+  /v1/jobs/{uuid}:
+    get:
+      operationId: get_job_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: UUID of the Job
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          headers:
+            Location:
+              description: The URI to check the status of the job (if the job is still running)
+              schema:
+                type: string
+                example: https://api.fieldguide.io/v1/jobs/f2c75e84-6b42-452d-b52f-3bf1854432d6
+              required: false
+            Retry-After:
+              description: A date-time estimate of when the job will complete (if the job is still running)
+              schema:
+                type: string
+                format: date-time
+                example: '2025-04-04T12:30:00.000Z'
+              required: false
+          description: Returns the status of a job if it is still running or has failed
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/JobRead'
+              examples:
+                running:
+                  summary: Job Running
+                  value:
+                    data:
+                      status: Running
+                failed:
+                  summary: Job Failed
+                  value:
+                    data:
+                      status: Failed
+                      reason: Failed to process data due to invalid format
+        '302':
+          description: Returns the status of a job if it has finished and redirects to the appropriate endpoint to get the result resource
+          headers:
+            Location:
+              description: The URI to check the status of the job
+              schema:
+                type: string
+                example: https://api.fieldguide.io/v1/insights/teams/time-tracking/exports/f2c75e84-6b42-452d-b52f-3bf1854432d6
+              required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobRead'
+              examples:
+                finished:
+                  summary: Job Finished
+                  value:
+                    status: Finished
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Resource not found
+      summary: Return the status of an asynchronous Job
+      tags:
+      - jobs
+components:
+  schemas:
+    JobRead:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Running
+          - Finished
+          - Failed
+          description: Current status of the job
+        reason:
+          type: string
+          description: Human-readable error message when job has failed
+        _links:
+          $ref: '#/components/schemas/JobReadLinks'
+      required:
+      - status
+    JobReadLinks:
+      type: object
+      properties:
+        results:
+          description: An API endpoint to retrieve the result of the job
+          example:
+            href: https://api.fieldguide.io/v1/insights/teams/time-tracking/exports/9b560ead-2b64-41f2-b9ae-826bdb866f1a
+            title: Get the result of this job
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - results
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

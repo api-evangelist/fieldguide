@@ -1,0 +1,605 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api users API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: users
+  description: Endpoints used to interact with Fieldguide Users
+paths:
+  /v1/engagements/{uuid}/users:
+    get:
+      operationId: list_engagement_users_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to retrieve Users for
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The users on the Engagement Team for the specified Engagement
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/EngagementUserRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:read`, `users:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List the Engagement Team on an Engagement
+      tags:
+      - users
+      x-required-scopes:
+      - engagements:read
+      - users:read
+    patch:
+      operationId: add_engagement_users_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to add Users to
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/EngagementUserCreate'
+      responses:
+        '204':
+          description: No content. The Users were added to the Engagement Team successfully.
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Add Users to an Engagement Team
+      tags:
+      - users
+      x-required-scopes:
+      - engagements:write
+    delete:
+      operationId: remove_engagement_users_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to delete Users from
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/EngagementUserDelete'
+      responses:
+        '204':
+          description: No content. The Users were removed from the Engagement Team successfully.
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Remove Users from an Engagement Team
+      tags:
+      - users
+      x-required-scopes:
+      - engagements:write
+  /v1/users:
+    get:
+      operationId: list_users_v1
+      parameters:
+      - name: uuids
+        required: false
+        in: query
+        description: Filter Users by UUID. Repeat the query parameter for multiple UUIDs.
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Users accessible by the user
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/UserRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `users:read`)
+        '429':
+          description: Too many requests
+      summary: List available Users
+      tags:
+      - users
+      x-required-scopes:
+      - users:read
+  /v1/users/me:
+    get:
+      operationId: get_current_user_v1
+      parameters: []
+      responses:
+        '200':
+          description: Identifying information about the current user
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserRead'
+        '401':
+          description: Unauthorized
+        '429':
+          description: Too many requests
+      summary: Fetch the authenticated User
+      tags:
+      - users
+  /v1/users/{uuid}:
+    get:
+      operationId: get_user_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the user to retrieve
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: Identifying information about the requested user
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `users:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch the specified User
+      tags:
+      - users
+      x-required-scopes:
+      - users:read
+  /v1/companies/{uuid}/users:
+    get:
+      operationId: list_company_users_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Company to retrieve Users for
+        schema:
+          format: uuid
+          type: string
+      - name: email
+        required: false
+        in: query
+        description: Filter Users by email address (case-insensitive, partial match)
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: Users for the specified Company
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/UserRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `users:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Users that belong to the specified Company
+      tags:
+      - users
+      x-required-scopes:
+      - users:read
+components:
+  schemas:
+    UserRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        first_name:
+          type: string
+          example: Kurt
+        last_name:
+          type: string
+          example: Vonnegut
+        email:
+          type: string
+          format: email
+          example: kurt.vonnegut@weyland-yutani.com
+          description: The user's email for deleted users will be noreply@fieldguide.io
+        company_uuid:
+          type: string
+          format: uuid
+          example: 0a5cc6c6-2855-48f1-892e-7547fe9f8fc4
+        _links:
+          $ref: '#/components/schemas/UserReadLinks'
+        status:
+          type: string
+          enum:
+          - Invited
+          - Verified
+          - Active
+          - Deactivated
+          - Deleted
+          example: Active
+          description: The user's account status (e.g. active, invited, or deactivated).
+        invite_last_resent_at:
+          format: date-time
+          type: string
+          nullable: true
+          example: '2023-01-01T12:30:00.000Z'
+      required:
+      - uuid
+      - first_name
+      - last_name
+      - email
+      - company_uuid
+      - _links
+      - status
+      - invite_last_resent_at
+    EngagementUserRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        first_name:
+          type: string
+          example: Kurt
+        last_name:
+          type: string
+          example: Vonnegut
+        email:
+          type: string
+          format: email
+          example: kurt.vonnegut@weyland-yutani.com
+          description: The user's email for deleted users will be noreply@fieldguide.io
+        company_uuid:
+          type: string
+          format: uuid
+          example: 0a5cc6c6-2855-48f1-892e-7547fe9f8fc4
+      required:
+      - uuid
+      - first_name
+      - last_name
+      - email
+      - company_uuid
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    UserReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the User within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/settings/admin/users/1
+            title: View this User in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    EngagementUserDelete:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The UUID of the user to remove from the Engagement Team
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+      required:
+      - uuid
+    EngagementUserCreate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The UUID of the user to add to the engagement
+          format: uuid
+          example: 3699af0f-9b92-410d-945c-bb0bf39da904
+      required:
+      - uuid
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

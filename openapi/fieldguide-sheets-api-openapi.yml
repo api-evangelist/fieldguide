@@ -1,0 +1,378 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api sheets API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: sheets
+  description: Endpoints used to interact with Fieldguide Sheets
+paths:
+  /v1/engagements/{uuid}/sheets:
+    get:
+      operationId: list_sheets_by_engagement_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement for which to get Sheets
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Sheets to which the Engagement is linked
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/SheetRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:read`, `sheets:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Sheets that belong to the specified Engagement
+      tags:
+      - sheets
+      x-required-scopes:
+      - engagements:read
+      - sheets:read
+  /v1/sheets/{uuid}/export:
+    post:
+      operationId: export_sheet_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Sheet to export
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The exported Sheet file metadata and download URL
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ExportedFileRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `sheets:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Export a Sheet
+      tags:
+      - sheets
+      x-required-scopes:
+      - sheets:read
+  /v1/sheets/{uuid}/sheet-rows:
+    get:
+      operationId: list_sheet_rows_by_sheet_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Sheet for which to get Sheet Rows
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Sheet Rows to which the Sheet is linked
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/SheetRowRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `sheets:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Sheet Rows that belong to the specified Sheet
+      tags:
+      - sheets
+      x-required-scopes:
+      - sheets:read
+components:
+  schemas:
+    SheetRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        name:
+          type: string
+          example: PCI DSS ROC v3.2.1 6. Findings and Observations
+        _links:
+          $ref: '#/components/schemas/SheetReadLinks'
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+      required:
+      - uuid
+      - name
+      - _links
+      - created_at
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    SheetReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Sheet within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/82027/workplan/3
+            title: View the Sheet in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    SheetRowRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        keys:
+          type: array
+          items:
+            type: string
+            example: 1.1.1
+        _links:
+          $ref: '#/components/schemas/SheetReadLinks'
+      required:
+      - uuid
+      - keys
+      - _links
+    ExportedFileRead:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Board of Directors.docx
+        size:
+          type: number
+          example: 137437
+        mime_type:
+          type: string
+          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        url:
+          type: string
+          format: uri
+          example: https://example.com/document.docx
+          nullable: true
+        url_expiration:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+        uuid:
+          type: string
+          description: The UUID of the File
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+      - name
+      - size
+      - mime_type
+      - url
+      - url_expiration
+      - uuid
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

@@ -1,0 +1,343 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api milestones API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: milestones
+  description: Endpoints used to interact with Fieldguide Milestones
+paths:
+  /v1/milestones/{uuid}:
+    get:
+      operationId: get_milestone_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Milestone to retrieve
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The visible Milestone
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MilestoneRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Forbidden
+
+
+            Forbidden (requires scopes `milestones:read`)'
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch the specified Milestone
+      tags:
+      - milestones
+      x-required-scopes:
+      - milestones:read
+  /v1/engagements/{engagement_uuid}/milestones:
+    get:
+      operationId: list_milestones_by_engagement_v1
+      parameters:
+      - name: engagement_uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to retrieve Milestones for
+        schema:
+          format: uuid
+          type: string
+      - name: associated_engagement_status
+        required: false
+        in: query
+        description: Filter by the optional Engagement lifecycle phase associated with each Milestone. This is not the Engagement's current status and does not determine Milestone completion.
+        schema:
+          $ref: '#/components/schemas/MilestoneAssociatedEngagementStatus'
+      - name: client_can_view
+        required: false
+        in: query
+        description: Filter Milestones by client visibility.
+        schema:
+          type: boolean
+      - name: is_completed
+        required: false
+        in: query
+        description: Filter by completion state. A completed Milestone has a non-null `completed_at` value.
+        schema:
+          type: boolean
+      - name: sort_by
+        required: false
+        in: query
+        description: Field used to sort Milestones. Results are sorted by creation time unless `sequence` is requested.
+        schema:
+          $ref: '#/components/schemas/MilestoneSortBy'
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The visible Milestones for the Engagement
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/MilestoneRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Forbidden
+
+
+            Forbidden (requires scopes `milestones:read`)'
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Milestones that belong to the specified Engagement
+      tags:
+      - milestones
+      x-required-scopes:
+      - milestones:read
+components:
+  schemas:
+    MilestoneReadLinks:
+      type: object
+      properties:
+        self:
+          description: The canonical API URL for this Milestone
+          example:
+            href: https://api.fieldguide.io/v1/milestones/4d50d252-be0c-4d69-b77a-5bbdfef83f54
+            title: Fetch this Milestone
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+        collection:
+          description: The visible Milestones collection for the parent Engagement
+          example:
+            href: https://api.fieldguide.io/v1/engagements/821e8d9e-d2a8-480f-9187-5a685d3d0d71/milestones
+            title: List Milestones for this Engagement
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+        engagement:
+          description: The canonical API URL for the parent Engagement
+          example:
+            href: https://api.fieldguide.io/v1/engagements/821e8d9e-d2a8-480f-9187-5a685d3d0d71
+            title: Fetch the parent Engagement
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+        fieldguide:
+          description: A Fieldguide Engagement dashboard link containing this Milestone's UUID
+          example:
+            href: https://app.fieldguide.io/engagements/82027/dashboard?milestone=4d50d252-be0c-4d69-b77a-5bbdfef83f54
+            title: Open the parent Engagement in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - self
+      - collection
+      - engagement
+      - fieldguide
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    MilestoneSortBy:
+      type: string
+      enum:
+      - created_at
+      - sequence
+    MilestoneAssociatedEngagementStatus:
+      type: string
+      enum:
+      - Pending
+      - In Progress
+      - Complete
+      - Archived
+      description: An optional association to an Engagement lifecycle phase. It does not represent the Engagement's current status or determine Milestone completion.
+    MilestoneRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        engagement_uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: UUID of the Engagement that owns this Milestone.
+        name:
+          type: string
+          example: Planning complete
+        sequence:
+          type: integer
+          example: 2
+          description: The Milestone's display order within its Engagement.
+        associated_engagement_status:
+          nullable: true
+          description: An optional association to an Engagement lifecycle phase. It does not represent the Engagement's current status or determine Milestone completion.
+          allOf:
+          - $ref: '#/components/schemas/MilestoneAssociatedEngagementStatus'
+        due_date:
+          type: string
+          format: date
+          example: '2026-03-15'
+          nullable: true
+        completed_at:
+          type: string
+          format: date-time
+          example: '2026-03-10T12:30:00.000Z'
+          nullable: true
+          description: The authoritative completion indicator. Null means the Milestone is incomplete.
+        completed_by_user_uuid:
+          type: string
+          format: uuid
+          example: 6b242248-e2b9-4d41-8986-11b710860048
+          nullable: true
+          description: UUID of the user who completed the Milestone.
+        owner_user_uuid:
+          type: string
+          format: uuid
+          example: ee196968-2a7a-48e9-97f9-d12f26a8ff94
+          nullable: true
+          description: UUID of the user assigned to own the Milestone.
+        client_can_view:
+          type: boolean
+          example: true
+          description: Whether client users can view the Milestone.
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-02-01T12:30:00.000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-03-10T12:30:00.000Z'
+        _links:
+          $ref: '#/components/schemas/MilestoneReadLinks'
+      required:
+      - uuid
+      - engagement_uuid
+      - name
+      - sequence
+      - associated_engagement_status
+      - due_date
+      - completed_at
+      - completed_by_user_uuid
+      - owner_user_uuid
+      - client_can_view
+      - created_at
+      - updated_at
+      - _links
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

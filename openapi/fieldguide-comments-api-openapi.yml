@@ -1,0 +1,419 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api comments API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: comments
+  description: Endpoints used to interact with Fieldguide Comments
+paths:
+  /v1/requests/{uuid}/comments:
+    get:
+      operationId: list_comments_by_request_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the request to get comments for
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Request comments
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/CommentRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `comments:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch the Comments for the specified Request
+      tags:
+      - comments
+      x-required-scopes:
+      - comments:read
+    post:
+      operationId: create_request_comment_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the request to post the comment
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentCreate'
+      responses:
+        '201':
+          description: The newly created Comment
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CommentRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `comments:write`)
+        '429':
+          description: Too many requests
+      summary: Post a Comment on a Request
+      tags:
+      - comments
+      x-required-scopes:
+      - comments:write
+  /v1/comments/{uuid}:
+    get:
+      operationId: get_comment_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Comment
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The Comment
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CommentRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `comments:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch the Comment
+      tags:
+      - comments
+      x-required-scopes:
+      - comments:read
+  /v1/requests/comments:
+    post:
+      operationId: create_request_comments_v1
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCommentBulkCreate'
+      responses:
+        '201':
+          description: The newly created Comments
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CommentRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `comments:write`)
+        '429':
+          description: Too many requests
+      summary: Post Comments on multiple Requests
+      tags:
+      - comments
+      x-required-scopes:
+      - comments:write
+  /v1/comments/{uuid}/context:
+    get:
+      operationId: get_comment_context_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Comment
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The Comment context
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CommentContextRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `comments:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch the Comment context
+      tags:
+      - comments
+      x-required-scopes:
+      - comments:read
+components:
+  schemas:
+    RequestCommentBulkCreate:
+      type: object
+      properties:
+        comments:
+          minItems: 1
+          maxItems: 50
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestCommentBulkCreateItem'
+      required:
+      - comments
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    CommentRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        content:
+          type: string
+          example: <p>The comment text in HTML format</p>Employees hired in 2023
+        author_user_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        updated_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        _links:
+          $ref: '#/components/schemas/CommentReadLinks'
+      required:
+      - uuid
+      - content
+      - author_user_uuid
+      - created_at
+      - updated_at
+      - _links
+    CommentContextRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        type:
+          type: string
+          enum:
+          - request
+          example: request
+          description: The kind of object this comment is attached to.
+        _links:
+          $ref: '#/components/schemas/CommentContextReadLinks'
+      required:
+      - uuid
+      - type
+      - _links
+    CommentCreate:
+      type: object
+      properties:
+        content:
+          type: string
+          example: <p>The comment text in HTML format</p>
+          minLength: 1
+        mentioned_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: edbf4962-20eb-499e-a7fa-eaff50c81630
+          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
+      required:
+      - content
+    RequestCommentBulkCreateItem:
+      type: object
+      properties:
+        request_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        content:
+          type: string
+          example: <p>The comment text in HTML format</p>
+          minLength: 1
+        mentioned_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: edbf4962-20eb-499e-a7fa-eaff50c81630
+          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
+      required:
+      - request_uuid
+      - content
+    CommentReadLinks:
+      type: object
+      properties:
+        self:
+          description: A URL the user can fetch the Comment
+          example:
+            href: https://api.fieldguide.io/v1/comments/5919b6e8-9ea9-4cf0-9598-3a44cad3c7f7
+            title: Fetch this Comment
+            example: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - self
+    CommentContextReadLinks:
+      type: object
+      properties:
+        context_object:
+          description: A URL the user can fetch the Comment's Context
+          example:
+            href: https://api.fieldguide.io/v1/requests/9ddae459-8b25-41ef-a30d-d4c35d5915c9
+            title: Fetch the Request this comment was left on
+            example: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - context_object
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

@@ -1,0 +1,726 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api companies API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: companies
+  description: Endpoints used to interact with Fieldguide Companies
+paths:
+  /v1/companies:
+    get:
+      operationId: list_companies_v1
+      parameters:
+      - name: type
+        required: false
+        in: query
+        description: Filter to show companies of a specific type
+        schema:
+          $ref: '#/components/schemas/CompanyType'
+      - name: uuids
+        required: false
+        in: query
+        description: Filter Companies by UUID. Repeat the query parameter for multiple UUIDs.
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Companies accessible by the user
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/CompanyRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `companies:read`)
+        '429':
+          description: Too many requests
+      summary: List available Companies
+      tags:
+      - companies
+      x-required-scopes:
+      - companies:read
+    post:
+      operationId: create_company_v1
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyCreate'
+      responses:
+        '201':
+          description: The newly created Company
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CompanyRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Forbidden (requires permission `[''insert'', ''companies'']`)
+
+
+            Forbidden (requires scopes `companies:write`)'
+        '429':
+          description: Too many requests
+      summary: Create a new Company
+      tags:
+      - companies
+      x-required-scopes:
+      - companies:write
+  /v1/companies/{uuid}:
+    get:
+      operationId: get_company_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Company to retrieve
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The Company data
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CompanyRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `companies:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch the specified Company
+      tags:
+      - companies
+      x-required-scopes:
+      - companies:read
+    patch:
+      operationId: update_company_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Company to update
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyUpdate'
+      responses:
+        '200':
+          description: The updated Company
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CompanyRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Forbidden (requires permission `[''update'', ''companies'']`)
+
+
+            Forbidden (requires scopes `companies:write`)'
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Update the specified Company
+      tags:
+      - companies
+      x-required-scopes:
+      - companies:write
+  /v1/companies/{uuid}/engagements:
+    get:
+      operationId: list_engagements_by_company_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Company to retrieve engagements from
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Engagements for the specified Company
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/EngagementRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:read`)
+        '429':
+          description: Too many requests
+      summary: Get engagements for a given company
+      tags:
+      - companies
+      x-required-scopes:
+      - engagements:read
+  /v1/companies/{uuid}/users:
+    get:
+      operationId: list_company_users_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Company to retrieve Users for
+        schema:
+          format: uuid
+          type: string
+      - name: email
+        required: false
+        in: query
+        description: Filter Users by email address (case-insensitive, partial match)
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: Users for the specified Company
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/UserRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `users:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Users that belong to the specified Company
+      tags:
+      - companies
+      x-required-scopes:
+      - users:read
+components:
+  schemas:
+    UserRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        first_name:
+          type: string
+          example: Kurt
+        last_name:
+          type: string
+          example: Vonnegut
+        email:
+          type: string
+          format: email
+          example: kurt.vonnegut@weyland-yutani.com
+          description: The user's email for deleted users will be noreply@fieldguide.io
+        company_uuid:
+          type: string
+          format: uuid
+          example: 0a5cc6c6-2855-48f1-892e-7547fe9f8fc4
+        _links:
+          $ref: '#/components/schemas/UserReadLinks'
+        status:
+          type: string
+          enum:
+          - Invited
+          - Verified
+          - Active
+          - Deactivated
+          - Deleted
+          example: Active
+          description: The user's account status (e.g. active, invited, or deactivated).
+        invite_last_resent_at:
+          format: date-time
+          type: string
+          nullable: true
+          example: '2023-01-01T12:30:00.000Z'
+      required:
+      - uuid
+      - first_name
+      - last_name
+      - email
+      - company_uuid
+      - _links
+      - status
+      - invite_last_resent_at
+    EngagementReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Engagement within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/82027
+            title: View this Engagement in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    EngagementStatus:
+      type: string
+      enum:
+      - Pending
+      - In Progress
+      - Complete
+      - Archived
+      description: The engagement's current lifecycle status.
+    CompanyUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Jones Group, Inc.
+        identifier:
+          type: string
+          description: An external identifier that can be used by integrated systems
+          example: CA0001-A
+          nullable: true
+        require_mfa:
+          type: boolean
+          description: Whether new users will have multi-factor authentication enabled
+          example: false
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    CompanyType:
+      type: string
+      enum:
+      - client
+      - firm
+      description: Whether the company is a Firm (the audit provider) or a Client.
+    UserReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the User within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/settings/admin/users/1
+            title: View this User in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    CompanyCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Jones Group, Inc.
+        identifier:
+          type: string
+          description: An external identifier that can be used by integrated systems
+          example: CA0001-A
+        require_mfa:
+          type: boolean
+          description: Whether new users will have multi-factor authentication enabled
+          example: false
+      required:
+      - name
+      - require_mfa
+    CompanyReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Company within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/clients/1/overview
+            title: View this Company in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    EngagementRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+        name:
+          type: string
+          example: SOC 2 - Type 1
+        status:
+          description: The engagement's current lifecycle status.
+          allOf:
+          - $ref: '#/components/schemas/EngagementStatus'
+        is_template:
+          type: boolean
+          example: false
+          description: Whether this is a reusable engagement template rather than a live engagement.
+        company_uuid:
+          type: string
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+          description: UUID of the client company this engagement is for.
+        start_date:
+          type: string
+          format: date
+          example: '2023-05-23'
+          nullable: true
+          description: The engagement's planned start date, or null if not scheduled.
+        end_date:
+          type: string
+          format: date
+          example: '2023-07-30'
+          nullable: true
+          description: The engagement's planned end date, or null if not scheduled.
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        report_issue_date:
+          type: string
+          format: date
+          example: '2023-07-30'
+          nullable: true
+          description: The date the audit report was issued, or null if not yet issued.
+        engagement_lead_user_uuid:
+          type: string
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+          nullable: true
+          description: UUID of the user leading the engagement (the audit lead), or null if no engagement lead is available.
+        client_owner_user_uuid:
+          type: string
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+          nullable: true
+          description: UUID of the client-side owner of the engagement, or null if unassigned.
+        identifier:
+          type: string
+          description: An external identifier that can be used by integrated systems
+          example: E0001-A
+          nullable: true
+        _links:
+          $ref: '#/components/schemas/EngagementReadLinks'
+      required:
+      - uuid
+      - name
+      - status
+      - is_template
+      - company_uuid
+      - start_date
+      - end_date
+      - created_at
+      - report_issue_date
+      - engagement_lead_user_uuid
+      - client_owner_user_uuid
+      - _links
+    CompanyRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 3699af0f-9b92-410d-945c-bb0bf39da904
+        name:
+          type: string
+          example: Jones Group, Inc.
+        identifier:
+          type: string
+          description: An external identifier that can be used by integrated systems
+          example: CA0001-A
+          nullable: true
+          default: null
+        type:
+          description: Whether the company is a Firm (the audit provider) or a Client.
+          allOf:
+          - $ref: '#/components/schemas/CompanyType'
+        require_mfa:
+          type: boolean
+          description: Whether new users will have multi-factor authentication enabled
+          example: false
+        _links:
+          $ref: '#/components/schemas/CompanyReadLinks'
+      required:
+      - uuid
+      - name
+      - type
+      - require_mfa
+      - _links
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

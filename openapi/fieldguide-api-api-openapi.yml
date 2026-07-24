@@ -1,0 +1,197 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: api
+  description: Endpoints used to interact with the Fieldguide API platform
+paths:
+  /v1/scopes:
+    get:
+      operationId: list_scopes_v1
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScopeRead'
+        '429':
+          description: Too many requests
+      security:
+      - {}
+      summary: List available Scopes for the Fieldguide API
+      tags:
+      - api
+  /v1/token:
+    get:
+      operationId: get_current_token_v1
+      parameters: []
+      responses:
+        '200':
+          description: Metadata about the current authentication token
+          content:
+            application/json:
+              schema:
+                discriminator:
+                  propertyName: type
+                  mapping:
+                    api: '#/components/schemas/ApiTokenRead'
+                    jwt: '#/components/schemas/JwtTokenRead'
+                oneOf:
+                - $ref: '#/components/schemas/ApiTokenRead'
+                - $ref: '#/components/schemas/JwtTokenRead'
+        '401':
+          description: Unauthorized
+      summary: Get metadata about the current authentication token
+      tags:
+      - api
+components:
+  schemas:
+    ApiTokenRead:
+      type: object
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        expires_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        type:
+          type: string
+          enum:
+          - api
+          example: api
+        uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+        name:
+          type: string
+          example: Acme ABC Token
+        scopes:
+          type: array
+          example:
+          - engagements:read
+          - engagements.files:read
+          - engagements.files:write
+          items:
+            enum:
+            - comments:read
+            - comments:write
+            - companies:read
+            - companies:write
+            - controls:read
+            - engagements:read
+            - engagements:write
+            - engagements.files:read
+            - engagements.files:write
+            - files:read
+            - insights:read
+            - milestones:read
+            - requests:read
+            - requests:write
+            - requests.files:read
+            - requests.files:write
+            - users:read
+            - webhooks:read
+            - webhooks:write
+            - sheets:read
+            - sheets:write
+        provisioned_for:
+          type: string
+          default: fieldguide
+      required:
+      - user_uuid
+      - created_at
+      - expires_at
+      - type
+      - uuid
+      - name
+      - scopes
+      - provisioned_for
+    ApiResource:
+      type: string
+      enum:
+      - comments
+      - companies
+      - controls
+      - engagements
+      - requests
+      - users
+      - webhooks
+      - files
+      - sheets
+      - sheet-columns
+      - sheet-rows
+      - insights
+      - jobs
+      - milestones
+      - folders
+      description: The API resource this scope grants access to.
+    JwtTokenRead:
+      type: object
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        expires_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        type:
+          type: string
+          enum:
+          - jwt
+          example: jwt
+      required:
+      - user_uuid
+      - created_at
+      - expires_at
+      - type
+    ScopeRead:
+      type: object
+      properties:
+        scope:
+          type: string
+          example: engagements:read
+        resource:
+          description: The API resource this scope grants access to.
+          allOf:
+          - $ref: '#/components/schemas/ApiResource'
+        description:
+          type: string
+          example: Can read engagement metadata
+      required:
+      - scope
+      - resource
+      - description
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

@@ -1,0 +1,1170 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api requests API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: requests
+  description: Endpoints used to interact with Fieldguide Requests
+paths:
+  /v1/requests/{uuid}/controls:
+    get:
+      operationId: list_controls_by_request_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the request to retrieve controls for
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Controls for the Request
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/ControlRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `controls:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Controls that belong to the specified Request
+      tags:
+      - requests
+      x-required-scopes:
+      - controls:read
+  /v1/engagements/{uuid}/requests:
+    get:
+      operationId: list_requests_by_engagement_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the engagement to retrieve requests for
+        schema:
+          format: uuid
+          type: string
+      - name: statuses
+        required: false
+        in: query
+        description: Filter Requests by status. Repeat the query parameter for multiple statuses.
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestStatus'
+      - name: client_owner_user_uuids
+        required: false
+        in: query
+        description: Filter Requests by the UUID of their Client Owner Users. Repeat the query parameter for multiple UUIDs.
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+      - name: due_date_before
+        required: false
+        in: query
+        description: Filter Requests to those with a due date before this date. Uses strict before semantics and excludes Requests with no due date.
+        schema:
+          format: date
+          example: '2024-05-01'
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Requests for the Engagement
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/RequestRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `requests:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Requests that belong to the specified Engagement
+      tags:
+      - requests
+      x-required-scopes:
+      - requests:read
+  /v1/sheet-rows/{uuid}/requests:
+    get:
+      operationId: list_requests_by_sheet_row_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Sheet Row to retrieve requests for
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Requests for the Sheet Row
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/RequestRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `requests:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Requests that belong to the specified Sheet Row
+      tags:
+      - requests
+      x-required-scopes:
+      - requests:read
+  /v1/requests/{uuid}:
+    get:
+      operationId: get_request_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Request to retrieve
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The Request data
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RequestRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `requests:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch the specified Request
+      tags:
+      - requests
+      x-required-scopes:
+      - requests:read
+    patch:
+      operationId: update_request_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the request to update
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdate'
+      responses:
+        '200':
+          description: The updated Request data
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RequestRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `requests:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Update the specified Request
+      tags:
+      - requests
+      x-required-scopes:
+      - requests:write
+  /v1/requests/{uuid}/sheet-rows:
+    get:
+      operationId: list_sheet_rows_by_request_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Request for which to get Sheet Rows
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Sheet Rows to which the Request is linked
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/SheetRowRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `sheets:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Sheet Rows that belong to the specified Request
+      tags:
+      - requests
+      x-required-scopes:
+      - sheets:read
+  /v1/requests/{uuid}/files:
+    get:
+      operationId: list_request_files_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Request to list Files for
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Files for the specified Request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FileRead'
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Forbidden
+
+
+            Forbidden (requires scopes `requests.files:read`)'
+        '404':
+          description: Resource not found
+      summary: Fetch the Files for the specified Request
+      tags:
+      - requests
+      x-required-scopes:
+      - requests.files:read
+    post:
+      operationId: upload_request_file_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the request to upload the file to
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        description: File to upload to the Request
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FileCreate'
+      responses:
+        '200':
+          description: The UUID of the file that was attached to the Request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FileUploadRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `requests.files:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Upload a File to the specified Request
+      tags:
+      - requests
+      x-required-scopes:
+      - requests.files:write
+  /v1/requests/{uuid}/comments:
+    get:
+      operationId: list_comments_by_request_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the request to get comments for
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Request comments
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/CommentRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `comments:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch the Comments for the specified Request
+      tags:
+      - requests
+      x-required-scopes:
+      - comments:read
+    post:
+      operationId: create_request_comment_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the request to post the comment
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentCreate'
+      responses:
+        '201':
+          description: The newly created Comment
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CommentRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `comments:write`)
+        '429':
+          description: Too many requests
+      summary: Post a Comment on a Request
+      tags:
+      - requests
+      x-required-scopes:
+      - comments:write
+  /v1/requests/comments:
+    post:
+      operationId: create_request_comments_v1
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCommentBulkCreate'
+      responses:
+        '201':
+          description: The newly created Comments
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CommentRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `comments:write`)
+        '429':
+          description: Too many requests
+      summary: Post Comments on multiple Requests
+      tags:
+      - requests
+      x-required-scopes:
+      - comments:write
+components:
+  schemas:
+    ControlReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Controls within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/controls?client=2&id=09f7eeab-5318-4aff-a2bc-98b21dbe8b60&open=true
+            title: View the Control in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    RequestUpdate:
+      type: object
+      properties:
+        status:
+          allOf:
+          - $ref: '#/components/schemas/RequestStatus'
+    RequestCommentBulkCreate:
+      type: object
+      properties:
+        comments:
+          minItems: 1
+          maxItems: 50
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestCommentBulkCreateItem'
+      required:
+      - comments
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    FileRead:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Board of Directors.docx
+        size:
+          type: number
+          example: 137437
+        mime_type:
+          type: string
+          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        url:
+          type: string
+          format: uri
+          example: https://example.com/document.docx
+          nullable: true
+        url_expiration:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+        uuid:
+          type: string
+          format: uuid
+          example: 91aeda5e-4a3c-4090-90b1-cbf09d4c1ba1
+        created_at:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+      required:
+      - name
+      - size
+      - mime_type
+      - url
+      - url_expiration
+      - uuid
+      - created_at
+      - updated_at
+    SheetRowRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        keys:
+          type: array
+          items:
+            type: string
+            example: 1.1.1
+        _links:
+          $ref: '#/components/schemas/SheetReadLinks'
+      required:
+      - uuid
+      - keys
+      - _links
+    SheetReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Sheet within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/82027/workplan/3
+            title: View the Sheet in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    RequestReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Request within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/inbox?open=true&id=47923
+            title: View this Request in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    RequestStatus:
+      type: string
+      enum:
+      - Open
+      - Update Requested
+      - Complete
+      - Ready For Review
+      - Draft
+      description: The request's current status in the evidence-collection workflow.
+    CommentCreate:
+      type: object
+      properties:
+        content:
+          type: string
+          example: <p>The comment text in HTML format</p>
+          minLength: 1
+        mentioned_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: edbf4962-20eb-499e-a7fa-eaff50c81630
+          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
+      required:
+      - content
+    RequestRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        title:
+          type: string
+          example: Employees hired in 2023
+        description:
+          type: string
+          example: Please provide a list of employees hired this calendar year along with full HR profiles
+        status:
+          description: The request's current status in the evidence-collection workflow.
+          allOf:
+          - $ref: '#/components/schemas/RequestStatus'
+        identifier:
+          type: string
+          description: An external identifier that can be used by integrated systems
+          example: REQ-1234
+        client_company_uuid:
+          type: string
+          format: uuid
+          example: 60d593b6-1c59-4f30-bf9c-56901af906a7
+        status_label:
+          type: string
+          example: Waiting for Specification
+          description: If the status is "Draft", this can be a custom label. Otherwise, it will be the same value as the "status" property.
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        due_date:
+          type: string
+          format: date
+          example: '2024-05-01'
+          nullable: true
+        client_owner_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: edbf4962-20eb-499e-a7fa-eaff50c81630
+        tags:
+          type: array
+          items:
+            type: string
+            example: tag-name
+        engagement_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: d51b4959-a6b0-4b8a-a251-8b5f7be7765e
+        _links:
+          $ref: '#/components/schemas/RequestReadLinks'
+      required:
+      - uuid
+      - title
+      - description
+      - status
+      - identifier
+      - client_company_uuid
+      - status_label
+      - created_at
+      - due_date
+      - client_owner_user_uuids
+      - tags
+      - engagement_uuids
+      - _links
+    ControlRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        description:
+          type: string
+          example: Organizational charts are in place to communicate key areas of authority, responsibility, and appropriate lines of reporting to personnel.
+        key:
+          type: string
+          example: FG-6
+        _links:
+          $ref: '#/components/schemas/ControlReadLinks'
+      required:
+      - uuid
+      - description
+      - key
+      - _links
+    FileCreate:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+      required:
+      - file
+    CommentRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        content:
+          type: string
+          example: <p>The comment text in HTML format</p>Employees hired in 2023
+        author_user_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        updated_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        _links:
+          $ref: '#/components/schemas/CommentReadLinks'
+      required:
+      - uuid
+      - content
+      - author_user_uuid
+      - created_at
+      - updated_at
+      - _links
+    RequestCommentBulkCreateItem:
+      type: object
+      properties:
+        request_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        content:
+          type: string
+          example: <p>The comment text in HTML format</p>
+          minLength: 1
+        mentioned_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: edbf4962-20eb-499e-a7fa-eaff50c81630
+          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
+      required:
+      - request_uuid
+      - content
+    CommentReadLinks:
+      type: object
+      properties:
+        self:
+          description: A URL the user can fetch the Comment
+          example:
+            href: https://api.fieldguide.io/v1/comments/5919b6e8-9ea9-4cf0-9598-3a44cad3c7f7
+            title: Fetch this Comment
+            example: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - self
+    FileUploadRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 3e11fc6d-ecd0-4673-8a90-aa787ed391ec
+      required:
+      - uuid
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

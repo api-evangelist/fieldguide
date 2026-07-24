@@ -1,0 +1,1974 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api engagements API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: engagements
+  description: Endpoints used to interact with Fieldguide Engagements
+paths:
+  /v1/companies/{uuid}/engagements:
+    get:
+      operationId: list_engagements_by_company_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Company to retrieve engagements from
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Engagements for the specified Company
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/EngagementRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:read`)
+        '429':
+          description: Too many requests
+      summary: Get engagements for a given company
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements:read
+  /v1/engagements:
+    get:
+      operationId: list_engagements_v1
+      parameters:
+      - name: templates
+        required: false
+        in: query
+        description: Filter to include, exclude, or only show template engagements
+        schema:
+          $ref: '#/components/schemas/TemplatesQuery'
+      - name: uuids
+        required: false
+        in: query
+        description: Filter Engagements by UUID. Repeat the query parameter for multiple UUIDs.
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+      - name: engagement_lead_user_uuid
+        required: false
+        in: query
+        description: Filter Engagements by the UUID of their Engagement Lead User.
+        schema:
+          format: uuid
+          type: string
+      - name: client_owner_user_uuid
+        required: false
+        in: query
+        description: Filter Engagements by the UUID of their Client Owner User.
+        schema:
+          format: uuid
+          type: string
+      - name: statuses
+        required: false
+        in: query
+        description: Filter Engagements by status. Repeat the query parameter for multiple statuses.
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/EngagementsQueryStatusLabel'
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Engagements accessible by the user
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/EngagementRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:read`)
+        '429':
+          description: Too many requests
+      summary: List available Engagements
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements:read
+  /v1/engagements/{uuid}:
+    get:
+      operationId: get_engagement_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to retrieve
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The Engagement details
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch the specified Engagement
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements:read
+    patch:
+      operationId: update_engagement_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to update
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EngagementUpdate'
+      responses:
+        '200':
+          description: The updated Engagement data
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Update the specified Engagement
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements:write
+  /v1/engagements/from-template:
+    post:
+      description: Creates a new Engagement based on an existing template Engagement. The request is accepted for asynchronous processing; the response returns the new Engagement's UUID, which may not be fully provisioned immediately.
+      operationId: create_engagement_from_template_v1
+      parameters: []
+      requestBody:
+        required: true
+        description: Engagement creation from template options
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EngagementCreateFromTemplate'
+      responses:
+        '202':
+          description: The Engagement creation has been accepted for processing
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementUuidRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Forbidden (requires permission `[''insert'', ''engagements'']`)
+
+
+            Forbidden (requires scopes `engagements:write`)'
+        '429':
+          description: Too many requests
+      summary: Create a new Engagement from a template
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements:write
+  /v1/engagements/{uuid}/export:
+    post:
+      description: 'Begins a long-running process that will generate an Engagement binder as a zip file.
+
+
+        Use the Job ID that this endpoint returns with the appropriate [jobs endpoint](#/jobs/get_job_v1) to check its status and get its result.'
+      operationId: export_engagement_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to export
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '202':
+          headers:
+            Location:
+              description: The URI to check the status of the job
+              schema:
+                type: string
+                example: https://api.fieldguide.io/v1/jobs/f2c75e84-6b42-452d-b52f-3bf1854432d6
+            Retry-After:
+              description: A date-time estimate of when the job will complete (if the job is still running)
+              schema:
+                type: string
+                format: date-time
+                example: '2025-04-04T12:30:00.000Z'
+              required: false
+          description: The Job UUID for the Engagement binder export
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/JobSubmittedRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Export an Engagement binder
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements:read
+  /v1/engagements/exports/{uuid}:
+    get:
+      description: Returns the download URL and metadata for a completed Engagement binder export. Call this once the export Job returned by the export endpoint has finished.
+      operationId: get_engagement_export_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Job
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The exported Engagement binder file metadata and download URL
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementExportRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch a generated Engagement binder report
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements:read
+  /v1/engagements/{uuid}/users:
+    get:
+      operationId: list_engagement_users_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to retrieve Users for
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The users on the Engagement Team for the specified Engagement
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/EngagementUserRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:read`, `users:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List the Engagement Team on an Engagement
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements:read
+      - users:read
+    patch:
+      operationId: add_engagement_users_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to add Users to
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/EngagementUserCreate'
+      responses:
+        '204':
+          description: No content. The Users were added to the Engagement Team successfully.
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Add Users to an Engagement Team
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements:write
+    delete:
+      operationId: remove_engagement_users_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to delete Users from
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/EngagementUserDelete'
+      responses:
+        '204':
+          description: No content. The Users were removed from the Engagement Team successfully.
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Remove Users from an Engagement Team
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements:write
+  /v1/engagements/{uuid}/requests:
+    get:
+      operationId: list_requests_by_engagement_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the engagement to retrieve requests for
+        schema:
+          format: uuid
+          type: string
+      - name: statuses
+        required: false
+        in: query
+        description: Filter Requests by status. Repeat the query parameter for multiple statuses.
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestStatus'
+      - name: client_owner_user_uuids
+        required: false
+        in: query
+        description: Filter Requests by the UUID of their Client Owner Users. Repeat the query parameter for multiple UUIDs.
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+      - name: due_date_before
+        required: false
+        in: query
+        description: Filter Requests to those with a due date before this date. Uses strict before semantics and excludes Requests with no due date.
+        schema:
+          format: date
+          example: '2024-05-01'
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Requests for the Engagement
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/RequestRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `requests:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Requests that belong to the specified Engagement
+      tags:
+      - engagements
+      x-required-scopes:
+      - requests:read
+  /v1/engagements/{uuid}/sheets:
+    get:
+      operationId: list_sheets_by_engagement_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement for which to get Sheets
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Sheets to which the Engagement is linked
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/SheetRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements:read`, `sheets:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Sheets that belong to the specified Engagement
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements:read
+      - sheets:read
+  /v1/engagements/{uuid}/folders:
+    get:
+      operationId: list_engagement_folders_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement for which to get Folders
+        schema:
+          format: uuid
+          type: string
+      - name: parent_folder_uuid
+        required: false
+        in: query
+        description: An optional UUID of the parent folder
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The list of Engagement Folders
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementFolderRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements.files:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Folders that belong to the specified Engagement
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements.files:read
+  /v1/engagements/{engagement_uuid}/folders/{folder_uuid}:
+    get:
+      operationId: get_engagement_folder_v1
+      parameters:
+      - name: engagement_uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement from which to get a Folder
+        schema:
+          format: uuid
+          type: string
+      - name: folder_uuid
+        required: true
+        in: path
+        description: The UUID of the folder to fetch
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The Engagement Folder with the specified UUID
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementFolderRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements.files:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch a Folder by Engagement and Folder UUIDs
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements.files:read
+  /v1/engagements/{engagement_uuid}/files/{file_uuid}:
+    get:
+      operationId: get_engagement_file_v1
+      parameters:
+      - name: engagement_uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement from which to get a File
+        schema:
+          format: uuid
+          type: string
+      - name: file_uuid
+        required: true
+        in: path
+        description: The UUID of the File to fetch
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The Engagement File with the specified UUID
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementFileRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements.files:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch a File by Engagement and File UUIDs
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements.files:read
+  /v1/engagements/{uuid}/files:
+    get:
+      operationId: list_engagement_files_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement for which to get Files
+        schema:
+          format: uuid
+          type: string
+      - name: folder_uuid
+        required: false
+        in: query
+        description: An optional UUID of the Folder to filter Files by
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The list of Engagement Files
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementFileRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements.files:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Files that belong to the specified Engagement
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements.files:read
+    post:
+      operationId: upload_engagement_file_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to upload the File to
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        description: The File to upload
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EngagementFileCreate'
+      responses:
+        '200':
+          description: The UUID of the File that was attached to the Engagement
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementFileRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements.files:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Upload a File to the specified Engagement
+      tags:
+      - engagements
+      x-required-scopes:
+      - engagements.files:write
+  /v1/engagements/{engagement_uuid}/milestones:
+    get:
+      operationId: list_milestones_by_engagement_v1
+      parameters:
+      - name: engagement_uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to retrieve Milestones for
+        schema:
+          format: uuid
+          type: string
+      - name: associated_engagement_status
+        required: false
+        in: query
+        description: Filter by the optional Engagement lifecycle phase associated with each Milestone. This is not the Engagement's current status and does not determine Milestone completion.
+        schema:
+          $ref: '#/components/schemas/MilestoneAssociatedEngagementStatus'
+      - name: client_can_view
+        required: false
+        in: query
+        description: Filter Milestones by client visibility.
+        schema:
+          type: boolean
+      - name: is_completed
+        required: false
+        in: query
+        description: Filter by completion state. A completed Milestone has a non-null `completed_at` value.
+        schema:
+          type: boolean
+      - name: sort_by
+        required: false
+        in: query
+        description: Field used to sort Milestones. Results are sorted by creation time unless `sequence` is requested.
+        schema:
+          $ref: '#/components/schemas/MilestoneSortBy'
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The visible Milestones for the Engagement
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/MilestoneRead'
+                - properties:
+                    _links:
+                      type: object
+                      required:
+                      - self
+                      - first
+                      - last
+                      properties:
+                        self:
+                          type: object
+                          description: The URL for the current page being fetched
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=2&per_page=50
+                        first:
+                          type: object
+                          description: The URL for the first page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        last:
+                          type: object
+                          description: The URL for the last page of the set
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=10&per_page=50
+                        previous:
+                          type: object
+                          description: The URL for the previous page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=1&per_page=50
+                        next:
+                          type: object
+                          description: The URL for the next page in the set, if there is one
+                          properties:
+                            href:
+                              type: string
+                              example: https://api.fieldguide.io/v1/example?page=3&per_page=50
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Forbidden
+
+
+            Forbidden (requires scopes `milestones:read`)'
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Milestones that belong to the specified Engagement
+      tags:
+      - engagements
+      x-required-scopes:
+      - milestones:read
+components:
+  schemas:
+    EngagementExportRead:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Board of Directors.docx
+        size:
+          type: number
+          example: 137437
+        mime_type:
+          type: string
+          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        url:
+          type: string
+          format: uri
+          example: https://example.com/document.docx
+          nullable: true
+        url_expiration:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+      required:
+      - name
+      - size
+      - mime_type
+      - url
+      - url_expiration
+    EngagementFileRead:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Board of Directors.docx
+        size:
+          type: number
+          example: 137437
+        mime_type:
+          type: string
+          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        url:
+          type: string
+          format: uri
+          example: https://example.com/document.docx
+          nullable: true
+        url_expiration:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+        uuid:
+          type: string
+          format: uuid
+          example: 91aeda5e-4a3c-4090-90b1-cbf09d4c1ba1
+        created_at:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+        engagement_uuid:
+          type: string
+          description: The UUID of the Engagement this File is associated with
+          format: uuid
+        folder_uuid:
+          type: string
+          description: The UUID of the Folder this File is associated with, or null if it sits at the Engagement root.
+          format: uuid
+          nullable: true
+        _links:
+          $ref: '#/components/schemas/EngagementFileReadLinks'
+      required:
+      - name
+      - size
+      - mime_type
+      - url
+      - url_expiration
+      - uuid
+      - created_at
+      - updated_at
+      - engagement_uuid
+      - folder_uuid
+      - _links
+    EngagementUserDelete:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The UUID of the user to remove from the Engagement Team
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+      required:
+      - uuid
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    RequestRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        title:
+          type: string
+          example: Employees hired in 2023
+        description:
+          type: string
+          example: Please provide a list of employees hired this calendar year along with full HR profiles
+        status:
+          description: The request's current status in the evidence-collection workflow.
+          allOf:
+          - $ref: '#/components/schemas/RequestStatus'
+        identifier:
+          type: string
+          description: An external identifier that can be used by integrated systems
+          example: REQ-1234
+        client_company_uuid:
+          type: string
+          format: uuid
+          example: 60d593b6-1c59-4f30-bf9c-56901af906a7
+        status_label:
+          type: string
+          example: Waiting for Specification
+          description: If the status is "Draft", this can be a custom label. Otherwise, it will be the same value as the "status" property.
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        due_date:
+          type: string
+          format: date
+          example: '2024-05-01'
+          nullable: true
+        client_owner_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: edbf4962-20eb-499e-a7fa-eaff50c81630
+        tags:
+          type: array
+          items:
+            type: string
+            example: tag-name
+        engagement_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: d51b4959-a6b0-4b8a-a251-8b5f7be7765e
+        _links:
+          $ref: '#/components/schemas/RequestReadLinks'
+      required:
+      - uuid
+      - title
+      - description
+      - status
+      - identifier
+      - client_company_uuid
+      - status_label
+      - created_at
+      - due_date
+      - client_owner_user_uuids
+      - tags
+      - engagement_uuids
+      - _links
+    EngagementRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+        name:
+          type: string
+          example: SOC 2 - Type 1
+        status:
+          description: The engagement's current lifecycle status.
+          allOf:
+          - $ref: '#/components/schemas/EngagementStatus'
+        is_template:
+          type: boolean
+          example: false
+          description: Whether this is a reusable engagement template rather than a live engagement.
+        company_uuid:
+          type: string
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+          description: UUID of the client company this engagement is for.
+        start_date:
+          type: string
+          format: date
+          example: '2023-05-23'
+          nullable: true
+          description: The engagement's planned start date, or null if not scheduled.
+        end_date:
+          type: string
+          format: date
+          example: '2023-07-30'
+          nullable: true
+          description: The engagement's planned end date, or null if not scheduled.
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        report_issue_date:
+          type: string
+          format: date
+          example: '2023-07-30'
+          nullable: true
+          description: The date the audit report was issued, or null if not yet issued.
+        engagement_lead_user_uuid:
+          type: string
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+          nullable: true
+          description: UUID of the user leading the engagement (the audit lead), or null if no engagement lead is available.
+        client_owner_user_uuid:
+          type: string
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+          nullable: true
+          description: UUID of the client-side owner of the engagement, or null if unassigned.
+        identifier:
+          type: string
+          description: An external identifier that can be used by integrated systems
+          example: E0001-A
+          nullable: true
+        _links:
+          $ref: '#/components/schemas/EngagementReadLinks'
+      required:
+      - uuid
+      - name
+      - status
+      - is_template
+      - company_uuid
+      - start_date
+      - end_date
+      - created_at
+      - report_issue_date
+      - engagement_lead_user_uuid
+      - client_owner_user_uuid
+      - _links
+    JobSubmittedReadLinks:
+      type: object
+      properties:
+        status:
+          description: An API endpoint to retrieve the status of the job
+          example:
+            href: https://api.fieldguide.io/jobs/2d2e102e-f4af-4534-9749-4d9249eca6cc
+            title: Get the status of this job
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - status
+    EngagementsQueryStatusLabel:
+      type: string
+      enum:
+      - Pending
+      - In Progress
+      - Complete
+      - Archived
+    EngagementUserRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        first_name:
+          type: string
+          example: Kurt
+        last_name:
+          type: string
+          example: Vonnegut
+        email:
+          type: string
+          format: email
+          example: kurt.vonnegut@weyland-yutani.com
+          description: The user's email for deleted users will be noreply@fieldguide.io
+        company_uuid:
+          type: string
+          format: uuid
+          example: 0a5cc6c6-2855-48f1-892e-7547fe9f8fc4
+      required:
+      - uuid
+      - first_name
+      - last_name
+      - email
+      - company_uuid
+    EngagementStatusLabel:
+      type: string
+      enum:
+      - Pending
+      - In Progress
+      - Complete
+      description: The status of the Engagement
+    EngagementCreateFromTemplate:
+      type: object
+      properties:
+        template_uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+        client_company_uuid:
+          type: string
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+        name:
+          type: string
+          example: SOC 2 - Type 1
+        start_date:
+          type: string
+          example: '2023-07-30'
+        end_date:
+          type: string
+          example: '2023-07-30'
+        report_issue_date:
+          type: string
+          example: '2023-07-30'
+        identifier:
+          type: string
+          description: An external identifier that can be used by integrated systems
+          example: E0001-A
+          nullable: true
+          default: null
+      required:
+      - template_uuid
+      - client_company_uuid
+      - name
+    TemplatesQuery:
+      type: string
+      enum:
+      - include
+      - exclude
+      - only
+    EngagementFolderReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Engagement Folder within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/123/documents?folder=abc-123
+            title: View this Engagement Folder in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    EngagementUuidRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+      required:
+      - uuid
+    JobSubmittedRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The UUID of the job that was submitted
+        _links:
+          $ref: '#/components/schemas/JobSubmittedReadLinks'
+      required:
+      - uuid
+      - _links
+    EngagementFileReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Engagement File within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/v1/engagements/2/documents?folder=0d7c72ee-28b3-4bc8-aea1-18bc7d9a8679&file=9b560ead-2b64-41f2-b9ae-826bdb866f1a
+            title: Get the result of this job
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    EngagementReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Engagement within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/82027
+            title: View this Engagement in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    SheetReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Sheet within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/82027/workplan/3
+            title: View the Sheet in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    RequestStatus:
+      type: string
+      enum:
+      - Open
+      - Update Requested
+      - Complete
+      - Ready For Review
+      - Draft
+      description: The request's current status in the evidence-collection workflow.
+    MilestoneRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        engagement_uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: UUID of the Engagement that owns this Milestone.
+        name:
+          type: string
+          example: Planning complete
+        sequence:
+          type: integer
+          example: 2
+          description: The Milestone's display order within its Engagement.
+        associated_engagement_status:
+          nullable: true
+          description: An optional association to an Engagement lifecycle phase. It does not represent the Engagement's current status or determine Milestone completion.
+          allOf:
+          - $ref: '#/components/schemas/MilestoneAssociatedEngagementStatus'
+        due_date:
+          type: string
+          format: date
+          example: '2026-03-15'
+          nullable: true
+        completed_at:
+          type: string
+          format: date-time
+          example: '2026-03-10T12:30:00.000Z'
+          nullable: true
+          description: The authoritative completion indicator. Null means the Milestone is incomplete.
+        completed_by_user_uuid:
+          type: string
+          format: uuid
+          example: 6b242248-e2b9-4d41-8986-11b710860048
+          nullable: true
+          description: UUID of the user who completed the Milestone.
+        owner_user_uuid:
+          type: string
+          format: uuid
+          example: ee196968-2a7a-48e9-97f9-d12f26a8ff94
+          nullable: true
+          description: UUID of the user assigned to own the Milestone.
+        client_can_view:
+          type: boolean
+          example: true
+          description: Whether client users can view the Milestone.
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-02-01T12:30:00.000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-03-10T12:30:00.000Z'
+        _links:
+          $ref: '#/components/schemas/MilestoneReadLinks'
+      required:
+      - uuid
+      - engagement_uuid
+      - name
+      - sequence
+      - associated_engagement_status
+      - due_date
+      - completed_at
+      - completed_by_user_uuid
+      - owner_user_uuid
+      - client_can_view
+      - created_at
+      - updated_at
+      - _links
+    EngagementUserCreate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The UUID of the user to add to the engagement
+          format: uuid
+          example: 3699af0f-9b92-410d-945c-bb0bf39da904
+      required:
+      - uuid
+    EngagementUpdate:
+      type: object
+      properties:
+        engagement_lead_user_uuid:
+          type: string
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+          description: The UUID of the firm user who is the engagement lead
+        identifier:
+          type: string
+          description: An external identifier that can be used by integrated systems
+          example: E0001-A
+          nullable: true
+        status:
+          description: The status of the Engagement
+          allOf:
+          - $ref: '#/components/schemas/EngagementStatusLabel'
+        name:
+          type: string
+          description: The name of the Engagement
+          example: SOC 2 - Type 1
+          nullable: false
+    MilestoneReadLinks:
+      type: object
+      properties:
+        self:
+          description: The canonical API URL for this Milestone
+          example:
+            href: https://api.fieldguide.io/v1/milestones/4d50d252-be0c-4d69-b77a-5bbdfef83f54
+            title: Fetch this Milestone
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+        collection:
+          description: The visible Milestones collection for the parent Engagement
+          example:
+            href: https://api.fieldguide.io/v1/engagements/821e8d9e-d2a8-480f-9187-5a685d3d0d71/milestones
+            title: List Milestones for this Engagement
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+        engagement:
+          description: The canonical API URL for the parent Engagement
+          example:
+            href: https://api.fieldguide.io/v1/engagements/821e8d9e-d2a8-480f-9187-5a685d3d0d71
+            title: Fetch the parent Engagement
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+        fieldguide:
+          description: A Fieldguide Engagement dashboard link containing this Milestone's UUID
+          example:
+            href: https://app.fieldguide.io/engagements/82027/dashboard?milestone=4d50d252-be0c-4d69-b77a-5bbdfef83f54
+            title: Open the parent Engagement in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - self
+      - collection
+      - engagement
+      - fieldguide
+    EngagementStatus:
+      type: string
+      enum:
+      - Pending
+      - In Progress
+      - Complete
+      - Archived
+      description: The engagement's current lifecycle status.
+    SheetRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        name:
+          type: string
+          example: PCI DSS ROC v3.2.1 6. Findings and Observations
+        _links:
+          $ref: '#/components/schemas/SheetReadLinks'
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+      required:
+      - uuid
+      - name
+      - _links
+      - created_at
+    EngagementFolderRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The unique identifier for the resource
+        parent_folder_uuid:
+          type: string
+          format: uuid
+          example: 721e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The folder that contains this one
+          nullable: true
+        engagement_uuid:
+          type: string
+          format: uuid
+          example: 921e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The Engagement this Folder belongs to
+        name:
+          type: string
+          example: Documents
+          description: The name of the Folder
+        path:
+          type: string
+          example: /grandparent/parent
+          description: The path to the Folder from the Engagement root
+        created_at:
+          format: date-time
+          type: string
+          example: '2024-03-19T12:00:00Z'
+          description: Timestamp of when the Folder was created
+        _links:
+          $ref: '#/components/schemas/EngagementFolderReadLinks'
+      required:
+      - uuid
+      - parent_folder_uuid
+      - engagement_uuid
+      - name
+      - path
+      - created_at
+      - _links
+    RequestReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Request within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/inbox?open=true&id=47923
+            title: View this Request in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    EngagementFileCreate:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+        folder_uuid:
+          type: string
+          description: The Folder UUID of the Engagement this File is associated with
+          format: uuid
+      required:
+      - file
+    MilestoneSortBy:
+      type: string
+      enum:
+      - created_at
+      - sequence
+    MilestoneAssociatedEngagementStatus:
+      type: string
+      enum:
+      - Pending
+      - In Progress
+      - Complete
+      - Archived
+      description: An optional association to an Engagement lifecycle phase. It does not represent the Engagement's current status or determine Milestone completion.
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

@@ -1,0 +1,717 @@
+openapi: 3.0.0
+info:
+  title: Fieldguide api files API
+  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: files
+  description: Endpoints used to interact with Fieldguide Files
+paths:
+  /v1/files/{uuid}:
+    delete:
+      operationId: delete_file_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the file to delete
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: No content. The file was deleted successfully.
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `requests.files:write` for request files, `engagements.files:write` for engagement files)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Delete the specified File
+      tags:
+      - files
+    get:
+      operationId: get_file_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the File to get details for
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The File details
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FileRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `files:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Get details for a specific File
+      tags:
+      - files
+      x-required-scopes:
+      - files:read
+  /v1/files/{uuid}/context:
+    get:
+      operationId: get_file_context_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the File
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The File context
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FileContextRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `files:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Get context for a specific File
+      tags:
+      - files
+      x-required-scopes:
+      - files:read
+  /v1/engagements/{uuid}/folders:
+    get:
+      operationId: list_engagement_folders_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement for which to get Folders
+        schema:
+          format: uuid
+          type: string
+      - name: parent_folder_uuid
+        required: false
+        in: query
+        description: An optional UUID of the parent folder
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The list of Engagement Folders
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementFolderRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements.files:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Folders that belong to the specified Engagement
+      tags:
+      - files
+      x-required-scopes:
+      - engagements.files:read
+  /v1/engagements/{engagement_uuid}/folders/{folder_uuid}:
+    get:
+      operationId: get_engagement_folder_v1
+      parameters:
+      - name: engagement_uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement from which to get a Folder
+        schema:
+          format: uuid
+          type: string
+      - name: folder_uuid
+        required: true
+        in: path
+        description: The UUID of the folder to fetch
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The Engagement Folder with the specified UUID
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementFolderRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements.files:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch a Folder by Engagement and Folder UUIDs
+      tags:
+      - files
+      x-required-scopes:
+      - engagements.files:read
+  /v1/engagements/{engagement_uuid}/files/{file_uuid}:
+    get:
+      operationId: get_engagement_file_v1
+      parameters:
+      - name: engagement_uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement from which to get a File
+        schema:
+          format: uuid
+          type: string
+      - name: file_uuid
+        required: true
+        in: path
+        description: The UUID of the File to fetch
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          description: The Engagement File with the specified UUID
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementFileRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements.files:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Fetch a File by Engagement and File UUIDs
+      tags:
+      - files
+      x-required-scopes:
+      - engagements.files:read
+  /v1/engagements/{uuid}/files:
+    get:
+      operationId: list_engagement_files_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement for which to get Files
+        schema:
+          format: uuid
+          type: string
+      - name: folder_uuid
+        required: false
+        in: query
+        description: An optional UUID of the Folder to filter Files by
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The list of Engagement Files
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementFileRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements.files:read`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: List Files that belong to the specified Engagement
+      tags:
+      - files
+      x-required-scopes:
+      - engagements.files:read
+    post:
+      operationId: upload_engagement_file_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Engagement to upload the File to
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        description: The File to upload
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EngagementFileCreate'
+      responses:
+        '200':
+          description: The UUID of the File that was attached to the Engagement
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EngagementFileRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `engagements.files:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Upload a File to the specified Engagement
+      tags:
+      - files
+      x-required-scopes:
+      - engagements.files:write
+  /v1/requests/{uuid}/files:
+    get:
+      operationId: list_request_files_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the Request to list Files for
+        schema:
+          format: uuid
+          type: string
+      - name: page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 1
+          nullable: true
+      - name: per_page
+        required: false
+        in: query
+        schema:
+          type: number
+          default: 50
+          nullable: true
+          minimum: 1
+          maximum: 200
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for paginated results. Use `desc` to reverse the default ascending order.
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: The Files for the specified Request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FileRead'
+        '401':
+          description: Unauthorized
+        '403':
+          description: 'Forbidden
+
+
+            Forbidden (requires scopes `requests.files:read`)'
+        '404':
+          description: Resource not found
+      summary: Fetch the Files for the specified Request
+      tags:
+      - files
+      x-required-scopes:
+      - requests.files:read
+    post:
+      operationId: upload_request_file_v1
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        description: The UUID of the request to upload the file to
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        required: true
+        description: File to upload to the Request
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FileCreate'
+      responses:
+        '200':
+          description: The UUID of the file that was attached to the Request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FileUploadRead'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden (requires scopes `requests.files:write`)
+        '404':
+          description: Resource not found
+        '429':
+          description: Too many requests
+      summary: Upload a File to the specified Request
+      tags:
+      - files
+      x-required-scopes:
+      - requests.files:write
+components:
+  schemas:
+    EngagementFileReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Engagement File within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/v1/engagements/2/documents?folder=0d7c72ee-28b3-4bc8-aea1-18bc7d9a8679&file=9b560ead-2b64-41f2-b9ae-826bdb866f1a
+            title: Get the result of this job
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    EngagementFolderRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The unique identifier for the resource
+        parent_folder_uuid:
+          type: string
+          format: uuid
+          example: 721e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The folder that contains this one
+          nullable: true
+        engagement_uuid:
+          type: string
+          format: uuid
+          example: 921e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The Engagement this Folder belongs to
+        name:
+          type: string
+          example: Documents
+          description: The name of the Folder
+        path:
+          type: string
+          example: /grandparent/parent
+          description: The path to the Folder from the Engagement root
+        created_at:
+          format: date-time
+          type: string
+          example: '2024-03-19T12:00:00Z'
+          description: Timestamp of when the Folder was created
+        _links:
+          $ref: '#/components/schemas/EngagementFolderReadLinks'
+      required:
+      - uuid
+      - parent_folder_uuid
+      - engagement_uuid
+      - name
+      - path
+      - created_at
+      - _links
+    EngagementFileRead:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Board of Directors.docx
+        size:
+          type: number
+          example: 137437
+        mime_type:
+          type: string
+          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        url:
+          type: string
+          format: uri
+          example: https://example.com/document.docx
+          nullable: true
+        url_expiration:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+        uuid:
+          type: string
+          format: uuid
+          example: 91aeda5e-4a3c-4090-90b1-cbf09d4c1ba1
+        created_at:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+        engagement_uuid:
+          type: string
+          description: The UUID of the Engagement this File is associated with
+          format: uuid
+        folder_uuid:
+          type: string
+          description: The UUID of the Folder this File is associated with, or null if it sits at the Engagement root.
+          format: uuid
+          nullable: true
+        _links:
+          $ref: '#/components/schemas/EngagementFileReadLinks'
+      required:
+      - name
+      - size
+      - mime_type
+      - url
+      - url_expiration
+      - uuid
+      - created_at
+      - updated_at
+      - engagement_uuid
+      - folder_uuid
+      - _links
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    FileRead:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Board of Directors.docx
+        size:
+          type: number
+          example: 137437
+        mime_type:
+          type: string
+          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        url:
+          type: string
+          format: uri
+          example: https://example.com/document.docx
+          nullable: true
+        url_expiration:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+        uuid:
+          type: string
+          format: uuid
+          example: 91aeda5e-4a3c-4090-90b1-cbf09d4c1ba1
+        created_at:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+          nullable: true
+      required:
+      - name
+      - size
+      - mime_type
+      - url
+      - url_expiration
+      - uuid
+      - created_at
+      - updated_at
+    FileCreate:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+      required:
+      - file
+    FileContextRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        type:
+          type: string
+          enum:
+          - engagement
+          - request
+          example: engagement
+          description: The kind of object this file is attached to.
+      required:
+      - uuid
+      - type
+    EngagementFileCreate:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+        folder_uuid:
+          type: string
+          description: The Folder UUID of the Engagement this File is associated with
+          format: uuid
+      required:
+      - file
+    EngagementFolderReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Engagement Folder within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/123/documents?folder=abc-123
+            title: View this Engagement Folder in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    FileUploadRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 3e11fc6d-ecd0-4673-8a90-aa787ed391ec
+      required:
+      - uuid
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers
