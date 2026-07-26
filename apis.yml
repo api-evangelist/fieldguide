@@ -1,27 +1,343 @@
 aid: fieldguide
 name: Fieldguide
-description: Fieldguide is a company surfaced as a portfolio company of 8vc, bessemer-venture-partners
-  and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the
-  enrichment pipeline.
+description: >-
+  Fieldguide is an AI-native platform for audit and advisory firms, providing
+  professional-grade "Field Agents" that plan, execute, and document engagement
+  work end-to-end across financial audit, SOC audits, IT audit, risk advisory,
+  tax, cybersecurity, and regulatory compliance engagements. The platform pairs
+  engagement management, document management, insights and analytics, and a
+  client hub with an open REST API (api.fieldguide.io) that exposes companies,
+  engagements, requests, sheets, files, comments, milestones, users, insights,
+  and webhook subscriptions. Fieldguide is used by half of the top 100 firms,
+  is SOC 2 Type 2 and ISO/IEC 42001 certified, and is backed by 8VC and
+  Bessemer Venture Partners.
 url: https://raw.githubusercontent.com/api-evangelist/fieldguide/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - 8vc
 - bessemer-venture-partners
-x-tier: stub
+x-tier: enriched
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
+image: https://app.fieldguide.io/img/logo192.png
 tags:
 - Company
-apis: []
+- Audit
+- Advisory
+- Accounting
+- Compliance
+- Risk
+- Engagement Management
+- Artificial Intelligence
+- Agents
+- Webhooks
+apis:
+- aid: fieldguide:fieldguide-api-api
+  name: Fieldguide api API
+  description: Endpoints used to interact with the Fieldguide API platform
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - api
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-api-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-comments-api
+  name: Fieldguide comments API
+  description: Endpoints used to interact with Fieldguide Comments
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - comments
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-comments-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-companies-api
+  name: Fieldguide companies API
+  description: Endpoints used to interact with Fieldguide Companies
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - companies
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-companies-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-controls-api
+  name: Fieldguide controls API
+  description: Endpoints used to interact with Fieldguide Controls
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - controls
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-controls-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-engagements-api
+  name: Fieldguide engagements API
+  description: Endpoints used to interact with Fieldguide Engagements
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - engagements
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-engagements-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-files-api
+  name: Fieldguide files API
+  description: Endpoints used to interact with Fieldguide Files
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - files
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-files-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-insights-api
+  name: Fieldguide insights API
+  description: Endpoints used to interact with Fieldguide Insights
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - insights
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-insights-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-jobs-api
+  name: Fieldguide jobs API
+  description: Endpoints used to interact with long-running processes (Jobs) in the Fieldguide API
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-jobs-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-milestones-api
+  name: Fieldguide milestones API
+  description: Endpoints used to interact with Fieldguide Milestones
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - milestones
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-milestones-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-requests-api
+  name: Fieldguide requests API
+  description: Endpoints used to interact with Fieldguide Requests
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - requests
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-requests-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-sheet-columns-api
+  name: Fieldguide sheet-columns API
+  description: Endpoints used to interact with Fieldguide Sheet Columns
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - sheet-columns
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-sheet-columns-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-sheet-rows-api
+  name: Fieldguide sheet-rows API
+  description: Endpoints used to interact with Fieldguide Sheet Rows
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - sheet-rows
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-sheet-rows-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-sheets-api
+  name: Fieldguide sheets API
+  description: Endpoints used to interact with Fieldguide Sheets
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - sheets
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-sheets-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-users-api
+  name: Fieldguide users API
+  description: Endpoints used to interact with Fieldguide Users
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - users
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-users-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-webhooks-api
+  name: Fieldguide webhooks API
+  description: Endpoints used to interact with Fieldguide Webhooks
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-webhooks-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: TrustCenter
+  url: security/fieldguide-trust-center.yml
+- type: DomainSecurity
+  url: security/fieldguide-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/fieldguide-agentic-access.yml
+- type: Authentication
+  url: authentication/fieldguide-authentication.yml
 - type: Website
-  url: https://fieldguide.io
+  url: https://www.fieldguide.io
+- type: DeveloperPortal
+  url: https://www.fieldguide.io/developers
+- type: Documentation
+  url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- type: APIReference
+  url: https://api.fieldguide.io/api
+- type: Blog
+  url: https://www.fieldguide.io/blog
+- type: ChangeLog
+  url: https://changelog.fieldguide.io
+- type: StatusPage
+  url: https://status.fieldguide.io
+- type: Pricing
+  url: https://www.fieldguide.io/demo
+- type: SignUp
+  url: https://app.fieldguide.io
+- type: Login
+  url: https://app.fieldguide.io
+- type: Support
+  url: mailto:support@fieldguide.io
+- type: TermsOfService
+  url: https://www.fieldguide.io/terms
+- type: PrivacyPolicy
+  url: https://www.fieldguide.io/privacy-policy
+- type: Compliance
+  url: https://www.fieldguide.io/trust
+- type: OAuthScopes
+  url: scopes/fieldguide-scopes.yml
+- type: Conventions
+  url: conventions/fieldguide-conventions.yml
+- type: ErrorCatalog
+  url: errors/fieldguide-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/fieldguide-lifecycle.yml
+- type: MCPServer
+  url: mcp/fieldguide-mcp.yml
+- type: LLMsTxt
+  url: llms/fieldguide-llms.txt
+- type: Overlay
+  url: overlays/fieldguide-openapi-overlay.yaml
+- type: Conformance
+  url: conformance/fieldguide-conformance.yml
+- type: Webhooks
+  url: asyncapi/fieldguide-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DataModel
+  url: data-model/fieldguide-data-model.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

@@ -1,0 +1,15 @@
+generated: '2026-07-19'
+method: searched
+probe: true
+source: https://www.fieldguide.io/trust
+url: https://www.fieldguide.io/trust
+certifications:
+- SOC 2
+- PCI DSS
+- HIPAA
+evidence:
+- source: https://www.fieldguide.io/trust
+  keywords:
+  - soc 2
+  - pci dss
+  - hipaa

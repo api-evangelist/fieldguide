@@ -1,0 +1,81 @@
+generated: '2026-07-19'
+method: searched
+source: https://api.fieldguide.io/v1/scopes
+docs: https://api.fieldguide.io/api
+note: >-
+  Fieldguide authenticates with bearer API tokens (JWT); each token is granted
+  a set of resource-level scopes of the form `<resource>:read` / `<resource>:write`.
+  The live, unauthenticated /v1/scopes endpoint returns the authoritative scope
+  registry captured verbatim below. This is an API-token permission model, not an
+  OAuth 2.0 authorization-server flow — no oauth2 securityScheme is declared in
+  the OpenAPI (auth is http bearer JWT).
+schemes:
+- name: bearer
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  source: openapi/fieldguide-openapi-original.json
+scopes:
+- scope: comments:read
+  resource: comments
+  description: Can fetch information about Comments that I have access to
+- scope: comments:write
+  resource: comments
+  description: Can create/update Comments that I have access to
+- scope: companies:read
+  resource: companies
+  description: Can fetch information about Companies that I have access to
+- scope: companies:write
+  resource: companies
+  description: Can create/update Companies that I have access to
+- scope: controls:read
+  resource: controls
+  description: Can fetch information about Controls that I have access to
+- scope: engagements.files:read
+  resource: engagements
+  description: Can fetch information about Files & Folders in Engagements that I have access to
+- scope: engagements.files:write
+  resource: engagements
+  description: Can create and update Files & Folders in Engagements that I have access to
+- scope: engagements:read
+  resource: engagements
+  description: Can fetch information about Engagements that I have access to
+- scope: engagements:write
+  resource: engagements
+  description: Can create/update Engagements that I have access to
+- scope: files:read
+  resource: files
+  description: Can fetch information about Files that I have access to
+- scope: insights:read
+  resource: insights
+  description: Can fetch information about Insights that I have access to
+- scope: milestones:read
+  resource: milestones
+  description: Can fetch information about Milestones that I have access to
+- scope: requests.files:read
+  resource: requests
+  description: Can fetch information about Files from Requests that I have access to
+- scope: requests.files:write
+  resource: requests
+  description: Can upload Files to Requests that I have access to
+- scope: requests:read
+  resource: requests
+  description: Can fetch information about Requests that I have access to
+- scope: requests:write
+  resource: requests
+  description: Can create/update Requests that I have access to
+- scope: sheets:read
+  resource: sheets
+  description: Can read Sheet-related data that I have access to
+- scope: sheets:write
+  resource: sheets
+  description: Can update Sheet-related data that I have access to
+- scope: users:read
+  resource: users
+  description: Can fetch information about Users that I have access to
+- scope: webhooks:read
+  resource: webhooks
+  description: Can fetch information about webhook subscriptions that I have created
+- scope: webhooks:write
+  resource: webhooks
+  description: Can create/update webhook subscriptions for my user

@@ -1,0 +1,59 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/fieldguide-openapi-original.json
+docs: https://api.fieldguide.io/api
+summary: >-
+  Cross-cutting request/response semantics for the Fieldguide REST API, derived
+  from the published OpenAPI and the live API surface. Bearer-token auth with
+  resource scopes, page/per_page pagination, resource-scoped 403s, RFC-style
+  HTTP status errors, and 429 rate limiting.
+authentication:
+  style: bearer-token
+  scheme: Authorization Bearer <token>
+  token_formats: [jwt, api-token]
+  scoped: true
+  scopes_ref: scopes/fieldguide-scopes.yml
+  detail: authentication/fieldguide-authentication.yml
+idempotency:
+  supported: false
+  note: >-
+    No Idempotency-Key header/parameter is declared in the OpenAPI and none is
+    documented; writes are not advertised as idempotent. Omitted deliberately —
+    do not assert idempotency support.
+pagination:
+  style: page-number
+  params:
+  - name: page
+    in: query
+    description: 1-based page number
+  - name: per_page
+    in: query
+    description: Number of items per page
+  sorting:
+  - name: sort_by
+    in: query
+  - name: sort_order
+    in: query
+identifiers:
+  style: uuid
+  note: Resources are addressed by RFC 4122 UUIDs in path parameters (e.g. /v1/companies/{uuid}).
+versioning:
+  scheme: uri-path
+  current: v1
+  base_path: /v1
+error_envelope:
+  format: http-status
+  detail: errors/fieldguide-problem-types.yml
+  note: >-
+    Errors are signaled via HTTP status codes (400/401/403/404/422/429). 403
+    responses name the missing scope, e.g. "Forbidden (requires scopes
+    `engagements:write`)".
+rate_limiting:
+  signaled: true
+  status_code: 429
+  note: >-
+    A 429 "Too many requests" response is documented across endpoints; specific
+    numeric limits and rate-limit headers are not published in the OpenAPI.
+events:
+  webhooks: true
+  detail: asyncapi/fieldguide-webhooks.yml

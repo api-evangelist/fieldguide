@@ -1,0 +1,38 @@
+# Fieldguide
+
+> Fieldguide is an AI-native platform for audit and advisory firms. Its REST API (https://api.fieldguide.io) exposes companies, engagements, requests, sheets, files, comments, milestones, controls, users, insights exports, jobs, and webhook subscriptions. Authentication is bearer JWT / API tokens scoped by resource permission (`<resource>:read` / `<resource>:write`).
+
+## APIs
+
+- [Fieldguide API (developer portal)](https://www.fieldguide.io/developers): Overview and getting started for the Fieldguide REST API.
+- [Interactive API reference (Swagger UI)](https://api.fieldguide.io/api): Full endpoint reference for v1.
+- [API documentation (Notion)](https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda): Authentication, tokens, scopes, and usage guides.
+
+## Specs
+
+- [OpenAPI 3.0.0 (original)](openapi/fieldguide-openapi-original.json): 56 operations across companies, engagements, requests, sheets, files, comments, milestones, users, insights, jobs, and webhooks.
+- [Webhooks event catalog](asyncapi/fieldguide-webhooks.yml): created/updated/deleted events for comments, companies, engagements, requests, users.
+
+## Auth & conventions
+
+- [Authentication profile](authentication/fieldguide-authentication.yml): HTTP bearer JWT / API tokens.
+- [OAuth-style scopes reference](scopes/fieldguide-scopes.yml): 21 resource scopes from the live /v1/scopes endpoint.
+- [API conventions](conventions/fieldguide-conventions.yml): page/per_page pagination, UUID identifiers, uri-path versioning (v1), 429 rate limiting.
+- [Error catalog](errors/fieldguide-problem-types.yml): HTTP status semantics (400/401/403/404/422/429).
+- [Data model / ERD](data-model/fieldguide-data-model.yml): entity relationships derived from the spec.
+
+## Operations & lifecycle
+
+- [Changelog](https://changelog.fieldguide.io): Dated product and API changelog.
+- [Status page](https://status.fieldguide.io): Atlassian Statuspage.
+- [Lifecycle](lifecycle/fieldguide-lifecycle.yml): versioning, status, changelog.
+
+## Trust & compliance
+
+- [Trust & security](https://www.fieldguide.io/trust): SOC 2 Type 2, ISO/IEC 42001:2023, AIUC-1, ISO 27001 (infra), GDPR, CCPA.
+
+## Company
+
+- [Fieldguide](https://www.fieldguide.io): AI-native platform for audit and advisory firms.
+- [Blog](https://www.fieldguide.io/blog)
+- [Integrations](https://www.fieldguide.io/product/integrations): 75+ enterprise integrations.

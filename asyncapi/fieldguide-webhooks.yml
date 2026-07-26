@@ -1,0 +1,64 @@
+generated: '2026-07-19'
+method: searched
+source: openapi/fieldguide-openapi-original.json
+docs: https://changelog.fieldguide.io/api-companies-webhooks-309550
+type: Webhooks
+summary: >-
+  Fieldguide delivers outbound webhooks for resource lifecycle events. A user
+  creates webhook subscriptions via the REST API (/v1/webhooks), optionally
+  scoped to one or more resources; Fieldguide then POSTs a signed JSON payload
+  to the subscription URL whenever a matching object is created, updated, or
+  deleted.
+subscription:
+  managed_via: rest-api
+  operations:
+  - list_webhooks_v1     # GET    /v1/webhooks
+  - create_webhook_v1    # POST   /v1/webhooks
+  - update_webhook_v1    # PATCH  /v1/webhooks/{uuid}
+  - delete_webhook_v1    # DELETE /v1/webhooks/{uuid}
+  scopes: [webhooks:read, webhooks:write]
+  filter:
+    field: scopes
+    description: >-
+      One or more resources to fire webhooks for. If null, webhooks fire for all
+      resources.
+delivery:
+  transport: https-post
+  signed: true
+  secret_field: secret   # returned once on subscription create (WebhookReadWithSecret)
+payload:
+  schema: WebhookPayload
+  fields:
+  - uuid            # unique event id
+  - timestamp       # when the event occurred (date-time)
+  - action          # created | updated | deleted
+  - object_type     # comments | companies | engagements | requests | users
+  - object_uuid     # UUID of the affected object
+  - metadata        # array of key/value pairs (e.g. company_uuid)
+actions:
+- created
+- updated
+- deleted
+object_types:
+- comments
+- companies
+- engagements
+- requests
+- users
+events:
+# cartesian product of object_type x action that Fieldguide can emit
+- comments.created
+- comments.updated
+- comments.deleted
+- companies.created
+- companies.updated
+- companies.deleted
+- engagements.created
+- engagements.updated
+- engagements.deleted
+- requests.created
+- requests.updated
+- requests.deleted
+- users.created
+- users.updated
+- users.deleted

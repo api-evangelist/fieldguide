@@ -1,0 +1,38 @@
+generated: '2026-07-19'
+method: searched
+source: https://changelog.fieldguide.io
+scheme: dated-entries
+note: >-
+  Fieldguide publishes a public product changelog at changelog.fieldguide.io
+  (individual entries are permalinked by numeric id). The API-tagged entries
+  below were captured from the live changelog; the changelog UI is
+  client-rendered and does not expose per-entry publication dates in scrapeable
+  form, so `date` is left null rather than fabricated. See the live changelog
+  for authoritative dates.
+current_version: v1
+entries:
+- title: 'Fieldguide API: engagement, team, and client management'
+  url: https://changelog.fieldguide.io/fieldguide-api-engagement-team-and-client-management-298801
+  date: null
+  area: api
+- title: 'API: Companies webhooks'
+  url: https://changelog.fieldguide.io/api-companies-webhooks-309550
+  date: null
+  area: api
+  highlights: Outbound webhooks for company created/updated/deleted events.
+- title: 'API: Get controls on a request'
+  url: https://changelog.fieldguide.io/api-get-controls-on-a-request-309654
+  date: null
+  area: api
+- title: 'Fieldguide API: GET Request endpoint includes additional information'
+  url: https://changelog.fieldguide.io/fieldguide-api-get-request-endpoint-includes-additional-information-306180
+  date: null
+  area: api
+- title: 'API: Engagements files (and folders) endpoints'
+  url: https://changelog.fieldguide.io/api-engagements-files-(and-folders)-endpoints-316454
+  date: null
+  area: api
+- title: 'API: Read and Write Basic Sheets Data'
+  url: https://changelog.fieldguide.io/api-read-and-write-basic-sheets-data-322121
+  date: null
+  area: api

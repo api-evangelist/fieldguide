@@ -1,0 +1,22 @@
+generated: '2026-07-19'
+method: searched
+source: openapi/fieldguide-openapi-original.json
+versioning:
+  scheme: uri-path
+  current: v1
+  base_path: /v1
+  docs: https://api.fieldguide.io/api
+changelog:
+  url: https://changelog.fieldguide.io
+  scheme: dated-entries
+status_page: https://status.fieldguide.io
+status_page_provider: atlassian-statuspage
+sla:
+  published: false
+deprecation:
+  policy_published: false
+  sunset_header: unknown
+  note: >-
+    No public deprecation policy page or RFC 8594 Sunset/Deprecation header
+    support was found; the OpenAPI declares no `deprecated: true` operations.
+deprecated_operations: []

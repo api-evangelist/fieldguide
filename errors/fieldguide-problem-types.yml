@@ -1,0 +1,47 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/fieldguide-openapi-original.json
+format: http-status
+note: >-
+  Derived from the HTTP status responses declared across the Fieldguide OpenAPI
+  (56 operations). Fieldguide does not publish an RFC 9457 problem+json error
+  envelope; errors are signaled by HTTP status code with a human-readable
+  description. 403 responses additionally name the missing scope and/or the
+  required object permission.
+problems:
+- status: 400
+  title: Bad Request
+  meaning: The request was malformed or contained invalid parameters.
+  occurrences: 48
+  remediation: Validate request body and query parameters against the OpenAPI schema.
+- status: 401
+  title: Unauthorized
+  meaning: Missing, invalid, or expired bearer token.
+  occurrences: 55
+  remediation: "Supply a valid `Authorization: Bearer <token>` header; refresh the API token if expired."
+- status: 403
+  title: Forbidden
+  meaning: >-
+    The authenticated token lacks the required resource scope or object-level
+    permission. The description names the missing scope, e.g. "requires scopes
+    `engagements:write`", or permission, e.g. "requires permission `['insert',
+    'companies']`".
+  occurrences: 53
+  remediation: Grant the named scope to the API token (see scopes/fieldguide-scopes.yml) or ensure the user has access to the object.
+- status: 404
+  title: Resource not found
+  meaning: The referenced resource (by UUID) does not exist or is not visible to the caller.
+  occurrences: 41
+  remediation: Verify the resource UUID and that the token's user has access to it.
+- status: 422
+  title: Unprocessable Entity
+  meaning: >-
+    The request was well-formed but could not be processed (e.g. a Sheet Row
+    with more than 1000 columns).
+  occurrences: 2
+  remediation: Adjust the payload to satisfy documented limits.
+- status: 429
+  title: Too many requests
+  meaning: The client exceeded the API rate limit.
+  occurrences: 53
+  remediation: Back off and retry; specific limits and rate-limit headers are not published.

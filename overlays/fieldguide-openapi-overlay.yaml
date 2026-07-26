@@ -1,0 +1,27 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Fieldguide API
+  version: 1.0.0
+extends: openapi/fieldguide-openapi-original.json
+x-generated: '2026-07-19'
+x-method: generated
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: true
+    x-apievangelist-artifacts:
+      authentication: authentication/fieldguide-authentication.yml
+      scopes: scopes/fieldguide-scopes.yml
+      conventions: conventions/fieldguide-conventions.yml
+      errors: errors/fieldguide-problem-types.yml
+      webhooks: asyncapi/fieldguide-webhooks.yml
+      lifecycle: lifecycle/fieldguide-lifecycle.yml
+      data-model: data-model/fieldguide-data-model.yml
+- target: $.info
+  update:
+    x-apievangelist-auth: bearer-jwt-scoped
+    x-apievangelist-pagination: page-number
+    x-apievangelist-rate-limit-status: 429
+- target: $.servers
+  update:
+    x-apievangelist-primary: https://api.fieldguide.io

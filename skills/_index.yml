@@ -1,0 +1,16 @@
+generated: '2026-07-19'
+method: generated
+source: openapi/fieldguide-openapi-original.json
+skills:
+- file: fieldguide-manage-engagements.md
+  name: Manage Fieldguide engagements
+  api: openapi/fieldguide-openapi-original.json
+  operations: [list_engagements_v1, get_engagement_v1, update_engagement_v1, create_engagement_from_template_v1, export_engagement_v1, get_engagement_export_v1, get_job_v1]
+- file: fieldguide-requests-and-comments.md
+  name: Work Fieldguide requests and comments
+  api: openapi/fieldguide-openapi-original.json
+  operations: [list_requests_by_engagement_v1, get_request_v1, update_request_v1, list_request_files_v1, upload_request_file_v1, list_comments_by_request_v1, create_request_comment_v1]
+- file: fieldguide-webhooks.md
+  name: Subscribe to Fieldguide webhooks
+  api: openapi/fieldguide-openapi-original.json
+  operations: [list_webhooks_v1, create_webhook_v1, update_webhook_v1, delete_webhook_v1]

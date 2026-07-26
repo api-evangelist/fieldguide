@@ -1,0 +1,69 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/fieldguide-openapi-original.json
+note: Entity-relationship graph derived from Fieldguide OpenAPI schemas and *_uuid id-reference fields.
+  Entities are addressed by UUID.
+entities:
+- name: Company
+  read_schema: CompanyRead
+- name: Engagement
+  read_schema: EngagementRead
+- name: Request
+  read_schema: RequestRead
+- name: Sheet
+  read_schema: SheetRead
+- name: SheetRow
+  read_schema: SheetRowRead
+- name: SheetColumn
+  read_schema: SheetColumnRead
+- name: File
+  read_schema: FileRead
+- name: Comment
+  read_schema: CommentRead
+- name: Milestone
+  read_schema: MilestoneRead
+- name: Control
+  read_schema: ControlRead
+- name: User
+  read_schema: UserRead
+- name: Webhook
+  read_schema: WebhookRead
+- name: Job
+  read_schema: JobRead
+relationships:
+- from: Engagement
+  type: belongs_to
+  to: company
+  via: company_uuid
+- from: Engagement
+  type: belongs_to
+  to: engagement_lead_user
+  via: engagement_lead_user_uuid
+- from: Engagement
+  type: belongs_to
+  to: client_owner_user
+  via: client_owner_user_uuid
+- from: Request
+  type: belongs_to
+  to: client_company
+  via: client_company_uuid
+- from: Comment
+  type: belongs_to
+  to: author_user
+  via: author_user_uuid
+- from: Milestone
+  type: belongs_to
+  to: engagement
+  via: engagement_uuid
+- from: Milestone
+  type: belongs_to
+  to: completed_by_user
+  via: completed_by_user_uuid
+- from: Milestone
+  type: belongs_to
+  to: owner_user
+  via: owner_user_uuid
+- from: User
+  type: belongs_to
+  to: company
+  via: company_uuid

@@ -1,0 +1,42 @@
+{
+  "provider": "fieldguide",
+  "sources": [
+    "fieldguide-api-api-openapi.yml",
+    "fieldguide-comments-api-openapi.yml",
+    "fieldguide-companies-api-openapi.yml",
+    "fieldguide-controls-api-openapi.yml",
+    "fieldguide-engagements-api-openapi.yml",
+    "fieldguide-files-api-openapi.yml",
+    "fieldguide-insights-api-openapi.yml",
+    "fieldguide-jobs-api-openapi.yml",
+    "fieldguide-milestones-api-openapi.yml",
+    "fieldguide-requests-api-openapi.yml",
+    "fieldguide-sheet-columns-api-openapi.yml",
+    "fieldguide-sheet-rows-api-openapi.yml",
+    "fieldguide-sheets-api-openapi.yml",
+    "fieldguide-users-api-openapi.yml",
+    "fieldguide-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "fieldguide-api-api-openapi.yml",
+    "fieldguide-comments-api-openapi.yml",
+    "fieldguide-companies-api-openapi.yml",
+    "fieldguide-controls-api-openapi.yml",
+    "fieldguide-engagements-api-openapi.yml",
+    "fieldguide-files-api-openapi.yml",
+    "fieldguide-insights-api-openapi.yml",
+    "fieldguide-jobs-api-openapi.yml",
+    "fieldguide-milestones-api-openapi.yml",
+    "fieldguide-requests-api-openapi.yml",
+    "fieldguide-sheet-columns-api-openapi.yml",
+    "fieldguide-sheet-rows-api-openapi.yml",
+    "fieldguide-sheets-api-openapi.yml",
+    "fieldguide-users-api-openapi.yml",
+    "fieldguide-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

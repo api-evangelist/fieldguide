@@ -1,0 +1,180 @@
+generated: '2026-07-19'
+method: derived
+status: candidate
+source: openapi/fieldguide-openapi-original.json
+note: No official hosted/remote Fieldguide MCP server was found. This is a CANDIDATE tool list derived
+  one-per-operation from the published OpenAPI (56 operations), suitable for a generated MCP wrapper.
+server:
+  name: fieldguide
+  transport: http
+  base_url: https://api.fieldguide.io
+  auth: bearer-token
+tools:
+- name: list_scopes_v1
+  description: List available Scopes for the Fieldguide API
+  source_operation: openapi/fieldguide-openapi-original.json#list_scopes_v1
+- name: get_current_token_v1
+  description: Get metadata about the current authentication token
+  source_operation: openapi/fieldguide-openapi-original.json#get_current_token_v1
+- name: list_companies_v1
+  description: List available Companies
+  source_operation: openapi/fieldguide-openapi-original.json#list_companies_v1
+- name: create_company_v1
+  description: Create a new Company
+  source_operation: openapi/fieldguide-openapi-original.json#create_company_v1
+- name: get_company_v1
+  description: Fetch the specified Company
+  source_operation: openapi/fieldguide-openapi-original.json#get_company_v1
+- name: update_company_v1
+  description: Update the specified Company
+  source_operation: openapi/fieldguide-openapi-original.json#update_company_v1
+- name: list_engagements_by_company_v1
+  description: Get engagements for a given company
+  source_operation: openapi/fieldguide-openapi-original.json#list_engagements_by_company_v1
+- name: list_engagements_v1
+  description: List available Engagements
+  source_operation: openapi/fieldguide-openapi-original.json#list_engagements_v1
+- name: get_engagement_v1
+  description: Fetch the specified Engagement
+  source_operation: openapi/fieldguide-openapi-original.json#get_engagement_v1
+- name: update_engagement_v1
+  description: Update the specified Engagement
+  source_operation: openapi/fieldguide-openapi-original.json#update_engagement_v1
+- name: create_engagement_from_template_v1
+  description: Create a new Engagement from a template
+  source_operation: openapi/fieldguide-openapi-original.json#create_engagement_from_template_v1
+- name: export_engagement_v1
+  description: Export an Engagement binder
+  source_operation: openapi/fieldguide-openapi-original.json#export_engagement_v1
+- name: get_engagement_export_v1
+  description: Fetch a generated Engagement binder report
+  source_operation: openapi/fieldguide-openapi-original.json#get_engagement_export_v1
+- name: list_engagement_users_v1
+  description: List the Engagement Team on an Engagement
+  source_operation: openapi/fieldguide-openapi-original.json#list_engagement_users_v1
+- name: add_engagement_users_v1
+  description: Add Users to an Engagement Team
+  source_operation: openapi/fieldguide-openapi-original.json#add_engagement_users_v1
+- name: remove_engagement_users_v1
+  description: Remove Users from an Engagement Team
+  source_operation: openapi/fieldguide-openapi-original.json#remove_engagement_users_v1
+- name: get_job_v1
+  description: Return the status of an asynchronous Job
+  source_operation: openapi/fieldguide-openapi-original.json#get_job_v1
+- name: list_users_v1
+  description: List available Users
+  source_operation: openapi/fieldguide-openapi-original.json#list_users_v1
+- name: get_current_user_v1
+  description: Fetch the authenticated User
+  source_operation: openapi/fieldguide-openapi-original.json#get_current_user_v1
+- name: get_user_v1
+  description: Fetch the specified User
+  source_operation: openapi/fieldguide-openapi-original.json#get_user_v1
+- name: list_company_users_v1
+  description: List Users that belong to the specified Company
+  source_operation: openapi/fieldguide-openapi-original.json#list_company_users_v1
+- name: list_controls_by_request_v1
+  description: List Controls that belong to the specified Request
+  source_operation: openapi/fieldguide-openapi-original.json#list_controls_by_request_v1
+- name: list_requests_by_engagement_v1
+  description: List Requests that belong to the specified Engagement
+  source_operation: openapi/fieldguide-openapi-original.json#list_requests_by_engagement_v1
+- name: list_requests_by_sheet_row_v1
+  description: List Requests that belong to the specified Sheet Row
+  source_operation: openapi/fieldguide-openapi-original.json#list_requests_by_sheet_row_v1
+- name: get_request_v1
+  description: Fetch the specified Request
+  source_operation: openapi/fieldguide-openapi-original.json#get_request_v1
+- name: update_request_v1
+  description: Update the specified Request
+  source_operation: openapi/fieldguide-openapi-original.json#update_request_v1
+- name: list_sheets_by_engagement_v1
+  description: List Sheets that belong to the specified Engagement
+  source_operation: openapi/fieldguide-openapi-original.json#list_sheets_by_engagement_v1
+- name: export_sheet_v1
+  description: Export a Sheet
+  source_operation: openapi/fieldguide-openapi-original.json#export_sheet_v1
+- name: list_sheet_columns_v1
+  description: List Sheet Columns that belong to the specified Sheet
+  source_operation: openapi/fieldguide-openapi-original.json#list_sheet_columns_v1
+- name: list_sheet_rows_by_request_v1
+  description: List Sheet Rows that belong to the specified Request
+  source_operation: openapi/fieldguide-openapi-original.json#list_sheet_rows_by_request_v1
+- name: list_sheet_rows_by_sheet_v1
+  description: List Sheet Rows that belong to the specified Sheet
+  source_operation: openapi/fieldguide-openapi-original.json#list_sheet_rows_by_sheet_v1
+- name: list_sheet_row_cells_v1
+  description: Get the cells of a Sheet Row
+  source_operation: openapi/fieldguide-openapi-original.json#list_sheet_row_cells_v1
+- name: update_sheet_row_cells_v1
+  description: Updates the cells of a Sheet Row
+  source_operation: openapi/fieldguide-openapi-original.json#update_sheet_row_cells_v1
+- name: delete_file_v1
+  description: Delete the specified File
+  source_operation: openapi/fieldguide-openapi-original.json#delete_file_v1
+- name: get_file_v1
+  description: Get details for a specific File
+  source_operation: openapi/fieldguide-openapi-original.json#get_file_v1
+- name: get_file_context_v1
+  description: Get context for a specific File
+  source_operation: openapi/fieldguide-openapi-original.json#get_file_context_v1
+- name: list_engagement_folders_v1
+  description: List Folders that belong to the specified Engagement
+  source_operation: openapi/fieldguide-openapi-original.json#list_engagement_folders_v1
+- name: get_engagement_folder_v1
+  description: Fetch a Folder by Engagement and Folder UUIDs
+  source_operation: openapi/fieldguide-openapi-original.json#get_engagement_folder_v1
+- name: get_engagement_file_v1
+  description: Fetch a File by Engagement and File UUIDs
+  source_operation: openapi/fieldguide-openapi-original.json#get_engagement_file_v1
+- name: list_engagement_files_v1
+  description: List Files that belong to the specified Engagement
+  source_operation: openapi/fieldguide-openapi-original.json#list_engagement_files_v1
+- name: upload_engagement_file_v1
+  description: Upload a File to the specified Engagement
+  source_operation: openapi/fieldguide-openapi-original.json#upload_engagement_file_v1
+- name: list_request_files_v1
+  description: Fetch the Files for the specified Request
+  source_operation: openapi/fieldguide-openapi-original.json#list_request_files_v1
+- name: upload_request_file_v1
+  description: Upload a File to the specified Request
+  source_operation: openapi/fieldguide-openapi-original.json#upload_request_file_v1
+- name: get_time_tracking_export_v1
+  description: Fetch a generated Insights Time Tracking report
+  source_operation: openapi/fieldguide-openapi-original.json#get_time_tracking_export_v1
+- name: export_time_tracking_report_v1
+  description: Export an Insights Time Tracking report
+  source_operation: openapi/fieldguide-openapi-original.json#export_time_tracking_report_v1
+- name: get_milestone_v1
+  description: Fetch the specified Milestone
+  source_operation: openapi/fieldguide-openapi-original.json#get_milestone_v1
+- name: list_milestones_by_engagement_v1
+  description: List Milestones that belong to the specified Engagement
+  source_operation: openapi/fieldguide-openapi-original.json#list_milestones_by_engagement_v1
+- name: list_comments_by_request_v1
+  description: Fetch the Comments for the specified Request
+  source_operation: openapi/fieldguide-openapi-original.json#list_comments_by_request_v1
+- name: create_request_comment_v1
+  description: Post a Comment on a Request
+  source_operation: openapi/fieldguide-openapi-original.json#create_request_comment_v1
+- name: get_comment_v1
+  description: Fetch the Comment
+  source_operation: openapi/fieldguide-openapi-original.json#get_comment_v1
+- name: create_request_comments_v1
+  description: Post Comments on multiple Requests
+  source_operation: openapi/fieldguide-openapi-original.json#create_request_comments_v1
+- name: get_comment_context_v1
+  description: Fetch the Comment context
+  source_operation: openapi/fieldguide-openapi-original.json#get_comment_context_v1
+- name: list_webhooks_v1
+  description: List available Fieldguide Webhook subscriptions for the current User
+  source_operation: openapi/fieldguide-openapi-original.json#list_webhooks_v1
+- name: create_webhook_v1
+  description: Create a new Webhook
+  source_operation: openapi/fieldguide-openapi-original.json#create_webhook_v1
+- name: delete_webhook_v1
+  description: Delete the specified Webhook
+  source_operation: openapi/fieldguide-openapi-original.json#delete_webhook_v1
+- name: update_webhook_v1
+  description: Update the specified Webhook
+  source_operation: openapi/fieldguide-openapi-original.json#update_webhook_v1
