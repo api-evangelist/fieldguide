@@ -1,0 +1,46 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fieldguide api API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "api",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List available Scopes for the Fieldguide API",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/scopes"
+          },
+          "docs": "List available Scopes for the Fieldguide API"
+        },
+        {
+          "info": {
+            "name": "Get metadata about the current authentication token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/token"
+          },
+          "docs": "Get metadata about the current authentication token"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

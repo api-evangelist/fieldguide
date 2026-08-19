@@ -1,0 +1,171 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fieldguide api sheet-rows API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "sheet-rows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Requests that belong to the specified Sheet Row",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/sheet-rows/:uuid/requests",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Sheet Row to retrieve requests for"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Requests that belong to the specified Sheet Row"
+        },
+        {
+          "info": {
+            "name": "List Sheet Rows that belong to the specified Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/requests/:uuid/sheet-rows",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Request for which to get Sheet Rows"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Sheet Rows that belong to the specified Request"
+        },
+        {
+          "info": {
+            "name": "List Sheet Rows that belong to the specified Sheet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/sheets/:uuid/sheet-rows",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Sheet for which to get Sheet Rows"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Sheet Rows that belong to the specified Sheet"
+        },
+        {
+          "info": {
+            "name": "Get the cells of a Sheet Row",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/sheet-rows/:uuid/cells",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Sheet Row for which to get cell values"
+              }
+            ]
+          },
+          "docs": "Get the cells of a Sheet Row"
+        },
+        {
+          "info": {
+            "name": "Updates the cells of a Sheet Row",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fieldguide.io/v1/sheet-rows/:uuid/cells",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Sheet Row for which to update cell values"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the cells of a Sheet Row"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

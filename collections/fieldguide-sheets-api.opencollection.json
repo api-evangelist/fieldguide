@@ -1,0 +1,113 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fieldguide api sheets API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "sheets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Sheets that belong to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/sheets",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement for which to get Sheets"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Sheets that belong to the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "Export a Sheet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fieldguide.io/v1/sheets/:uuid/export",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Sheet to export"
+              }
+            ]
+          },
+          "docs": "Export a Sheet"
+        },
+        {
+          "info": {
+            "name": "List Sheet Rows that belong to the specified Sheet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/sheets/:uuid/sheet-rows",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Sheet for which to get Sheet Rows"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Sheet Rows that belong to the specified Sheet"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

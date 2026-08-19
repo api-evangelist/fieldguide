@@ -178,3 +178,9 @@ tools:
 - name: update_webhook_v1
   description: Update the specified Webhook
   source_operation: openapi/fieldguide-openapi-original.json#update_webhook_v1
+deployment:
+  mode: none
+  verified: derived
+  tools: 56
+  checked: '2026-08-12'
+  source: catalog MCP census

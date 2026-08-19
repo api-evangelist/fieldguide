@@ -1,0 +1,294 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fieldguide api files API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get details for a specific File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/files/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the File to get details for"
+              }
+            ]
+          },
+          "docs": "Get details for a specific File"
+        },
+        {
+          "info": {
+            "name": "Delete the specified File",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fieldguide.io/v1/files/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the file to delete"
+              }
+            ]
+          },
+          "docs": "Delete the specified File"
+        },
+        {
+          "info": {
+            "name": "Get context for a specific File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/files/:uuid/context",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the File"
+              }
+            ]
+          },
+          "docs": "Get context for a specific File"
+        },
+        {
+          "info": {
+            "name": "List Folders that belong to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/folders",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement for which to get Folders"
+              },
+              {
+                "name": "parent_folder_uuid",
+                "value": "",
+                "type": "query",
+                "description": "An optional UUID of the parent folder"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Folders that belong to the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "Fetch a Folder by Engagement and Folder UUIDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:engagement_uuid/folders/:folder_uuid",
+            "params": [
+              {
+                "name": "engagement_uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement from which to get a Folder"
+              },
+              {
+                "name": "folder_uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the folder to fetch"
+              }
+            ]
+          },
+          "docs": "Fetch a Folder by Engagement and Folder UUIDs"
+        },
+        {
+          "info": {
+            "name": "Fetch a File by Engagement and File UUIDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:engagement_uuid/files/:file_uuid",
+            "params": [
+              {
+                "name": "engagement_uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement from which to get a File"
+              },
+              {
+                "name": "file_uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the File to fetch"
+              }
+            ]
+          },
+          "docs": "Fetch a File by Engagement and File UUIDs"
+        },
+        {
+          "info": {
+            "name": "List Files that belong to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/files",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement for which to get Files"
+              },
+              {
+                "name": "folder_uuid",
+                "value": "",
+                "type": "query",
+                "description": "An optional UUID of the Folder to filter Files by"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Files that belong to the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "Upload a File to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/files",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to upload the File to"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload a File to the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "Fetch the Files for the specified Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/requests/:uuid/files",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Request to list Files for"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "Fetch the Files for the specified Request"
+        },
+        {
+          "info": {
+            "name": "Upload a File to the specified Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fieldguide.io/v1/requests/:uuid/files",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the request to upload the file to"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload a File to the specified Request"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,57 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fieldguide api insights API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "insights",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch a generated Insights Time Tracking report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/insights/teams/time-tracking/exports/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a generated Insights Time Tracking report"
+        },
+        {
+          "info": {
+            "name": "Export an Insights Time Tracking report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fieldguide.io/v1/insights/teams/time-tracking/export",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Begins a long-running process that will generate an Insights Time Tracking report in CSV format.\n\nUse the Job ID that this endpoint returns with the appropriate [jobs endpoint](#/jobs/get_job_v1) to check its status and get its result."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

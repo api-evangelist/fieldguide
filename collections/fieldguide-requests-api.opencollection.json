@@ -1,0 +1,355 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fieldguide api requests API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "requests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Controls that belong to the specified Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/requests/:uuid/controls",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the request to retrieve controls for"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Controls that belong to the specified Request"
+        },
+        {
+          "info": {
+            "name": "List Requests that belong to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/requests",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the engagement to retrieve requests for"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter Requests by status. Repeat the query parameter for multiple statuses."
+              },
+              {
+                "name": "client_owner_user_uuids",
+                "value": "",
+                "type": "query",
+                "description": "Filter Requests by the UUID of their Client Owner Users. Repeat the query parameter for multiple UUIDs."
+              },
+              {
+                "name": "due_date_before",
+                "value": "",
+                "type": "query",
+                "description": "Filter Requests to those with a due date before this date. Uses strict before semantics and excludes Requests with no due date."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Requests that belong to the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "List Requests that belong to the specified Sheet Row",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/sheet-rows/:uuid/requests",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Sheet Row to retrieve requests for"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Requests that belong to the specified Sheet Row"
+        },
+        {
+          "info": {
+            "name": "Fetch the specified Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/requests/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Request to retrieve"
+              }
+            ]
+          },
+          "docs": "Fetch the specified Request"
+        },
+        {
+          "info": {
+            "name": "Update the specified Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fieldguide.io/v1/requests/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the request to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the specified Request"
+        },
+        {
+          "info": {
+            "name": "List Sheet Rows that belong to the specified Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/requests/:uuid/sheet-rows",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Request for which to get Sheet Rows"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Sheet Rows that belong to the specified Request"
+        },
+        {
+          "info": {
+            "name": "Fetch the Files for the specified Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/requests/:uuid/files",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Request to list Files for"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "Fetch the Files for the specified Request"
+        },
+        {
+          "info": {
+            "name": "Upload a File to the specified Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fieldguide.io/v1/requests/:uuid/files",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the request to upload the file to"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload a File to the specified Request"
+        },
+        {
+          "info": {
+            "name": "Fetch the Comments for the specified Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/requests/:uuid/comments",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the request to get comments for"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "Fetch the Comments for the specified Request"
+        },
+        {
+          "info": {
+            "name": "Post a Comment on a Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fieldguide.io/v1/requests/:uuid/comments",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the request to post the comment"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Post a Comment on a Request"
+        },
+        {
+          "info": {
+            "name": "Post Comments on multiple Requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fieldguide.io/v1/requests/comments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Post Comments on multiple Requests"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

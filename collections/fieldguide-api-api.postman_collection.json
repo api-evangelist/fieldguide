@@ -1,0 +1,258 @@
+{
+  "item": [
+    {
+      "id": "e68b6e4b-57f9-4a0e-b439-9dd326a5d019",
+      "name": "api",
+      "description": {
+        "content": "Endpoints used to interact with the Fieldguide API platform",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6cdd2fd8-4420-4d76-8ef2-10130375ad9b",
+          "name": "List available Scopes for the Fieldguide API",
+          "request": {
+            "name": "List available Scopes for the Fieldguide API",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "scopes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [
+            {
+              "id": "da7c824b-ed19-47d6-bc97-e7b523444889",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "scopes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"scope\": \"engagements:read\",\n    \"resource\": \"folders\",\n    \"description\": \"Can read engagement metadata\"\n  },\n  {\n    \"scope\": \"engagements:read\",\n    \"resource\": \"engagements\",\n    \"description\": \"Can read engagement metadata\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3a847ccc-b978-4ec6-bc34-1fe40038dc70",
+              "name": "Too many requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "scopes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "87d67479-f652-422b-8281-247dee0c97ea",
+          "name": "Get metadata about the current authentication token",
+          "request": {
+            "name": "Get metadata about the current authentication token",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c9c7a011-87dd-4b9d-aab4-5275e7896650",
+              "name": "Metadata about the current authentication token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"user_uuid\": \"821e8d9e-d2a8-480f-9187-5a685d3d0d71\",\n  \"created_at\": \"2023-01-01T12:30:00.000Z\",\n  \"expires_at\": \"2023-01-01T12:30:00.000Z\",\n  \"type\": \"api\",\n  \"uuid\": \"821e8d9e-d2a8-480f-9187-5a685d3d0d71\",\n  \"name\": \"Acme ABC Token\",\n  \"scopes\": [\n    \"engagements:read\",\n    \"engagements.files:read\",\n    \"engagements.files:write\"\n  ],\n  \"provisioned_for\": \"fieldguide\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02111ea2-1021-46eb-a603-14309fb85531",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fieldguide.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f3b190c5-b41a-44e6-af5c-1f9c1fe2c20b",
+    "name": "Fieldguide api API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "An API for interacting with the [Fieldguide](https://fieldguide.io) platform",
+      "type": "text/plain"
+    }
+  }
+}

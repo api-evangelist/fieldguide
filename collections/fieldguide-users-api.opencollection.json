@@ -1,0 +1,211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fieldguide api users API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List the Engagement Team on an Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/users",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to retrieve Users for"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List the Engagement Team on an Engagement"
+        },
+        {
+          "info": {
+            "name": "Add Users to an Engagement Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/users",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to add Users to"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add Users to an Engagement Team"
+        },
+        {
+          "info": {
+            "name": "Remove Users from an Engagement Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/users",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to delete Users from"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove Users from an Engagement Team"
+        },
+        {
+          "info": {
+            "name": "List available Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/users",
+            "params": [
+              {
+                "name": "uuids",
+                "value": "",
+                "type": "query",
+                "description": "Filter Users by UUID. Repeat the query parameter for multiple UUIDs."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List available Users"
+        },
+        {
+          "info": {
+            "name": "Fetch the authenticated User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/users/me"
+          },
+          "docs": "Fetch the authenticated User"
+        },
+        {
+          "info": {
+            "name": "Fetch the specified User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/users/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the user to retrieve"
+              }
+            ]
+          },
+          "docs": "Fetch the specified User"
+        },
+        {
+          "info": {
+            "name": "List Users that belong to the specified Company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/companies/:uuid/users",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Company to retrieve Users for"
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Filter Users by email address (case-insensitive, partial match)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Users that belong to the specified Company"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,596 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fieldguide api engagements API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "engagements",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get engagements for a given company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/companies/:uuid/engagements",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Company to retrieve engagements from"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "Get engagements for a given company"
+        },
+        {
+          "info": {
+            "name": "List available Engagements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements",
+            "params": [
+              {
+                "name": "templates",
+                "value": "",
+                "type": "query",
+                "description": "Filter to include, exclude, or only show template engagements"
+              },
+              {
+                "name": "uuids",
+                "value": "",
+                "type": "query",
+                "description": "Filter Engagements by UUID. Repeat the query parameter for multiple UUIDs."
+              },
+              {
+                "name": "engagement_lead_user_uuid",
+                "value": "",
+                "type": "query",
+                "description": "Filter Engagements by the UUID of their Engagement Lead User."
+              },
+              {
+                "name": "client_owner_user_uuid",
+                "value": "",
+                "type": "query",
+                "description": "Filter Engagements by the UUID of their Client Owner User."
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter Engagements by status. Repeat the query parameter for multiple statuses."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List available Engagements"
+        },
+        {
+          "info": {
+            "name": "Fetch the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to retrieve"
+              }
+            ]
+          },
+          "docs": "Fetch the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "Update the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "Create a new Engagement from a template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fieldguide.io/v1/engagements/from-template",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new Engagement based on an existing template Engagement. The request is accepted for asynchronous processing; the response returns the new Engagement's UUID, which may not be fully provisioned immediately."
+        },
+        {
+          "info": {
+            "name": "Export an Engagement binder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/export",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to export"
+              }
+            ]
+          },
+          "docs": "Begins a long-running process that will generate an Engagement binder as a zip file.\n\nUse the Job ID that this endpoint returns with the appropriate [jobs endpoint](#/jobs/get_job_v1) to check its status and get its result."
+        },
+        {
+          "info": {
+            "name": "Fetch a generated Engagement binder report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/exports/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Job"
+              }
+            ]
+          },
+          "docs": "Returns the download URL and metadata for a completed Engagement binder export. Call this once the export Job returned by the export endpoint has finished."
+        },
+        {
+          "info": {
+            "name": "List the Engagement Team on an Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/users",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to retrieve Users for"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List the Engagement Team on an Engagement"
+        },
+        {
+          "info": {
+            "name": "Add Users to an Engagement Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/users",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to add Users to"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add Users to an Engagement Team"
+        },
+        {
+          "info": {
+            "name": "Remove Users from an Engagement Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/users",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to delete Users from"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove Users from an Engagement Team"
+        },
+        {
+          "info": {
+            "name": "List Requests that belong to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/requests",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the engagement to retrieve requests for"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter Requests by status. Repeat the query parameter for multiple statuses."
+              },
+              {
+                "name": "client_owner_user_uuids",
+                "value": "",
+                "type": "query",
+                "description": "Filter Requests by the UUID of their Client Owner Users. Repeat the query parameter for multiple UUIDs."
+              },
+              {
+                "name": "due_date_before",
+                "value": "",
+                "type": "query",
+                "description": "Filter Requests to those with a due date before this date. Uses strict before semantics and excludes Requests with no due date."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Requests that belong to the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "List Sheets that belong to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/sheets",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement for which to get Sheets"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Sheets that belong to the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "List Folders that belong to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/folders",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement for which to get Folders"
+              },
+              {
+                "name": "parent_folder_uuid",
+                "value": "",
+                "type": "query",
+                "description": "An optional UUID of the parent folder"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Folders that belong to the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "Fetch a Folder by Engagement and Folder UUIDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:engagement_uuid/folders/:folder_uuid",
+            "params": [
+              {
+                "name": "engagement_uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement from which to get a Folder"
+              },
+              {
+                "name": "folder_uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the folder to fetch"
+              }
+            ]
+          },
+          "docs": "Fetch a Folder by Engagement and Folder UUIDs"
+        },
+        {
+          "info": {
+            "name": "Fetch a File by Engagement and File UUIDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:engagement_uuid/files/:file_uuid",
+            "params": [
+              {
+                "name": "engagement_uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement from which to get a File"
+              },
+              {
+                "name": "file_uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the File to fetch"
+              }
+            ]
+          },
+          "docs": "Fetch a File by Engagement and File UUIDs"
+        },
+        {
+          "info": {
+            "name": "List Files that belong to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/files",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement for which to get Files"
+              },
+              {
+                "name": "folder_uuid",
+                "value": "",
+                "type": "query",
+                "description": "An optional UUID of the Folder to filter Files by"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Files that belong to the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "Upload a File to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fieldguide.io/v1/engagements/:uuid/files",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to upload the File to"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload a File to the specified Engagement"
+        },
+        {
+          "info": {
+            "name": "List Milestones that belong to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:engagement_uuid/milestones",
+            "params": [
+              {
+                "name": "engagement_uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to retrieve Milestones for"
+              },
+              {
+                "name": "associated_engagement_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the optional Engagement lifecycle phase associated with each Milestone. This is not the Engagement's current status and does not determine Milestone completion."
+              },
+              {
+                "name": "client_can_view",
+                "value": "",
+                "type": "query",
+                "description": "Filter Milestones by client visibility."
+              },
+              {
+                "name": "is_completed",
+                "value": "",
+                "type": "query",
+                "description": "Filter by completion state. A completed Milestone has a non-null `completed_at` value."
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "Field used to sort Milestones. Results are sorted by creation time unless `sequence` is requested."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Milestones that belong to the specified Engagement"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

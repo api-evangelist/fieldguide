@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fieldguide api milestones API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "milestones",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch the specified Milestone",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/milestones/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Milestone to retrieve"
+              }
+            ]
+          },
+          "docs": "Fetch the specified Milestone"
+        },
+        {
+          "info": {
+            "name": "List Milestones that belong to the specified Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.fieldguide.io/v1/engagements/:engagement_uuid/milestones",
+            "params": [
+              {
+                "name": "engagement_uuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the Engagement to retrieve Milestones for"
+              },
+              {
+                "name": "associated_engagement_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the optional Engagement lifecycle phase associated with each Milestone. This is not the Engagement's current status and does not determine Milestone completion."
+              },
+              {
+                "name": "client_can_view",
+                "value": "",
+                "type": "query",
+                "description": "Filter Milestones by client visibility."
+              },
+              {
+                "name": "is_completed",
+                "value": "",
+                "type": "query",
+                "description": "Filter by completion state. A completed Milestone has a non-null `completed_at` value."
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "Field used to sort Milestones. Results are sorted by creation time unless `sequence` is requested."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for paginated results. Use `desc` to reverse the default ascending order."
+              }
+            ]
+          },
+          "docs": "List Milestones that belong to the specified Engagement"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
