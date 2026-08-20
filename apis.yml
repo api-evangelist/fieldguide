@@ -45,6 +45,17 @@ tags:
 - Engagement Management
 - Artificial Intelligence
 - Agents
+- Webhook
+tags_raw:
+- Company
+- Audit
+- Advisory
+- Accounting
+- Compliance
+- Risk
+- Engagement Management
+- Artificial Intelligence
+- Agents
 - Webhooks
 apis:
 - aid: fieldguide:fieldguide-api-api
@@ -52,7 +63,8 @@ apis:
   description: Endpoints used to interact with the Fieldguide API platform
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
-  tags:
+  tags: []
+  tags_raw:
   - api
   properties:
   - type: OpenAPI
@@ -68,6 +80,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - Comments
+  tags_raw:
   - comments
   properties:
   - type: OpenAPI
@@ -83,6 +97,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - Companies
+  tags_raw:
   - companies
   properties:
   - type: OpenAPI
@@ -98,6 +114,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - Controls
+  tags_raw:
   - controls
   properties:
   - type: OpenAPI
@@ -113,6 +131,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - Engagements
+  tags_raw:
   - engagements
   properties:
   - type: OpenAPI
@@ -128,6 +148,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - File
+  tags_raw:
   - files
   properties:
   - type: OpenAPI
@@ -143,6 +165,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - Insights
+  tags_raw:
   - insights
   properties:
   - type: OpenAPI
@@ -158,6 +182,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - Job
+  tags_raw:
   - jobs
   properties:
   - type: OpenAPI
@@ -173,6 +199,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - Milestones
+  tags_raw:
   - milestones
   properties:
   - type: OpenAPI
@@ -188,6 +216,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - Requests
+  tags_raw:
   - requests
   properties:
   - type: OpenAPI
@@ -233,6 +263,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - Sheets
+  tags_raw:
   - sheets
   properties:
   - type: OpenAPI
@@ -248,6 +280,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - User
+  tags_raw:
   - users
   properties:
   - type: OpenAPI
@@ -263,6 +297,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - Webhook
+  tags_raw:
   - webhooks
   properties:
   - type: OpenAPI
