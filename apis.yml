@@ -126,7 +126,7 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
-  - Controls
+  - controls
   tags_raw:
   - controls
   properties:
@@ -275,7 +275,7 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
-  - Sheets
+  - sheets
   tags_raw:
   - sheets
   properties:
