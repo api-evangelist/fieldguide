@@ -1,16 +1,12 @@
 aid: fieldguide
 name: Fieldguide
-description: >-
-  Fieldguide is an AI-native platform for audit and advisory firms, providing
-  professional-grade "Field Agents" that plan, execute, and document engagement
-  work end-to-end across financial audit, SOC audits, IT audit, risk advisory,
-  tax, cybersecurity, and regulatory compliance engagements. The platform pairs
-  engagement management, document management, insights and analytics, and a
-  client hub with an open REST API (api.fieldguide.io) that exposes companies,
-  engagements, requests, sheets, files, comments, milestones, users, insights,
-  and webhook subscriptions. Fieldguide is used by half of the top 100 firms,
-  is SOC 2 Type 2 and ISO/IEC 42001 certified, and is backed by 8VC and
-  Bessemer Venture Partners.
+description: Fieldguide is an AI-native platform for audit and advisory firms, providing professional-grade
+  "Field Agents" that plan, execute, and document engagement work end-to-end across financial audit, SOC
+  audits, IT audit, risk advisory, tax, cybersecurity, and regulatory compliance engagements. The platform
+  pairs engagement management, document management, insights and analytics, and a client hub with an open
+  REST API (api.fieldguide.io) that exposes companies, engagements, requests, sheets, files, comments,
+  milestones, users, insights, and webhook subscriptions. Fieldguide is used by half of the top 100 firms,
+  is SOC 2 Type 2 and ISO/IEC 42001 certified, and is backed by 8VC and Bessemer Venture Partners.
 url: https://raw.githubusercontent.com/api-evangelist/fieldguide/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -47,7 +43,7 @@ accessModel:
   method: derived
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-07-19'
+modified: '2026-09-16'
 image: https://app.fieldguide.io/img/logo192.png
 tags:
 - Company
@@ -73,7 +69,7 @@ tags_raw:
 - Webhooks
 apis:
 - aid: fieldguide:fieldguide-api-api
-  name: Fieldguide api API
+  name: Fieldguide api
   description: Endpoints used to interact with the Fieldguide API platform
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -86,8 +82,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-comments-api
   name: Fieldguide comments API
   description: Endpoints used to interact with Fieldguide Comments
@@ -103,8 +98,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-companies-api
   name: Fieldguide companies API
   description: Endpoints used to interact with Fieldguide Companies
@@ -120,8 +114,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-controls-api
   name: Fieldguide controls API
   description: Endpoints used to interact with Fieldguide Controls
@@ -137,8 +130,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-engagements-api
   name: Fieldguide engagements API
   description: Endpoints used to interact with Fieldguide Engagements
@@ -154,8 +146,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-files-api
   name: Fieldguide files API
   description: Endpoints used to interact with Fieldguide Files
@@ -171,8 +162,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-insights-api
   name: Fieldguide insights API
   description: Endpoints used to interact with Fieldguide Insights
@@ -188,8 +178,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-jobs-api
   name: Fieldguide jobs API
   description: Endpoints used to interact with long-running processes (Jobs) in the Fieldguide API
@@ -205,8 +194,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-milestones-api
   name: Fieldguide milestones API
   description: Endpoints used to interact with Fieldguide Milestones
@@ -222,8 +210,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-requests-api
   name: Fieldguide requests API
   description: Endpoints used to interact with Fieldguide Requests
@@ -239,8 +226,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-sheet-columns-api
   name: Fieldguide sheet-columns API
   description: Endpoints used to interact with Fieldguide Sheet Columns
@@ -254,8 +240,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-sheet-rows-api
   name: Fieldguide sheet-rows API
   description: Endpoints used to interact with Fieldguide Sheet Rows
@@ -269,8 +254,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-sheets-api
   name: Fieldguide sheets API
   description: Endpoints used to interact with Fieldguide Sheets
@@ -286,8 +270,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-users-api
   name: Fieldguide users API
   description: Endpoints used to interact with Fieldguide Users
@@ -303,8 +286,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-webhooks-api
   name: Fieldguide webhooks API
   description: Endpoints used to interact with Fieldguide Webhooks
@@ -320,8 +302,7 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: >-
-      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -374,7 +355,10 @@ common:
   url: lifecycle/fieldguide-lifecycle.yml
 - type: X-MCPServerCandidate
   url: mcp/fieldguide-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
+    — a tool list derived from the published API contracts, not an existing server. The scorer already
+    read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type
+    surfaces with a server that does not exist.'
 - type: LLMsTxt
   url: llms/fieldguide-llms.txt
 - type: Overlay
