@@ -1,21 +1,7 @@
 {
   "provider": "fieldguide",
   "sources": [
-    "fieldguide-api-api-openapi.yml",
-    "fieldguide-comments-api-openapi.yml",
-    "fieldguide-companies-api-openapi.yml",
-    "fieldguide-controls-api-openapi.yml",
-    "fieldguide-engagements-api-openapi.yml",
-    "fieldguide-files-api-openapi.yml",
-    "fieldguide-insights-api-openapi.yml",
-    "fieldguide-jobs-api-openapi.yml",
-    "fieldguide-milestones-api-openapi.yml",
-    "fieldguide-requests-api-openapi.yml",
-    "fieldguide-sheet-columns-api-openapi.yml",
-    "fieldguide-sheet-rows-api-openapi.yml",
-    "fieldguide-sheets-api-openapi.yml",
-    "fieldguide-users-api-openapi.yml",
-    "fieldguide-webhooks-api-openapi.yml"
+    "_original/fieldguide-openapi-original.json"
   ],
   "outputs": [
     "fieldguide-api-api-openapi.yml",
@@ -37,6 +23,26 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "fieldguide-openapi-original.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "fieldguide-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-comments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-companies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-controls-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-engagements-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-files-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-insights-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-milestones-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-requests-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-sheet-columns-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-sheet-rows-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-sheets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-users-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

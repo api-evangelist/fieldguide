@@ -1,7 +1,7 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fieldguide api API
-  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  title: Fieldguide API
+  description: An API for interacting with the Fieldguide platform
   version: v1
   contact: {}
 servers:
@@ -58,6 +58,25 @@ paths:
       - api
 components:
   schemas:
+    ApiResource:
+      type: string
+      enum:
+      - comments
+      - companies
+      - controls
+      - engagements
+      - requests
+      - users
+      - webhooks
+      - files
+      - sheets
+      - sheet-columns
+      - sheet-rows
+      - insights
+      - jobs
+      - milestones
+      - folders
+      description: The API resource this scope grants access to.
     ApiTokenRead:
       type: object
       properties:
@@ -126,25 +145,6 @@ components:
       - name
       - scopes
       - provisioned_for
-    ApiResource:
-      type: string
-      enum:
-      - comments
-      - companies
-      - controls
-      - engagements
-      - requests
-      - users
-      - webhooks
-      - files
-      - sheets
-      - sheet-columns
-      - sheet-rows
-      - insights
-      - jobs
-      - milestones
-      - folders
-      description: The API resource this scope grants access to.
     JwtTokenRead:
       type: object
       properties:

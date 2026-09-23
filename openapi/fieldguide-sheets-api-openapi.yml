@@ -1,7 +1,7 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fieldguide api sheets API
-  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  title: Fieldguide Sheets API
+  description: An API for interacting with the Fieldguide platform
   version: v1
   contact: {}
 servers:
@@ -10,7 +10,7 @@ servers:
 security:
 - bearer: []
 tags:
-- name: sheets
+- name: Sheets
   description: Endpoints used to interact with Fieldguide Sheets
 paths:
   /v1/engagements/{uuid}/sheets:
@@ -28,16 +28,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -117,7 +119,7 @@ paths:
           description: Too many requests
       summary: List Sheets that belong to the specified Engagement
       tags:
-      - sheets
+      - Sheets
       x-required-scopes:
       - engagements:read
       - sheets:read
@@ -153,7 +155,7 @@ paths:
           description: Too many requests
       summary: Export a Sheet
       tags:
-      - sheets
+      - Sheets
       x-required-scopes:
       - sheets:read
   /v1/sheets/{uuid}/sheet-rows:
@@ -171,16 +173,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -260,11 +264,77 @@ paths:
           description: Too many requests
       summary: List Sheet Rows that belong to the specified Sheet
       tags:
-      - sheets
+      - Sheets
       x-required-scopes:
       - sheets:read
 components:
   schemas:
+    ExportedFileRead:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Board of Directors.docx
+        size:
+          type: number
+          example: 137437
+        mime_type:
+          type: string
+          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: https://example.com/document.docx
+        url_expiration:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+        uuid:
+          type: string
+          description: The UUID of the File
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+      - name
+      - size
+      - mime_type
+      - url
+      - url_expiration
+      - uuid
+    SheetRowRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        keys:
+          type: array
+          items:
+            type: string
+            example: 1.1.1
+        _links:
+          $ref: '#/components/schemas/SheetReadLinks'
+      required:
+      - uuid
+      - keys
+      - _links
+    SheetReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Sheet within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/82027/workplan/3
+            title: View the Sheet in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
     SheetRead:
       type: object
       properties:
@@ -304,70 +374,6 @@ components:
       required:
       - href
       - type
-    SheetReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Sheet within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/engagements/82027/workplan/3
-            title: View the Sheet in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
-    SheetRowRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        keys:
-          type: array
-          items:
-            type: string
-            example: 1.1.1
-        _links:
-          $ref: '#/components/schemas/SheetReadLinks'
-      required:
-      - uuid
-      - keys
-      - _links
-    ExportedFileRead:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Board of Directors.docx
-        size:
-          type: number
-          example: 137437
-        mime_type:
-          type: string
-          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
-        url:
-          type: string
-          format: uri
-          example: https://example.com/document.docx
-          nullable: true
-        url_expiration:
-          type: string
-          format: date-time
-          example: '2023-01-01T12:30:00.000Z'
-          nullable: true
-        uuid:
-          type: string
-          description: The UUID of the File
-          example: 123e4567-e89b-12d3-a456-426614174000
-      required:
-      - name
-      - size
-      - mime_type
-      - url
-      - url_expiration
-      - uuid
   securitySchemes:
     bearer:
       scheme: bearer

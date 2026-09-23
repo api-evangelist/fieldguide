@@ -1,7 +1,7 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fieldguide api sheet-rows API
-  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  title: Fieldguide Sheet Rows API
+  description: An API for interacting with the Fieldguide platform
   version: v1
   contact: {}
 servers:
@@ -28,16 +28,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -135,16 +137,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -242,16 +246,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -409,71 +415,6 @@ paths:
       - sheets:write
 components:
   schemas:
-    SheetRowCellRead:
-      type: object
-      properties:
-        column_uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        value:
-          oneOf:
-          - type: string
-            nullable: true
-          - type: number
-            nullable: true
-      required:
-      - column_uuid
-      - value
-    HalLink:
-      type: object
-      properties:
-        href:
-          type: string
-          example: https://example.com/resource/or/path
-          format: uri
-        title:
-          type: string
-          description: A human-readable title for the link
-          example: A description for the link
-        type:
-          type: string
-          description: The content-type
-          example: text/html
-      required:
-      - href
-      - type
-    SheetRowRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        keys:
-          type: array
-          items:
-            type: string
-            example: 1.1.1
-        _links:
-          $ref: '#/components/schemas/SheetReadLinks'
-      required:
-      - uuid
-      - keys
-      - _links
-    SheetReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Sheet within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/engagements/82027/workplan/3
-            title: View the Sheet in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
     RequestStatus:
       type: string
       enum:
@@ -483,35 +424,6 @@ components:
       - Ready For Review
       - Draft
       description: The request's current status in the evidence-collection workflow.
-    RequestReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Request within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/inbox?open=true&id=47923
-            title: View this Request in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
-    SheetRowCellUpdate:
-      type: object
-      properties:
-        column_uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        value:
-          oneOf:
-          - type: string
-            nullable: true
-          - type: number
-            nullable: true
-      required:
-      - column_uuid
-      - value
     RequestRead:
       type: object
       properties:
@@ -546,10 +458,11 @@ components:
           type: string
           example: '2023-01-01T12:30:00.000Z'
         due_date:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date
           example: '2024-05-01'
-          nullable: true
         client_owner_user_uuids:
           type: array
           items:
@@ -583,6 +496,104 @@ components:
       - tags
       - engagement_uuids
       - _links
+    SheetRowCellRead:
+      type: object
+      properties:
+        column_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        value:
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type:
+            - number
+            - 'null'
+      required:
+      - column_uuid
+      - value
+    SheetRowRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        keys:
+          type: array
+          items:
+            type: string
+            example: 1.1.1
+        _links:
+          $ref: '#/components/schemas/SheetReadLinks'
+      required:
+      - uuid
+      - keys
+      - _links
+    SheetReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Sheet within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/82027/workplan/3
+            title: View the Sheet in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    RequestReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Request within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/inbox?open=true&id=47923
+            title: View this Request in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    SheetRowCellUpdate:
+      type: object
+      properties:
+        column_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        value:
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type:
+            - number
+            - 'null'
+      required:
+      - column_uuid
+      - value
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
   securitySchemes:
     bearer:
       scheme: bearer

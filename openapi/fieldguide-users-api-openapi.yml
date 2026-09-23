@@ -1,7 +1,7 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fieldguide api users API
-  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  title: Fieldguide Users API
+  description: An API for interacting with the Fieldguide platform
   version: v1
   contact: {}
 servers:
@@ -10,7 +10,7 @@ servers:
 security:
 - bearer: []
 tags:
-- name: users
+- name: Users
   description: Endpoints used to interact with Fieldguide Users
 paths:
   /v1/engagements/{uuid}/users:
@@ -28,16 +28,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -117,7 +119,7 @@ paths:
           description: Too many requests
       summary: List the Engagement Team on an Engagement
       tags:
-      - users
+      - Users
       x-required-scopes:
       - engagements:read
       - users:read
@@ -154,7 +156,7 @@ paths:
           description: Too many requests
       summary: Add Users to an Engagement Team
       tags:
-      - users
+      - Users
       x-required-scopes:
       - engagements:write
     delete:
@@ -190,7 +192,7 @@ paths:
           description: Too many requests
       summary: Remove Users from an Engagement Team
       tags:
-      - users
+      - Users
       x-required-scopes:
       - engagements:write
   /v1/users:
@@ -210,16 +212,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -297,7 +301,7 @@ paths:
           description: Too many requests
       summary: List available Users
       tags:
-      - users
+      - Users
       x-required-scopes:
       - users:read
   /v1/users/me:
@@ -319,7 +323,7 @@ paths:
           description: Too many requests
       summary: Fetch the authenticated User
       tags:
-      - users
+      - Users
   /v1/users/{uuid}:
     get:
       operationId: get_user_v1
@@ -352,7 +356,7 @@ paths:
           description: Too many requests
       summary: Fetch the specified User
       tags:
-      - users
+      - Users
       x-required-scopes:
       - users:read
   /v1/companies/{uuid}/users:
@@ -376,16 +380,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -463,11 +469,72 @@ paths:
           description: Too many requests
       summary: List Users that belong to the specified Company
       tags:
-      - users
+      - Users
       x-required-scopes:
       - users:read
 components:
   schemas:
+    EngagementUserDelete:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The UUID of the user to remove from the Engagement Team
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+      required:
+      - uuid
+    EngagementUserRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        first_name:
+          type: string
+          example: Kurt
+        last_name:
+          type: string
+          example: Vonnegut
+        email:
+          type: string
+          format: email
+          example: kurt.vonnegut@weyland-yutani.com
+          description: The user's email for deleted users will be noreply@fieldguide.io
+        company_uuid:
+          type: string
+          format: uuid
+          example: 0a5cc6c6-2855-48f1-892e-7547fe9f8fc4
+      required:
+      - uuid
+      - first_name
+      - last_name
+      - email
+      - company_uuid
+    UserReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the User within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/settings/admin/users/1
+            title: View this User in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    EngagementUserCreate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The UUID of the user to add to the engagement
+          format: uuid
+          example: 3699af0f-9b92-410d-945c-bb0bf39da904
+      required:
+      - uuid
     UserRead:
       type: object
       properties:
@@ -504,8 +571,9 @@ components:
           description: The user's account status (e.g. active, invited, or deactivated).
         invite_last_resent_at:
           format: date-time
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           example: '2023-01-01T12:30:00.000Z'
       required:
       - uuid
@@ -516,34 +584,6 @@ components:
       - _links
       - status
       - invite_last_resent_at
-    EngagementUserRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        first_name:
-          type: string
-          example: Kurt
-        last_name:
-          type: string
-          example: Vonnegut
-        email:
-          type: string
-          format: email
-          example: kurt.vonnegut@weyland-yutani.com
-          description: The user's email for deleted users will be noreply@fieldguide.io
-        company_uuid:
-          type: string
-          format: uuid
-          example: 0a5cc6c6-2855-48f1-892e-7547fe9f8fc4
-      required:
-      - uuid
-      - first_name
-      - last_name
-      - email
-      - company_uuid
     HalLink:
       type: object
       properties:
@@ -562,39 +602,6 @@ components:
       required:
       - href
       - type
-    UserReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the User within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/settings/admin/users/1
-            title: View this User in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
-    EngagementUserDelete:
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: The UUID of the user to remove from the Engagement Team
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-      required:
-      - uuid
-    EngagementUserCreate:
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: The UUID of the user to add to the engagement
-          format: uuid
-          example: 3699af0f-9b92-410d-945c-bb0bf39da904
-      required:
-      - uuid
   securitySchemes:
     bearer:
       scheme: bearer

@@ -1,7 +1,7 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fieldguide api webhooks API
-  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  title: Fieldguide Webhooks API
+  description: An API for interacting with the Fieldguide platform
   version: v1
   contact: {}
 servers:
@@ -10,7 +10,7 @@ servers:
 security:
 - bearer: []
 tags:
-- name: webhooks
+- name: Webhooks
   description: Endpoints used to interact with Fieldguide Webhooks
 paths:
   /v1/webhooks:
@@ -21,16 +21,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -106,7 +108,7 @@ paths:
           description: Too many requests
       summary: List available Fieldguide Webhook subscriptions for the current User
       tags:
-      - webhooks
+      - Webhooks
       x-required-scopes:
       - webhooks:read
     post:
@@ -167,7 +169,7 @@ paths:
           description: Too many requests
       summary: Create a new Webhook
       tags:
-      - webhooks
+      - Webhooks
       x-required-scopes:
       - webhooks:write
   /v1/webhooks/{uuid}:
@@ -196,7 +198,7 @@ paths:
           description: Too many requests
       summary: Delete the specified Webhook
       tags:
-      - webhooks
+      - Webhooks
       x-required-scopes:
       - webhooks:write
     patch:
@@ -237,28 +239,47 @@ paths:
           description: Too many requests
       summary: Update the specified Webhook
       tags:
-      - webhooks
+      - Webhooks
       x-required-scopes:
       - webhooks:write
 components:
   schemas:
-    WebhookResource:
-      type: string
-      enum:
-      - comments
-      - companies
-      - engagements
-      - requests
-      - users
-      description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
-    WebhookObjectType:
-      type: string
-      enum:
-      - comments
-      - companies
-      - engagements
-      - requests
-      - users
+    WebhookRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: d952a7a8-3f88-46d0-b4de-ec690d97105c
+          description: The unique ID for the webhook, referenced as `webhook_uuid` in webhook requests
+        description:
+          type: string
+          description: A human-readable description of the webhook's use
+          example: Firm internal systems
+        scopes:
+          type:
+          - array
+          - 'null'
+          description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
+          example:
+          - requests
+          - users
+          items:
+            $ref: '#/components/schemas/WebhookResource'
+        url:
+          type: string
+          format: uri
+          example: https://company-xyz.com/my-webhook-endpoint
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+      required:
+      - uuid
+      - description
+      - scopes
+      - url
+      - created_at
     WebhookReadWithSecret:
       type: object
       properties:
@@ -272,8 +293,9 @@ components:
           description: A human-readable description of the webhook's use
           example: Firm internal systems
         scopes:
-          type: array
-          nullable: true
+          type:
+          - array
+          - 'null'
           description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
           example:
           - requests
@@ -299,12 +321,59 @@ components:
       - url
       - created_at
       - secret
+    WebhookObjectType:
+      type: string
+      enum:
+      - comments
+      - companies
+      - engagements
+      - requests
+      - users
+    WebhookUpdate:
+      type: object
+      properties:
+        description:
+          type: string
+          example: Company XYZ Integration
+        scopes:
+          type:
+          - array
+          - 'null'
+          description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
+          example:
+          - requests
+          - users
+          items:
+            $ref: '#/components/schemas/WebhookResource'
     WebhookAction:
       type: string
       enum:
       - created
       - updated
       - deleted
+    WebhookCreate:
+      type: object
+      properties:
+        description:
+          type: string
+          example: Company XYZ Integration
+        scopes:
+          type:
+          - array
+          - 'null'
+          description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
+          example:
+          - requests
+          - users
+          items:
+            $ref: '#/components/schemas/WebhookResource'
+        url:
+          type: string
+          format: uri
+          example: https://company-xyz.com/my-webhook-endpoint
+      required:
+      - description
+      - url
     WebhookPayload:
       type: object
       properties:
@@ -355,78 +424,15 @@ components:
       - object_type
       - object_uuid
       - metadata
-    WebhookRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: d952a7a8-3f88-46d0-b4de-ec690d97105c
-          description: The unique ID for the webhook, referenced as `webhook_uuid` in webhook requests
-        description:
-          type: string
-          description: A human-readable description of the webhook's use
-          example: Firm internal systems
-        scopes:
-          type: array
-          nullable: true
-          description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
-          example:
-          - requests
-          - users
-          items:
-            $ref: '#/components/schemas/WebhookResource'
-        url:
-          type: string
-          format: uri
-          example: https://company-xyz.com/my-webhook-endpoint
-        created_at:
-          format: date-time
-          type: string
-          example: '2023-01-01T12:30:00.000Z'
-      required:
-      - uuid
-      - description
-      - scopes
-      - url
-      - created_at
-    WebhookUpdate:
-      type: object
-      properties:
-        description:
-          type: string
-          example: Company XYZ Integration
-        scopes:
-          type: array
-          nullable: true
-          description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
-          example:
-          - requests
-          - users
-          items:
-            $ref: '#/components/schemas/WebhookResource'
-    WebhookCreate:
-      type: object
-      properties:
-        description:
-          type: string
-          example: Company XYZ Integration
-        scopes:
-          type: array
-          nullable: true
-          description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
-          example:
-          - requests
-          - users
-          items:
-            $ref: '#/components/schemas/WebhookResource'
-        url:
-          type: string
-          format: uri
-          example: https://company-xyz.com/my-webhook-endpoint
-      required:
-      - description
-      - url
+    WebhookResource:
+      type: string
+      enum:
+      - comments
+      - companies
+      - engagements
+      - requests
+      - users
+      description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
   securitySchemes:
     bearer:
       scheme: bearer

@@ -1,7 +1,7 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fieldguide api comments API
-  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  title: Fieldguide Comments API
+  description: An API for interacting with the Fieldguide platform
   version: v1
   contact: {}
 servers:
@@ -10,7 +10,7 @@ servers:
 security:
 - bearer: []
 tags:
-- name: comments
+- name: Comments
   description: Endpoints used to interact with Fieldguide Comments
 paths:
   /v1/requests/{uuid}/comments:
@@ -28,16 +28,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -117,7 +119,7 @@ paths:
           description: Too many requests
       summary: Fetch the Comments for the specified Request
       tags:
-      - comments
+      - Comments
       x-required-scopes:
       - comments:read
     post:
@@ -155,7 +157,7 @@ paths:
           description: Too many requests
       summary: Post a Comment on a Request
       tags:
-      - comments
+      - Comments
       x-required-scopes:
       - comments:write
   /v1/comments/{uuid}:
@@ -190,7 +192,7 @@ paths:
           description: Too many requests
       summary: Fetch the Comment
       tags:
-      - comments
+      - Comments
       x-required-scopes:
       - comments:read
   /v1/requests/comments:
@@ -227,7 +229,7 @@ paths:
           description: Too many requests
       summary: Post Comments on multiple Requests
       tags:
-      - comments
+      - Comments
       x-required-scopes:
       - comments:write
   /v1/comments/{uuid}/context:
@@ -262,40 +264,64 @@ paths:
           description: Too many requests
       summary: Fetch the Comment context
       tags:
-      - comments
+      - Comments
       x-required-scopes:
       - comments:read
 components:
   schemas:
-    RequestCommentBulkCreate:
+    CommentContextReadLinks:
       type: object
       properties:
-        comments:
-          minItems: 1
-          maxItems: 50
-          type: array
-          items:
-            $ref: '#/components/schemas/RequestCommentBulkCreateItem'
+        context_object:
+          description: A URL the user can fetch the Comment's Context
+          example:
+            href: https://api.fieldguide.io/v1/requests/9ddae459-8b25-41ef-a30d-d4c35d5915c9
+            title: Fetch the Request this comment was left on
+            example: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
       required:
-      - comments
-    HalLink:
+      - context_object
+    CommentContextRead:
       type: object
       properties:
-        href:
+        uuid:
           type: string
-          example: https://example.com/resource/or/path
-          format: uri
-        title:
-          type: string
-          description: A human-readable title for the link
-          example: A description for the link
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
         type:
           type: string
-          description: The content-type
-          example: text/html
+          enum:
+          - request
+          example: request
+          description: The kind of object this comment is attached to.
+        _links:
+          $ref: '#/components/schemas/CommentContextReadLinks'
       required:
-      - href
+      - uuid
       - type
+      - _links
+    RequestCommentBulkCreateItem:
+      type: object
+      properties:
+        request_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        content:
+          type: string
+          example: <p>The comment text in HTML format</p>
+          minLength: 1
+        mentioned_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: edbf4962-20eb-499e-a7fa-eaff50c81630
+          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
+      required:
+      - request_uuid
+      - content
     CommentRead:
       type: object
       properties:
@@ -327,25 +353,6 @@ components:
       - created_at
       - updated_at
       - _links
-    CommentContextRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        type:
-          type: string
-          enum:
-          - request
-          example: request
-          description: The kind of object this comment is attached to.
-        _links:
-          $ref: '#/components/schemas/CommentContextReadLinks'
-      required:
-      - uuid
-      - type
-      - _links
     CommentCreate:
       type: object
       properties:
@@ -362,27 +369,17 @@ components:
           description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
       required:
       - content
-    RequestCommentBulkCreateItem:
+    RequestCommentBulkCreate:
       type: object
       properties:
-        request_uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        content:
-          type: string
-          example: <p>The comment text in HTML format</p>
-          minLength: 1
-        mentioned_user_uuids:
+        comments:
+          minItems: 1
+          maxItems: 50
           type: array
           items:
-            type: string
-            format: uuid
-            example: edbf4962-20eb-499e-a7fa-eaff50c81630
-          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
+            $ref: '#/components/schemas/RequestCommentBulkCreateItem'
       required:
-      - request_uuid
-      - content
+      - comments
     CommentReadLinks:
       type: object
       properties:
@@ -396,19 +393,24 @@ components:
           - $ref: '#/components/schemas/HalLink'
       required:
       - self
-    CommentContextReadLinks:
+    HalLink:
       type: object
       properties:
-        context_object:
-          description: A URL the user can fetch the Comment's Context
-          example:
-            href: https://api.fieldguide.io/v1/requests/9ddae459-8b25-41ef-a30d-d4c35d5915c9
-            title: Fetch the Request this comment was left on
-            example: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
       required:
-      - context_object
+      - href
+      - type
   securitySchemes:
     bearer:
       scheme: bearer

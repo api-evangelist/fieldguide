@@ -1,7 +1,7 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fieldguide api sheet-columns API
-  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  title: Fieldguide Sheet Columns API
+  description: An API for interacting with the Fieldguide platform
   version: v1
   contact: {}
 servers:
@@ -28,16 +28,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -161,19 +163,6 @@ components:
       - created_at
       - updated_at
       - _links
-    SheetColumnReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Sheet Column within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/engagements/165/workplan/183
-            title: View the Sheet for this Sheet Column in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
     HalLink:
       type: object
       properties:
@@ -192,6 +181,19 @@ components:
       required:
       - href
       - type
+    SheetColumnReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Sheet Column within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/165/workplan/183
+            title: View the Sheet for this Sheet Column in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
   securitySchemes:
     bearer:
       scheme: bearer

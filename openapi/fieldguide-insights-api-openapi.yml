@@ -1,7 +1,7 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fieldguide api insights API
-  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  title: Fieldguide Insights API
+  description: An API for interacting with the Fieldguide platform
   version: v1
   contact: {}
 servers:
@@ -10,7 +10,7 @@ servers:
 security:
 - bearer: []
 tags:
-- name: insights
+- name: Insights
   description: Endpoints used to interact with Fieldguide Insights
 paths:
   /v1/insights/teams/time-tracking/exports/{uuid}:
@@ -49,7 +49,7 @@ paths:
           description: Too many requests
       summary: Fetch a generated Insights Time Tracking report
       tags:
-      - insights
+      - Insights
       x-required-scopes:
       - insights:read
   /v1/insights/teams/time-tracking/export:
@@ -57,7 +57,7 @@ paths:
       description: 'Begins a long-running process that will generate an Insights Time Tracking report in CSV format.
 
 
-        Use the Job ID that this endpoint returns with the appropriate [jobs endpoint](#/jobs/get_job_v1) to check its status and get its result.'
+        Use the Job ID that this endpoint returns with the appropriate jobs endpoint to check its status and get its result.'
       operationId: export_time_tracking_report_v1
       parameters: []
       requestBody:
@@ -101,7 +101,7 @@ paths:
           description: Too many requests
       summary: Export an Insights Time Tracking report
       tags:
-      - insights
+      - Insights
       x-required-scopes:
       - insights:read
 components:
@@ -119,24 +119,26 @@ components:
           type: string
           example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
           example: https://example.com/document.docx
-          nullable: true
         url_expiration:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
           example: '2023-01-01T12:30:00.000Z'
-          nullable: true
         report_data_processed_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
           example: '2023-01-01T12:30:00.000Z'
-          nullable: true
         record_count:
           type: number
           example: 1000
-          nullable: false
       required:
       - name
       - size
@@ -145,6 +147,31 @@ components:
       - url_expiration
       - report_data_processed_at
       - record_count
+    JobSubmittedReadLinks:
+      type: object
+      properties:
+        status:
+          description: An API endpoint to retrieve the status of the job
+          example:
+            href: https://api.fieldguide.io/jobs/2d2e102e-f4af-4534-9749-4d9249eca6cc
+            title: Get the status of this job
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - status
+    JobSubmittedRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The UUID of the job that was submitted
+        _links:
+          $ref: '#/components/schemas/JobSubmittedReadLinks'
+      required:
+      - uuid
+      - _links
     HalLink:
       type: object
       properties:
@@ -175,31 +202,6 @@ components:
       required:
       - report_start
       - report_end
-    JobSubmittedRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          description: The UUID of the job that was submitted
-        _links:
-          $ref: '#/components/schemas/JobSubmittedReadLinks'
-      required:
-      - uuid
-      - _links
-    JobSubmittedReadLinks:
-      type: object
-      properties:
-        status:
-          description: An API endpoint to retrieve the status of the job
-          example:
-            href: https://api.fieldguide.io/jobs/2d2e102e-f4af-4534-9749-4d9249eca6cc
-            title: Get the status of this job
-            type: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - status
   securitySchemes:
     bearer:
       scheme: bearer

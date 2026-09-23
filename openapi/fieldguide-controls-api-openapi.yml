@@ -1,7 +1,7 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Fieldguide api controls API
-  description: An API for interacting with the [Fieldguide](https://fieldguide.io) platform
+  title: Fieldguide Controls API
+  description: An API for interacting with the Fieldguide platform
   version: v1
   contact: {}
 servers:
@@ -10,7 +10,7 @@ servers:
 security:
 - bearer: []
 tags:
-- name: controls
+- name: Controls
   description: Endpoints used to interact with Fieldguide Controls
 paths:
   /v1/requests/{uuid}/controls:
@@ -28,16 +28,18 @@ paths:
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 1
-          nullable: true
       - name: per_page
         required: false
         in: query
         schema:
-          type: number
+          type:
+          - number
+          - 'null'
           default: 50
-          nullable: true
           minimum: 1
           maximum: 200
       - name: sort_order
@@ -117,24 +119,11 @@ paths:
           description: Too many requests
       summary: List Controls that belong to the specified Request
       tags:
-      - controls
+      - Controls
       x-required-scopes:
       - controls:read
 components:
   schemas:
-    ControlReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Controls within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/controls?client=2&id=09f7eeab-5318-4aff-a2bc-98b21dbe8b60&open=true
-            title: View the Control in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
     HalLink:
       type: object
       properties:
@@ -153,6 +142,19 @@ components:
       required:
       - href
       - type
+    ControlReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Controls within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/controls?client=2&id=09f7eeab-5318-4aff-a2bc-98b21dbe8b60&open=true
+            title: View the Control in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
     ControlRead:
       type: object
       properties:
