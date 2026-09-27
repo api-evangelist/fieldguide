@@ -90,6 +90,19 @@ paths:
       - Jobs
 components:
   schemas:
+    JobReadLinks:
+      type: object
+      properties:
+        results:
+          description: An API endpoint to retrieve the result of the job
+          example:
+            href: https://api.fieldguide.io/v1/insights/teams/time-tracking/exports/9b560ead-2b64-41f2-b9ae-826bdb866f1a
+            title: Get the result of this job
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - results
     JobRead:
       type: object
       properties:
@@ -107,19 +120,6 @@ components:
           $ref: '#/components/schemas/JobReadLinks'
       required:
       - status
-    JobReadLinks:
-      type: object
-      properties:
-        results:
-          description: An API endpoint to retrieve the result of the job
-          example:
-            href: https://api.fieldguide.io/v1/insights/teams/time-tracking/exports/9b560ead-2b64-41f2-b9ae-826bdb866f1a
-            title: Get the result of this job
-            type: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - results
     HalLink:
       type: object
       properties:

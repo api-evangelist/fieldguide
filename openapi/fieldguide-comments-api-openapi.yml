@@ -282,46 +282,6 @@ components:
           - $ref: '#/components/schemas/HalLink'
       required:
       - context_object
-    CommentContextRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        type:
-          type: string
-          enum:
-          - request
-          example: request
-          description: The kind of object this comment is attached to.
-        _links:
-          $ref: '#/components/schemas/CommentContextReadLinks'
-      required:
-      - uuid
-      - type
-      - _links
-    RequestCommentBulkCreateItem:
-      type: object
-      properties:
-        request_uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        content:
-          type: string
-          example: <p>The comment text in HTML format</p>
-          minLength: 1
-        mentioned_user_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-            example: edbf4962-20eb-499e-a7fa-eaff50c81630
-          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
-      required:
-      - request_uuid
-      - content
     CommentRead:
       type: object
       properties:
@@ -353,6 +313,19 @@ components:
       - created_at
       - updated_at
       - _links
+    CommentReadLinks:
+      type: object
+      properties:
+        self:
+          description: A URL the user can fetch the Comment
+          example:
+            href: https://api.fieldguide.io/v1/comments/5919b6e8-9ea9-4cf0-9598-3a44cad3c7f7
+            title: Fetch this Comment
+            example: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - self
     CommentCreate:
       type: object
       properties:
@@ -380,19 +353,46 @@ components:
             $ref: '#/components/schemas/RequestCommentBulkCreateItem'
       required:
       - comments
-    CommentReadLinks:
+    RequestCommentBulkCreateItem:
       type: object
       properties:
-        self:
-          description: A URL the user can fetch the Comment
-          example:
-            href: https://api.fieldguide.io/v1/comments/5919b6e8-9ea9-4cf0-9598-3a44cad3c7f7
-            title: Fetch this Comment
-            example: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
+        request_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        content:
+          type: string
+          example: <p>The comment text in HTML format</p>
+          minLength: 1
+        mentioned_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: edbf4962-20eb-499e-a7fa-eaff50c81630
+          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
       required:
-      - self
+      - request_uuid
+      - content
+    CommentContextRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        type:
+          type: string
+          enum:
+          - request
+          example: request
+          description: The kind of object this comment is attached to.
+        _links:
+          $ref: '#/components/schemas/CommentContextReadLinks'
+      required:
+      - uuid
+      - type
+      - _links
     HalLink:
       type: object
       properties:

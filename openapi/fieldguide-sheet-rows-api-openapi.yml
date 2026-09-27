@@ -415,15 +415,6 @@ paths:
       - sheets:write
 components:
   schemas:
-    RequestStatus:
-      type: string
-      enum:
-      - Open
-      - Update Requested
-      - Complete
-      - Ready For Review
-      - Draft
-      description: The request's current status in the evidence-collection workflow.
     RequestRead:
       type: object
       properties:
@@ -514,6 +505,24 @@ components:
       required:
       - column_uuid
       - value
+    SheetRowCellUpdate:
+      type: object
+      properties:
+        column_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        value:
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type:
+            - number
+            - 'null'
+      required:
+      - column_uuid
+      - value
     SheetRowRead:
       type: object
       properties:
@@ -558,24 +567,15 @@ components:
           - $ref: '#/components/schemas/HalLink'
       required:
       - fieldguide
-    SheetRowCellUpdate:
-      type: object
-      properties:
-        column_uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        value:
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type:
-            - number
-            - 'null'
-      required:
-      - column_uuid
-      - value
+    RequestStatus:
+      type: string
+      enum:
+      - Open
+      - Update Requested
+      - Complete
+      - Ready For Review
+      - Draft
+      description: The request's current status in the evidence-collection workflow.
     HalLink:
       type: object
       properties:

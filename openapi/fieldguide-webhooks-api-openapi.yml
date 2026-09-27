@@ -244,6 +244,15 @@ paths:
       - webhooks:write
 components:
   schemas:
+    WebhookResource:
+      type: string
+      enum:
+      - comments
+      - companies
+      - engagements
+      - requests
+      - users
+      description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
     WebhookRead:
       type: object
       properties:
@@ -280,6 +289,62 @@ components:
       - scopes
       - url
       - created_at
+    WebhookPayload:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The unique ID for the event
+          example: c7e4afd8-1b56-4621-83ad-86ec735fc23d
+        timestamp:
+          format: date-time
+          type: string
+          description: When the event occurred
+          example: '2023-01-01T12:30:00.000Z'
+        action:
+          allOf:
+          - $ref: '#/components/schemas/WebhookAction'
+        object_type:
+          allOf:
+          - $ref: '#/components/schemas/WebhookObjectType'
+        object_uuid:
+          type: string
+          format: uuid
+          description: The UUID of the specific object for the event
+          example: 80d6783f-575d-4433-9dd8-25b81b2bad85
+        metadata:
+          type: array
+          description: Array of metadata key-value pairs
+          example:
+          - key: company_uuid
+            value: d952a7a8-3f88-46d0-b4de-ec690d97105c
+          - key: engagement_uuid
+            value: 066a9ebd-07cf-458e-b506-dd66fab9cbcc
+          - key: webhook_uuid
+            value: 5c8d4284-84f0-427c-be10-e350f7093a48
+          - key: updated_property
+            value: status
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+      required:
+      - uuid
+      - timestamp
+      - action
+      - object_type
+      - object_uuid
+      - metadata
+    WebhookAction:
+      type: string
+      enum:
+      - created
+      - updated
+      - deleted
     WebhookReadWithSecret:
       type: object
       properties:
@@ -345,12 +410,6 @@ components:
           - users
           items:
             $ref: '#/components/schemas/WebhookResource'
-    WebhookAction:
-      type: string
-      enum:
-      - created
-      - updated
-      - deleted
     WebhookCreate:
       type: object
       properties:
@@ -374,65 +433,6 @@ components:
       required:
       - description
       - url
-    WebhookPayload:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          description: The unique ID for the event
-          example: c7e4afd8-1b56-4621-83ad-86ec735fc23d
-        timestamp:
-          format: date-time
-          type: string
-          description: When the event occurred
-          example: '2023-01-01T12:30:00.000Z'
-        action:
-          allOf:
-          - $ref: '#/components/schemas/WebhookAction'
-        object_type:
-          allOf:
-          - $ref: '#/components/schemas/WebhookObjectType'
-        object_uuid:
-          type: string
-          format: uuid
-          description: The UUID of the specific object for the event
-          example: 80d6783f-575d-4433-9dd8-25b81b2bad85
-        metadata:
-          type: array
-          description: Array of metadata key-value pairs
-          example:
-          - key: company_uuid
-            value: d952a7a8-3f88-46d0-b4de-ec690d97105c
-          - key: engagement_uuid
-            value: 066a9ebd-07cf-458e-b506-dd66fab9cbcc
-          - key: webhook_uuid
-            value: 5c8d4284-84f0-427c-be10-e350f7093a48
-          - key: updated_property
-            value: status
-          items:
-            type: object
-            properties:
-              key:
-                type: string
-              value:
-                type: string
-      required:
-      - uuid
-      - timestamp
-      - action
-      - object_type
-      - object_uuid
-      - metadata
-    WebhookResource:
-      type: string
-      enum:
-      - comments
-      - companies
-      - engagements
-      - requests
-      - users
-      description: One or more resources to fire webhooks for. Available resources include comments, companies, engagements, requests, users. If `null`, webhooks will fire for all resources.
   securitySchemes:
     bearer:
       scheme: bearer

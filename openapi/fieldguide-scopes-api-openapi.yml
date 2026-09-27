@@ -1,0 +1,80 @@
+openapi: 3.2.0
+info:
+  title: Fieldguide Scopes API
+  description: An API for interacting with the Fieldguide platform
+  version: v1
+  contact: {}
+servers:
+- url: https://api.fieldguide.io
+  description: Fieldguide API
+security:
+- bearer: []
+tags:
+- name: Scopes
+paths:
+  /v1/scopes:
+    get:
+      operationId: list_scopes_v1
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScopeRead'
+        '429':
+          description: Too many requests
+      security:
+      - {}
+      summary: List available Scopes for the Fieldguide API
+      tags:
+      - Scopes
+components:
+  schemas:
+    ScopeRead:
+      type: object
+      properties:
+        scope:
+          type: string
+          example: engagements:read
+        resource:
+          description: The API resource this scope grants access to.
+          allOf:
+          - $ref: '#/components/schemas/ApiResource'
+        description:
+          type: string
+          example: Can read engagement metadata
+      required:
+      - scope
+      - resource
+      - description
+    ApiResource:
+      type: string
+      enum:
+      - comments
+      - companies
+      - controls
+      - engagements
+      - requests
+      - users
+      - webhooks
+      - files
+      - sheets
+      - sheet-columns
+      - sheet-rows
+      - insights
+      - jobs
+      - milestones
+      - folders
+      description: The API resource this scope grants access to.
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+externalDocs:
+  description: Fieldguide API Documentation
+  url: https://fieldguide.io/developers

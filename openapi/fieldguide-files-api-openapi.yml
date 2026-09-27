@@ -479,6 +479,65 @@ paths:
       - requests.files:write
 components:
   schemas:
+    EngagementFileReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Engagement File within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/v1/engagements/2/documents?folder=0d7c72ee-28b3-4bc8-aea1-18bc7d9a8679&file=9b560ead-2b64-41f2-b9ae-826bdb866f1a
+            title: Get the result of this job
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    FileContextRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        type:
+          type: string
+          enum:
+          - engagement
+          - request
+          example: engagement
+          description: The kind of object this file is attached to.
+      required:
+      - uuid
+      - type
+    EngagementFileCreate:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+        folder_uuid:
+          type: string
+          description: The Folder UUID of the Engagement this File is associated with
+          format: uuid
+      required:
+      - file
+    FileCreate:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+      required:
+      - file
+    FileUploadRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 3e11fc6d-ecd0-4673-8a90-aa787ed391ec
+      required:
+      - uuid
     EngagementFolderRead:
       type: object
       properties:
@@ -522,19 +581,6 @@ components:
       - path
       - created_at
       - _links
-    EngagementFileReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Engagement File within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/v1/engagements/2/documents?folder=0d7c72ee-28b3-4bc8-aea1-18bc7d9a8679&file=9b560ead-2b64-41f2-b9ae-826bdb866f1a
-            title: Get the result of this job
-            type: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
     EngagementFileRead:
       type: object
       properties:
@@ -644,32 +690,6 @@ components:
       - uuid
       - created_at
       - updated_at
-    FileContextRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        type:
-          type: string
-          enum:
-          - engagement
-          - request
-          example: engagement
-          description: The kind of object this file is attached to.
-      required:
-      - uuid
-      - type
-    FileUploadRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 3e11fc6d-ecd0-4673-8a90-aa787ed391ec
-      required:
-      - uuid
     EngagementFolderReadLinks:
       type: object
       properties:
@@ -683,26 +703,6 @@ components:
           - $ref: '#/components/schemas/HalLink'
       required:
       - fieldguide
-    FileCreate:
-      type: object
-      properties:
-        file:
-          type: string
-          format: binary
-      required:
-      - file
-    EngagementFileCreate:
-      type: object
-      properties:
-        file:
-          type: string
-          format: binary
-        folder_uuid:
-          type: string
-          description: The Folder UUID of the Engagement this File is associated with
-          format: uuid
-      required:
-      - file
     HalLink:
       type: object
       properties:

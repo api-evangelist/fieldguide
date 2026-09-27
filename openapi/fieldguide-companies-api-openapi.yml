@@ -462,42 +462,14 @@ paths:
       - users:read
 components:
   schemas:
-    CompanyCreate:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Jones Group, Inc.
-        identifier:
-          type: string
-          description: An external identifier that can be used by integrated systems
-          example: CA0001-A
-        require_mfa:
-          type: boolean
-          description: Whether new users will have multi-factor authentication enabled
-          example: false
-      required:
-      - name
-      - require_mfa
-    UserReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the User within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/settings/admin/users/1
-            title: View this User in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
-    CompanyType:
+    EngagementStatus:
       type: string
       enum:
-      - client
-      - firm
-      description: Whether the company is a Firm (the audit provider) or a Client.
+      - Pending
+      - In Progress
+      - Complete
+      - Archived
+      description: The engagement's current lifecycle status.
     UserRead:
       type: object
       properties:
@@ -547,6 +519,68 @@ components:
       - _links
       - status
       - invite_last_resent_at
+    CompanyUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Jones Group, Inc.
+        identifier:
+          type:
+          - string
+          - 'null'
+          description: An external identifier that can be used by integrated systems
+          example: CA0001-A
+        require_mfa:
+          type: boolean
+          description: Whether new users will have multi-factor authentication enabled
+          example: false
+    EngagementReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Engagement within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/82027
+            title: View this Engagement in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    CompanyRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 3699af0f-9b92-410d-945c-bb0bf39da904
+        name:
+          type: string
+          example: Jones Group, Inc.
+        identifier:
+          type:
+          - string
+          - 'null'
+          description: An external identifier that can be used by integrated systems
+          example: CA0001-A
+          default: null
+        type:
+          description: Whether the company is a Firm (the audit provider) or a Client.
+          allOf:
+          - $ref: '#/components/schemas/CompanyType'
+        require_mfa:
+          type: boolean
+          description: Whether new users will have multi-factor authentication enabled
+          example: false
+        _links:
+          $ref: '#/components/schemas/CompanyReadLinks'
+      required:
+      - uuid
+      - name
+      - type
+      - require_mfa
+      - _links
     EngagementRead:
       type: object
       properties:
@@ -630,76 +664,55 @@ components:
       - engagement_lead_user_uuid
       - client_owner_user_uuid
       - _links
-    EngagementStatus:
+    CompanyType:
       type: string
       enum:
-      - Pending
-      - In Progress
-      - Complete
-      - Archived
-      description: The engagement's current lifecycle status.
-    EngagementReadLinks:
+      - client
+      - firm
+      description: Whether the company is a Firm (the audit provider) or a Client.
+    UserReadLinks:
       type: object
       properties:
         fieldguide:
-          description: A URL the user can visit to view the Engagement within the Fieldguide web application
+          description: A URL the user can visit to view the User within the Fieldguide web application
           example:
-            href: https://app.fieldguide.io/engagements/82027
-            title: View this Engagement in Fieldguide
+            href: https://app.fieldguide.io/settings/admin/users/1
+            title: View this User in Fieldguide
             type: text/html
           allOf:
           - $ref: '#/components/schemas/HalLink'
       required:
       - fieldguide
-    CompanyRead:
+    CompanyCreate:
       type: object
       properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 3699af0f-9b92-410d-945c-bb0bf39da904
         name:
           type: string
           example: Jones Group, Inc.
         identifier:
-          type:
-          - string
-          - 'null'
+          type: string
           description: An external identifier that can be used by integrated systems
           example: CA0001-A
-          default: null
-        type:
-          description: Whether the company is a Firm (the audit provider) or a Client.
-          allOf:
-          - $ref: '#/components/schemas/CompanyType'
         require_mfa:
           type: boolean
           description: Whether new users will have multi-factor authentication enabled
           example: false
-        _links:
-          $ref: '#/components/schemas/CompanyReadLinks'
       required:
-      - uuid
       - name
-      - type
       - require_mfa
-      - _links
-    CompanyUpdate:
+    CompanyReadLinks:
       type: object
       properties:
-        name:
-          type: string
-          example: Jones Group, Inc.
-        identifier:
-          type:
-          - string
-          - 'null'
-          description: An external identifier that can be used by integrated systems
-          example: CA0001-A
-        require_mfa:
-          type: boolean
-          description: Whether new users will have multi-factor authentication enabled
-          example: false
+        fieldguide:
+          description: A URL the user can visit to view the Company within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/clients/1/overview
+            title: View this Company in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
     HalLink:
       type: object
       properties:
@@ -718,19 +731,6 @@ components:
       required:
       - href
       - type
-    CompanyReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Company within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/clients/1/overview
-            title: View this Company in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
   securitySchemes:
     bearer:
       scheme: bearer

@@ -51,7 +51,7 @@ tags:
 - Advisory
 - Accounting
 - Compliance
-- Risk
+- Risk Management
 - Engagement Management
 - Artificial Intelligence
 - Agents
@@ -68,23 +68,8 @@ tags_raw:
 - Agents
 - Webhooks
 apis:
-- aid: fieldguide:fieldguide-api-api
-  name: Fieldguide api
-  description: Endpoints used to interact with the Fieldguide API platform
-  humanURL: https://www.fieldguide.io/developers
-  baseURL: https://api.fieldguide.io
-  tags: []
-  tags_raw:
-  - api
-  properties:
-  - type: OpenAPI
-    url: openapi/fieldguide-api-api-openapi.yml
-  - type: APIReference
-    url: https://api.fieldguide.io/api
-  - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-comments-api
-  name: Fieldguide comments API
+  name: Fieldguide Comments API
   description: Endpoints used to interact with Fieldguide Comments
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -98,9 +83,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-companies-api
-  name: Fieldguide companies API
+  name: Fieldguide Companies API
   description: Endpoints used to interact with Fieldguide Companies
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -114,9 +100,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-controls-api
-  name: Fieldguide controls API
+  name: Fieldguide Controls API
   description: Endpoints used to interact with Fieldguide Controls
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -130,9 +117,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-engagements-api
-  name: Fieldguide engagements API
+  name: Fieldguide Engagements API
   description: Endpoints used to interact with Fieldguide Engagements
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -146,9 +134,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-files-api
-  name: Fieldguide files API
+  name: Fieldguide Files API
   description: Endpoints used to interact with Fieldguide Files
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -162,9 +151,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-insights-api
-  name: Fieldguide insights API
+  name: Fieldguide Insights API
   description: Endpoints used to interact with Fieldguide Insights
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -178,9 +168,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-jobs-api
-  name: Fieldguide jobs API
+  name: Fieldguide Jobs API
   description: Endpoints used to interact with long-running processes (Jobs) in the Fieldguide API
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -194,9 +185,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-milestones-api
-  name: Fieldguide milestones API
+  name: Fieldguide Milestones API
   description: Endpoints used to interact with Fieldguide Milestones
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -210,9 +202,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-requests-api
-  name: Fieldguide requests API
+  name: Fieldguide Requests API
   description: Endpoints used to interact with Fieldguide Requests
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -226,9 +219,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-sheet-columns-api
-  name: Fieldguide sheet-columns API
+  name: Fieldguide Sheet Columns API
   description: Endpoints used to interact with Fieldguide Sheet Columns
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -240,9 +234,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-sheet-rows-api
-  name: Fieldguide sheet-rows API
+  name: Fieldguide Sheet Rows API
   description: Endpoints used to interact with Fieldguide Sheet Rows
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -254,9 +249,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-sheets-api
-  name: Fieldguide sheets API
+  name: Fieldguide Sheets API
   description: Endpoints used to interact with Fieldguide Sheets
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -270,9 +266,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-users-api
-  name: Fieldguide users API
+  name: Fieldguide Users API
   description: Endpoints used to interact with Fieldguide Users
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -286,9 +283,10 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 - aid: fieldguide:fieldguide-webhooks-api
-  name: Fieldguide webhooks API
+  name: Fieldguide Webhooks API
   description: Endpoints used to interact with Fieldguide Webhooks
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
@@ -302,7 +300,38 @@ apis:
   - type: APIReference
     url: https://api.fieldguide.io/api
   - type: Documentation
-    url: https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-scopes-api
+  name: Fieldguide Scopes API
+  description: The Scopes API from Fieldguide — 1 operation(s) for scopes.
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - Scopes
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-scopes-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
+- aid: fieldguide:fieldguide-token-api
+  name: Fieldguide Token API
+  description: The Token API from Fieldguide — 1 operation(s) for token.
+  humanURL: https://www.fieldguide.io/developers
+  baseURL: https://api.fieldguide.io
+  tags:
+  - Token
+  properties:
+  - type: OpenAPI
+    url: openapi/fieldguide-token-api-openapi.yml
+  - type: APIReference
+    url: https://api.fieldguide.io/api
+  - type: Documentation
+    url: >-
+      https://fieldguide.notion.site/Fieldguide-API-Documentation-650f03765dc0402c96ccb750ecd70eda
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

@@ -1286,134 +1286,89 @@ paths:
       - milestones:read
 components:
   schemas:
-    RequestStatus:
-      type: string
-      enum:
-      - Open
-      - Update Requested
-      - Complete
-      - Ready For Review
-      - Draft
-      description: The request's current status in the evidence-collection workflow.
-    EngagementStatusLabel:
-      type: string
-      enum:
-      - Pending
-      - In Progress
-      - Complete
-      description: The status of the Engagement
-    MilestoneRead:
+    EngagementRead:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        engagement_uuid:
-          type: string
-          format: uuid
           example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
-          description: UUID of the Engagement that owns this Milestone.
         name:
           type: string
-          example: Planning complete
-        sequence:
-          type: integer
-          example: 2
-          description: The Milestone's display order within its Engagement.
-        associated_engagement_status:
-          description: An optional association to an Engagement lifecycle phase. It does not represent the Engagement's current status or determine Milestone completion.
+          example: SOC 2 - Type 1
+        status:
+          description: The engagement's current lifecycle status.
           allOf:
-          - $ref: '#/components/schemas/MilestoneAssociatedEngagementStatus'
-        due_date:
+          - $ref: '#/components/schemas/EngagementStatus'
+        is_template:
+          type: boolean
+          example: false
+          description: Whether this is a reusable engagement template rather than a live engagement.
+        company_uuid:
+          type: string
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+          description: UUID of the client company this engagement is for.
+        start_date:
           type:
           - string
           - 'null'
           format: date
-          example: '2026-03-15'
-        completed_at:
+          example: '2023-05-23'
+          description: The engagement's planned start date, or null if not scheduled.
+        end_date:
           type:
           - string
           - 'null'
-          format: date-time
-          example: '2026-03-10T12:30:00.000Z'
-          description: The authoritative completion indicator. Null means the Milestone is incomplete.
-        completed_by_user_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          example: 6b242248-e2b9-4d41-8986-11b710860048
-          description: UUID of the user who completed the Milestone.
-        owner_user_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          example: ee196968-2a7a-48e9-97f9-d12f26a8ff94
-          description: UUID of the user assigned to own the Milestone.
-        client_can_view:
-          type: boolean
-          example: true
-          description: Whether client users can view the Milestone.
+          format: date
+          example: '2023-07-30'
+          description: The engagement's planned end date, or null if not scheduled.
         created_at:
-          type: string
           format: date-time
-          example: '2026-02-01T12:30:00.000Z'
-        updated_at:
           type: string
-          format: date-time
-          example: '2026-03-10T12:30:00.000Z'
-        _links:
-          $ref: '#/components/schemas/MilestoneReadLinks'
-      required:
-      - uuid
-      - engagement_uuid
-      - name
-      - sequence
-      - associated_engagement_status
-      - due_date
-      - completed_at
-      - completed_by_user_uuid
-      - owner_user_uuid
-      - client_can_view
-      - created_at
-      - updated_at
-      - _links
-    EngagementCreateFromTemplate:
-      type: object
-      properties:
-        template_uuid:
-          type: string
-          format: uuid
-          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
-        client_company_uuid:
-          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        report_issue_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2023-07-30'
+          description: The date the audit report was issued, or null if not yet issued.
+        engagement_lead_user_uuid:
+          type:
+          - string
+          - 'null'
           format: uuid
           example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
-        name:
-          type: string
-          example: SOC 2 - Type 1
-        start_date:
-          type: string
-          example: '2023-07-30'
-        end_date:
-          type: string
-          example: '2023-07-30'
-        report_issue_date:
-          type: string
-          example: '2023-07-30'
+          description: UUID of the user leading the engagement (the audit lead), or null if no engagement lead is available.
+        client_owner_user_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+          description: UUID of the client-side owner of the engagement, or null if unassigned.
         identifier:
           type:
           - string
           - 'null'
           description: An external identifier that can be used by integrated systems
           example: E0001-A
-          default: null
+        _links:
+          $ref: '#/components/schemas/EngagementReadLinks'
       required:
-      - template_uuid
-      - client_company_uuid
+      - uuid
       - name
+      - status
+      - is_template
+      - company_uuid
+      - start_date
+      - end_date
+      - created_at
+      - report_issue_date
+      - engagement_lead_user_uuid
+      - client_owner_user_uuid
+      - _links
     EngagementUuidRead:
       type: object
       properties:
@@ -1423,25 +1378,71 @@ components:
           example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
       required:
       - uuid
-    EngagementFolderReadLinks:
+    EngagementFolderRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The unique identifier for the resource
+        parent_folder_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          example: 721e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The folder that contains this one
+        engagement_uuid:
+          type: string
+          format: uuid
+          example: 921e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The Engagement this Folder belongs to
+        name:
+          type: string
+          example: Documents
+          description: The name of the Folder
+        path:
+          type: string
+          example: /grandparent/parent
+          description: The path to the Folder from the Engagement root
+        created_at:
+          format: date-time
+          type: string
+          example: '2024-03-19T12:00:00Z'
+          description: Timestamp of when the Folder was created
+        _links:
+          $ref: '#/components/schemas/EngagementFolderReadLinks'
+      required:
+      - uuid
+      - parent_folder_uuid
+      - engagement_uuid
+      - name
+      - path
+      - created_at
+      - _links
+    SheetReadLinks:
       type: object
       properties:
         fieldguide:
-          description: A URL the user can visit to view the Engagement Folder within the Fieldguide web application
+          description: A URL the user can visit to view the Sheet within the Fieldguide web application
           example:
-            href: https://app.fieldguide.io/engagements/123/documents?folder=abc-123
-            title: View this Engagement Folder in Fieldguide
+            href: https://app.fieldguide.io/engagements/82027/workplan/3
+            title: View the Sheet in Fieldguide
             type: text/html
           allOf:
           - $ref: '#/components/schemas/HalLink'
       required:
       - fieldguide
-    TemplatesQuery:
+    RequestStatus:
       type: string
       enum:
-      - include
-      - exclude
-      - only
+      - Open
+      - Update Requested
+      - Complete
+      - Ready For Review
+      - Draft
+      description: The request's current status in the evidence-collection workflow.
     JobSubmittedRead:
       type: object
       properties:
@@ -1454,18 +1455,6 @@ components:
       required:
       - uuid
       - _links
-    EngagementFileCreate:
-      type: object
-      properties:
-        file:
-          type: string
-          format: binary
-        folder_uuid:
-          type: string
-          description: The Folder UUID of the Engagement this File is associated with
-          format: uuid
-      required:
-      - file
     EngagementExportRead:
       type: object
       properties:
@@ -1558,6 +1547,14 @@ components:
       - engagement_uuid
       - folder_uuid
       - _links
+    EngagementStatus:
+      type: string
+      enum:
+      - Pending
+      - In Progress
+      - Complete
+      - Archived
+      description: The engagement's current lifecycle status.
     SheetRead:
       type: object
       properties:
@@ -1579,6 +1576,21 @@ components:
       - name
       - _links
       - created_at
+    EngagementsQueryStatusLabel:
+      type: string
+      enum:
+      - Pending
+      - In Progress
+      - Complete
+      - Archived
+    MilestoneAssociatedEngagementStatus:
+      type: string
+      enum:
+      - Pending
+      - In Progress
+      - Complete
+      - Archived
+      description: An optional association to an Engagement lifecycle phase. It does not represent the Engagement's current status or determine Milestone completion.
     EngagementUserRead:
       type: object
       properties:
@@ -1607,36 +1619,85 @@ components:
       - last_name
       - email
       - company_uuid
-    EngagementsQueryStatusLabel:
-      type: string
-      enum:
-      - Pending
-      - In Progress
-      - Complete
-      - Archived
-    SheetReadLinks:
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    EngagementFileReadLinks:
       type: object
       properties:
         fieldguide:
-          description: A URL the user can visit to view the Sheet within the Fieldguide web application
+          description: A URL the user can visit to view the Engagement File within the Fieldguide web application
           example:
-            href: https://app.fieldguide.io/engagements/82027/workplan/3
-            title: View the Sheet in Fieldguide
+            href: https://app.fieldguide.io/v1/engagements/2/documents?folder=0d7c72ee-28b3-4bc8-aea1-18bc7d9a8679&file=9b560ead-2b64-41f2-b9ae-826bdb866f1a
+            title: Get the result of this job
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    EngagementUserCreate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The UUID of the user to add to the engagement
+          format: uuid
+          example: 3699af0f-9b92-410d-945c-bb0bf39da904
+      required:
+      - uuid
+    EngagementReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Engagement within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/82027
+            title: View this Engagement in Fieldguide
             type: text/html
           allOf:
           - $ref: '#/components/schemas/HalLink'
       required:
       - fieldguide
-    EngagementUserDelete:
+    EngagementFileCreate:
       type: object
       properties:
-        uuid:
+        file:
           type: string
-          description: The UUID of the user to remove from the Engagement Team
+          format: binary
+        folder_uuid:
+          type: string
+          description: The Folder UUID of the Engagement this File is associated with
           format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
       required:
-      - uuid
+      - file
+    JobSubmittedReadLinks:
+      type: object
+      properties:
+        status:
+          description: An API endpoint to retrieve the status of the job
+          example:
+            href: https://api.fieldguide.io/jobs/2d2e102e-f4af-4534-9749-4d9249eca6cc
+            title: Get the status of this job
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - status
     RequestRead:
       type: object
       properties:
@@ -1709,128 +1770,6 @@ components:
       - tags
       - engagement_uuids
       - _links
-    MilestoneSortBy:
-      type: string
-      enum:
-      - created_at
-      - sequence
-    EngagementStatus:
-      type: string
-      enum:
-      - Pending
-      - In Progress
-      - Complete
-      - Archived
-      description: The engagement's current lifecycle status.
-    EngagementUpdate:
-      type: object
-      properties:
-        engagement_lead_user_uuid:
-          type: string
-          format: uuid
-          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
-          description: The UUID of the firm user who is the engagement lead
-        identifier:
-          type:
-          - string
-          - 'null'
-          description: An external identifier that can be used by integrated systems
-          example: E0001-A
-        status:
-          description: The status of the Engagement
-          allOf:
-          - $ref: '#/components/schemas/EngagementStatusLabel'
-        name:
-          type: string
-          description: The name of the Engagement
-          example: SOC 2 - Type 1
-    EngagementFolderRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
-          description: The unique identifier for the resource
-        parent_folder_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          example: 721e8d9e-d2a8-480f-9187-5a685d3d0d71
-          description: The folder that contains this one
-        engagement_uuid:
-          type: string
-          format: uuid
-          example: 921e8d9e-d2a8-480f-9187-5a685d3d0d71
-          description: The Engagement this Folder belongs to
-        name:
-          type: string
-          example: Documents
-          description: The name of the Folder
-        path:
-          type: string
-          example: /grandparent/parent
-          description: The path to the Folder from the Engagement root
-        created_at:
-          format: date-time
-          type: string
-          example: '2024-03-19T12:00:00Z'
-          description: Timestamp of when the Folder was created
-        _links:
-          $ref: '#/components/schemas/EngagementFolderReadLinks'
-      required:
-      - uuid
-      - parent_folder_uuid
-      - engagement_uuid
-      - name
-      - path
-      - created_at
-      - _links
-    MilestoneAssociatedEngagementStatus:
-      type: string
-      enum:
-      - Pending
-      - In Progress
-      - Complete
-      - Archived
-      description: An optional association to an Engagement lifecycle phase. It does not represent the Engagement's current status or determine Milestone completion.
-    EngagementFileReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Engagement File within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/v1/engagements/2/documents?folder=0d7c72ee-28b3-4bc8-aea1-18bc7d9a8679&file=9b560ead-2b64-41f2-b9ae-826bdb866f1a
-            title: Get the result of this job
-            type: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
-    EngagementUserCreate:
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: The UUID of the user to add to the engagement
-          format: uuid
-          example: 3699af0f-9b92-410d-945c-bb0bf39da904
-      required:
-      - uuid
-    EngagementReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Engagement within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/engagements/82027
-            title: View this Engagement in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
     MilestoneReadLinks:
       type: object
       properties:
@@ -1871,6 +1810,84 @@ components:
       - collection
       - engagement
       - fieldguide
+    EngagementUserDelete:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The UUID of the user to remove from the Engagement Team
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+      required:
+      - uuid
+    EngagementUpdate:
+      type: object
+      properties:
+        engagement_lead_user_uuid:
+          type: string
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+          description: The UUID of the firm user who is the engagement lead
+        identifier:
+          type:
+          - string
+          - 'null'
+          description: An external identifier that can be used by integrated systems
+          example: E0001-A
+        status:
+          description: The status of the Engagement
+          allOf:
+          - $ref: '#/components/schemas/EngagementStatusLabel'
+        name:
+          type: string
+          description: The name of the Engagement
+          example: SOC 2 - Type 1
+    MilestoneSortBy:
+      type: string
+      enum:
+      - created_at
+      - sequence
+    EngagementCreateFromTemplate:
+      type: object
+      properties:
+        template_uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+        client_company_uuid:
+          type: string
+          format: uuid
+          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
+        name:
+          type: string
+          example: SOC 2 - Type 1
+        start_date:
+          type: string
+          example: '2023-07-30'
+        end_date:
+          type: string
+          example: '2023-07-30'
+        report_issue_date:
+          type: string
+          example: '2023-07-30'
+        identifier:
+          type:
+          - string
+          - 'null'
+          description: An external identifier that can be used by integrated systems
+          example: E0001-A
+          default: null
+      required:
+      - template_uuid
+      - client_company_uuid
+      - name
+    EngagementStatusLabel:
+      type: string
+      enum:
+      - Pending
+      - In Progress
+      - Complete
+      description: The status of the Engagement
     RequestReadLinks:
       type: object
       properties:
@@ -1884,120 +1901,103 @@ components:
           - $ref: '#/components/schemas/HalLink'
       required:
       - fieldguide
-    JobSubmittedReadLinks:
+    EngagementFolderReadLinks:
       type: object
       properties:
-        status:
-          description: An API endpoint to retrieve the status of the job
+        fieldguide:
+          description: A URL the user can visit to view the Engagement Folder within the Fieldguide web application
           example:
-            href: https://api.fieldguide.io/jobs/2d2e102e-f4af-4534-9749-4d9249eca6cc
-            title: Get the status of this job
-            type: application/json
+            href: https://app.fieldguide.io/engagements/123/documents?folder=abc-123
+            title: View this Engagement Folder in Fieldguide
+            type: text/html
           allOf:
           - $ref: '#/components/schemas/HalLink'
       required:
-      - status
-    EngagementRead:
+      - fieldguide
+    MilestoneRead:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        engagement_uuid:
+          type: string
+          format: uuid
           example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: UUID of the Engagement that owns this Milestone.
         name:
           type: string
-          example: SOC 2 - Type 1
-        status:
-          description: The engagement's current lifecycle status.
+          example: Planning complete
+        sequence:
+          type: integer
+          example: 2
+          description: The Milestone's display order within its Engagement.
+        associated_engagement_status:
+          description: An optional association to an Engagement lifecycle phase. It does not represent the Engagement's current status or determine Milestone completion.
           allOf:
-          - $ref: '#/components/schemas/EngagementStatus'
-        is_template:
-          type: boolean
-          example: false
-          description: Whether this is a reusable engagement template rather than a live engagement.
-        company_uuid:
-          type: string
-          format: uuid
-          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
-          description: UUID of the client company this engagement is for.
-        start_date:
+          - $ref: '#/components/schemas/MilestoneAssociatedEngagementStatus'
+        due_date:
           type:
           - string
           - 'null'
           format: date
-          example: '2023-05-23'
-          description: The engagement's planned start date, or null if not scheduled.
-        end_date:
+          example: '2026-03-15'
+        completed_at:
           type:
           - string
           - 'null'
-          format: date
-          example: '2023-07-30'
-          description: The engagement's planned end date, or null if not scheduled.
-        created_at:
           format: date-time
+          example: '2026-03-10T12:30:00.000Z'
+          description: The authoritative completion indicator. Null means the Milestone is incomplete.
+        completed_by_user_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          example: 6b242248-e2b9-4d41-8986-11b710860048
+          description: UUID of the user who completed the Milestone.
+        owner_user_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          example: ee196968-2a7a-48e9-97f9-d12f26a8ff94
+          description: UUID of the user assigned to own the Milestone.
+        client_can_view:
+          type: boolean
+          example: true
+          description: Whether client users can view the Milestone.
+        created_at:
           type: string
-          example: '2023-01-01T12:30:00.000Z'
-        report_issue_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          example: '2023-07-30'
-          description: The date the audit report was issued, or null if not yet issued.
-        engagement_lead_user_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
-          description: UUID of the user leading the engagement (the audit lead), or null if no engagement lead is available.
-        client_owner_user_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          example: 022723f4-1d6a-4c6c-9387-f63c7d66f0fc
-          description: UUID of the client-side owner of the engagement, or null if unassigned.
-        identifier:
-          type:
-          - string
-          - 'null'
-          description: An external identifier that can be used by integrated systems
-          example: E0001-A
+          format: date-time
+          example: '2026-02-01T12:30:00.000Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-03-10T12:30:00.000Z'
         _links:
-          $ref: '#/components/schemas/EngagementReadLinks'
+          $ref: '#/components/schemas/MilestoneReadLinks'
       required:
       - uuid
+      - engagement_uuid
       - name
-      - status
-      - is_template
-      - company_uuid
-      - start_date
-      - end_date
+      - sequence
+      - associated_engagement_status
+      - due_date
+      - completed_at
+      - completed_by_user_uuid
+      - owner_user_uuid
+      - client_can_view
       - created_at
-      - report_issue_date
-      - engagement_lead_user_uuid
-      - client_owner_user_uuid
+      - updated_at
       - _links
-    HalLink:
-      type: object
-      properties:
-        href:
-          type: string
-          example: https://example.com/resource/or/path
-          format: uri
-        title:
-          type: string
-          description: A human-readable title for the link
-          example: A description for the link
-        type:
-          type: string
-          description: The content-type
-          example: text/html
-      required:
-      - href
-      - type
+    TemplatesQuery:
+      type: string
+      enum:
+      - include
+      - exclude
+      - only
   securitySchemes:
     bearer:
       scheme: bearer

@@ -4,7 +4,8 @@
     "_original/fieldguide-openapi-original.json"
   ],
   "outputs": [
-    "fieldguide-api-api-openapi.yml",
+    "fieldguide-scopes-api-openapi.yml",
+    "fieldguide-token-api-openapi.yml",
     "fieldguide-comments-api-openapi.yml",
     "fieldguide-companies-api-openapi.yml",
     "fieldguide-controls-api-openapi.yml",
@@ -20,13 +21,20 @@
     "fieldguide-users-api-openapi.yml",
     "fieldguide-webhooks-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "fieldguide-openapi-original.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "fieldguide-openapi-original.json: tagged paths GET /v1/scopes -> Scopes",
+    "fieldguide-openapi-original.json: tagged paths GET /v1/token -> Token",
+    "fieldguide-openapi-original.json: declared missing tag: Scopes",
+    "fieldguide-openapi-original.json: declared missing tag: Token",
+    "superseded outputs removed: fieldguide-api-api-openapi.yml",
+    "apis.yml register: written (+2 apis, 16 total)"
   ],
   "skipped": [
     "fieldguide-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Fieldguide API
+  title: Fieldguide Token API
   description: An API for interacting with the Fieldguide platform
   version: v1
   contact: {}
@@ -10,29 +10,8 @@ servers:
 security:
 - bearer: []
 tags:
-- name: api
-  description: Endpoints used to interact with the Fieldguide API platform
+- name: Token
 paths:
-  /v1/scopes:
-    get:
-      operationId: list_scopes_v1
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ScopeRead'
-        '429':
-          description: Too many requests
-      security:
-      - {}
-      summary: List available Scopes for the Fieldguide API
-      tags:
-      - api
   /v1/token:
     get:
       operationId: get_current_token_v1
@@ -55,28 +34,34 @@ paths:
           description: Unauthorized
       summary: Get metadata about the current authentication token
       tags:
-      - api
+      - Token
 components:
   schemas:
-    ApiResource:
-      type: string
-      enum:
-      - comments
-      - companies
-      - controls
-      - engagements
-      - requests
-      - users
-      - webhooks
-      - files
-      - sheets
-      - sheet-columns
-      - sheet-rows
-      - insights
-      - jobs
-      - milestones
-      - folders
-      description: The API resource this scope grants access to.
+    JwtTokenRead:
+      type: object
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        expires_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        type:
+          type: string
+          enum:
+          - jwt
+          example: jwt
+      required:
+      - user_uuid
+      - created_at
+      - expires_at
+      - type
     ApiTokenRead:
       type: object
       properties:
@@ -145,48 +130,6 @@ components:
       - name
       - scopes
       - provisioned_for
-    JwtTokenRead:
-      type: object
-      properties:
-        user_uuid:
-          type: string
-          format: uuid
-          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
-        created_at:
-          format: date-time
-          type: string
-          example: '2023-01-01T12:30:00.000Z'
-        expires_at:
-          format: date-time
-          type: string
-          example: '2023-01-01T12:30:00.000Z'
-        type:
-          type: string
-          enum:
-          - jwt
-          example: jwt
-      required:
-      - user_uuid
-      - created_at
-      - expires_at
-      - type
-    ScopeRead:
-      type: object
-      properties:
-        scope:
-          type: string
-          example: engagements:read
-        resource:
-          description: The API resource this scope grants access to.
-          allOf:
-          - $ref: '#/components/schemas/ApiResource'
-        description:
-          type: string
-          example: Can read engagement metadata
-      required:
-      - scope
-      - resource
-      - description
   securitySchemes:
     bearer:
       scheme: bearer
