@@ -124,6 +124,19 @@ paths:
       - sheets:read
 components:
   schemas:
+    SheetColumnReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Sheet Column within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/165/workplan/183
+            title: View the Sheet for this Sheet Column in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
     SheetColumnFormat:
       type: string
       enum:
@@ -131,6 +144,24 @@ components:
       - number
       - list
       description: The data type of values stored in this column.
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
     SheetColumnRead:
       type: object
       properties:
@@ -163,37 +194,6 @@ components:
       - created_at
       - updated_at
       - _links
-    HalLink:
-      type: object
-      properties:
-        href:
-          type: string
-          example: https://example.com/resource/or/path
-          format: uri
-        title:
-          type: string
-          description: A human-readable title for the link
-          example: A description for the link
-        type:
-          type: string
-          description: The content-type
-          example: text/html
-      required:
-      - href
-      - type
-    SheetColumnReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Sheet Column within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/engagements/165/workplan/183
-            title: View the Sheet for this Sheet Column in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
   securitySchemes:
     bearer:
       scheme: bearer

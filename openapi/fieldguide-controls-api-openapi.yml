@@ -137,6 +137,24 @@ components:
           - $ref: '#/components/schemas/HalLink'
       required:
       - fieldguide
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
     ControlRead:
       type: object
       properties:
@@ -157,24 +175,6 @@ components:
       - description
       - key
       - _links
-    HalLink:
-      type: object
-      properties:
-        href:
-          type: string
-          example: https://example.com/resource/or/path
-          format: uri
-        title:
-          type: string
-          description: A human-readable title for the link
-          example: A description for the link
-        type:
-          type: string
-          description: The content-type
-          example: text/html
-      required:
-      - href
-      - type
   securitySchemes:
     bearer:
       scheme: bearer

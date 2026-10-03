@@ -189,51 +189,6 @@ paths:
       - milestones:read
 components:
   schemas:
-    MilestoneReadLinks:
-      type: object
-      properties:
-        self:
-          description: The canonical API URL for this Milestone
-          example:
-            href: https://api.fieldguide.io/v1/milestones/4d50d252-be0c-4d69-b77a-5bbdfef83f54
-            title: Fetch this Milestone
-            type: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-        collection:
-          description: The visible Milestones collection for the parent Engagement
-          example:
-            href: https://api.fieldguide.io/v1/engagements/821e8d9e-d2a8-480f-9187-5a685d3d0d71/milestones
-            title: List Milestones for this Engagement
-            type: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-        engagement:
-          description: The canonical API URL for the parent Engagement
-          example:
-            href: https://api.fieldguide.io/v1/engagements/821e8d9e-d2a8-480f-9187-5a685d3d0d71
-            title: Fetch the parent Engagement
-            type: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-        fieldguide:
-          description: A Fieldguide Engagement dashboard link containing this Milestone's UUID
-          example:
-            href: https://app.fieldguide.io/engagements/82027/dashboard?milestone=4d50d252-be0c-4d69-b77a-5bbdfef83f54
-            title: Open the parent Engagement in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - self
-      - collection
-      - engagement
-      - fieldguide
-    MilestoneSortBy:
-      type: string
-      enum:
-      - created_at
-      - sequence
     MilestoneAssociatedEngagementStatus:
       type: string
       enum:
@@ -320,6 +275,46 @@ components:
       - created_at
       - updated_at
       - _links
+    MilestoneReadLinks:
+      type: object
+      properties:
+        self:
+          description: The canonical API URL for this Milestone
+          example:
+            href: https://api.fieldguide.io/v1/milestones/4d50d252-be0c-4d69-b77a-5bbdfef83f54
+            title: Fetch this Milestone
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+        collection:
+          description: The visible Milestones collection for the parent Engagement
+          example:
+            href: https://api.fieldguide.io/v1/engagements/821e8d9e-d2a8-480f-9187-5a685d3d0d71/milestones
+            title: List Milestones for this Engagement
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+        engagement:
+          description: The canonical API URL for the parent Engagement
+          example:
+            href: https://api.fieldguide.io/v1/engagements/821e8d9e-d2a8-480f-9187-5a685d3d0d71
+            title: Fetch the parent Engagement
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+        fieldguide:
+          description: A Fieldguide Engagement dashboard link containing this Milestone's UUID
+          example:
+            href: https://app.fieldguide.io/engagements/82027/dashboard?milestone=4d50d252-be0c-4d69-b77a-5bbdfef83f54
+            title: Open the parent Engagement in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - self
+      - collection
+      - engagement
+      - fieldguide
     HalLink:
       type: object
       properties:
@@ -338,6 +333,11 @@ components:
       required:
       - href
       - type
+    MilestoneSortBy:
+      type: string
+      enum:
+      - created_at
+      - sequence
   securitySchemes:
     bearer:
       scheme: bearer

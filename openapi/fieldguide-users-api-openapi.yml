@@ -543,19 +543,24 @@ components:
           example: 3699af0f-9b92-410d-945c-bb0bf39da904
       required:
       - uuid
-    UserReadLinks:
+    HalLink:
       type: object
       properties:
-        fieldguide:
-          description: A URL the user can visit to view the User within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/settings/admin/users/1
-            title: View this User in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
       required:
-      - fieldguide
+      - href
+      - type
     EngagementUserRead:
       type: object
       properties:
@@ -584,24 +589,19 @@ components:
       - last_name
       - email
       - company_uuid
-    HalLink:
+    UserReadLinks:
       type: object
       properties:
-        href:
-          type: string
-          example: https://example.com/resource/or/path
-          format: uri
-        title:
-          type: string
-          description: A human-readable title for the link
-          example: A description for the link
-        type:
-          type: string
-          description: The content-type
-          example: text/html
+        fieldguide:
+          description: A URL the user can visit to view the User within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/settings/admin/users/1
+            title: View this User in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
       required:
-      - href
-      - type
+      - fieldguide
   securitySchemes:
     bearer:
       scheme: bearer

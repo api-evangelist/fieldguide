@@ -479,108 +479,53 @@ paths:
       - requests.files:write
 components:
   schemas:
-    EngagementFileReadLinks:
+    FileRead:
       type: object
       properties:
-        fieldguide:
-          description: A URL the user can visit to view the Engagement File within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/v1/engagements/2/documents?folder=0d7c72ee-28b3-4bc8-aea1-18bc7d9a8679&file=9b560ead-2b64-41f2-b9ae-826bdb866f1a
-            title: Get the result of this job
-            type: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
-    FileContextRead:
-      type: object
-      properties:
-        uuid:
+        name:
           type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        type:
+          example: Board of Directors.docx
+        size:
+          type: number
+          example: 137437
+        mime_type:
           type: string
-          enum:
-          - engagement
-          - request
-          example: engagement
-          description: The kind of object this file is attached to.
-      required:
-      - uuid
-      - type
-    EngagementFileCreate:
-      type: object
-      properties:
-        file:
-          type: string
-          format: binary
-        folder_uuid:
-          type: string
-          description: The Folder UUID of the Engagement this File is associated with
-          format: uuid
-      required:
-      - file
-    FileCreate:
-      type: object
-      properties:
-        file:
-          type: string
-          format: binary
-      required:
-      - file
-    FileUploadRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 3e11fc6d-ecd0-4673-8a90-aa787ed391ec
-      required:
-      - uuid
-    EngagementFolderRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
-          description: The unique identifier for the resource
-        parent_folder_uuid:
+          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        url:
           type:
           - string
           - 'null'
-          format: uuid
-          example: 721e8d9e-d2a8-480f-9187-5a685d3d0d71
-          description: The folder that contains this one
-        engagement_uuid:
-          type: string
-          format: uuid
-          example: 921e8d9e-d2a8-480f-9187-5a685d3d0d71
-          description: The Engagement this Folder belongs to
-        name:
-          type: string
-          example: Documents
-          description: The name of the Folder
-        path:
-          type: string
-          example: /grandparent/parent
-          description: The path to the Folder from the Engagement root
-        created_at:
+          format: uri
+          example: https://example.com/document.docx
+        url_expiration:
+          type:
+          - string
+          - 'null'
           format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+        uuid:
           type: string
-          example: '2024-03-19T12:00:00Z'
-          description: Timestamp of when the Folder was created
-        _links:
-          $ref: '#/components/schemas/EngagementFolderReadLinks'
+          format: uuid
+          example: 91aeda5e-4a3c-4090-90b1-cbf09d4c1ba1
+        created_at:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
+        updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2023-01-01T12:30:00.000Z'
       required:
-      - uuid
-      - parent_folder_uuid
-      - engagement_uuid
       - name
-      - path
+      - size
+      - mime_type
+      - url
+      - url_expiration
+      - uuid
       - created_at
-      - _links
+      - updated_at
     EngagementFileRead:
       type: object
       properties:
@@ -643,66 +588,44 @@ components:
       - engagement_uuid
       - folder_uuid
       - _links
-    FileRead:
+    FileCreate:
       type: object
       properties:
-        name:
+        file:
           type: string
-          example: Board of Directors.docx
-        size:
-          type: number
-          example: 137437
-        mime_type:
-          type: string
-          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: https://example.com/document.docx
-        url_expiration:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          example: '2023-01-01T12:30:00.000Z'
-        uuid:
-          type: string
-          format: uuid
-          example: 91aeda5e-4a3c-4090-90b1-cbf09d4c1ba1
-        created_at:
-          type: string
-          format: date-time
-          example: '2023-01-01T12:30:00.000Z'
-        updated_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          example: '2023-01-01T12:30:00.000Z'
+          format: binary
       required:
-      - name
-      - size
-      - mime_type
-      - url
-      - url_expiration
-      - uuid
-      - created_at
-      - updated_at
-    EngagementFolderReadLinks:
+      - file
+    EngagementFileReadLinks:
       type: object
       properties:
         fieldguide:
-          description: A URL the user can visit to view the Engagement Folder within the Fieldguide web application
+          description: A URL the user can visit to view the Engagement File within the Fieldguide web application
           example:
-            href: https://app.fieldguide.io/engagements/123/documents?folder=abc-123
-            title: View this Engagement Folder in Fieldguide
-            type: text/html
+            href: https://app.fieldguide.io/v1/engagements/2/documents?folder=0d7c72ee-28b3-4bc8-aea1-18bc7d9a8679&file=9b560ead-2b64-41f2-b9ae-826bdb866f1a
+            title: Get the result of this job
+            type: application/json
           allOf:
           - $ref: '#/components/schemas/HalLink'
       required:
       - fieldguide
+    FileContextRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        type:
+          type: string
+          enum:
+          - engagement
+          - request
+          example: engagement
+          description: The kind of object this file is attached to.
+      required:
+      - uuid
+      - type
     HalLink:
       type: object
       properties:
@@ -721,6 +644,83 @@ components:
       required:
       - href
       - type
+    EngagementFileCreate:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+        folder_uuid:
+          type: string
+          description: The Folder UUID of the Engagement this File is associated with
+          format: uuid
+      required:
+      - file
+    FileUploadRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 3e11fc6d-ecd0-4673-8a90-aa787ed391ec
+      required:
+      - uuid
+    EngagementFolderRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The unique identifier for the resource
+        parent_folder_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          example: 721e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The folder that contains this one
+        engagement_uuid:
+          type: string
+          format: uuid
+          example: 921e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The Engagement this Folder belongs to
+        name:
+          type: string
+          example: Documents
+          description: The name of the Folder
+        path:
+          type: string
+          example: /grandparent/parent
+          description: The path to the Folder from the Engagement root
+        created_at:
+          format: date-time
+          type: string
+          example: '2024-03-19T12:00:00Z'
+          description: Timestamp of when the Folder was created
+        _links:
+          $ref: '#/components/schemas/EngagementFolderReadLinks'
+      required:
+      - uuid
+      - parent_folder_uuid
+      - engagement_uuid
+      - name
+      - path
+      - created_at
+      - _links
+    EngagementFolderReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Engagement Folder within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/123/documents?folder=abc-123
+            title: View this Engagement Folder in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
   securitySchemes:
     bearer:
       scheme: bearer

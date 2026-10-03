@@ -838,6 +838,19 @@ paths:
       - comments:write
 components:
   schemas:
+    SheetReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Sheet within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/82027/workplan/3
+            title: View the Sheet in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
     RequestRead:
       type: object
       properties:
@@ -910,6 +923,26 @@ components:
       - tags
       - engagement_uuids
       - _links
+    ControlRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        description:
+          type: string
+          example: Organizational charts are in place to communicate key areas of authority, responsibility, and appropriate lines of reporting to personnel.
+        key:
+          type: string
+          example: FG-6
+        _links:
+          $ref: '#/components/schemas/ControlReadLinks'
+      required:
+      - uuid
+      - description
+      - key
+      - _links
     CommentRead:
       type: object
       properties:
@@ -941,25 +974,64 @@ components:
       - created_at
       - updated_at
       - _links
-    CommentReadLinks:
+    FileCreate:
       type: object
       properties:
-        self:
-          description: A URL the user can fetch the Comment
-          example:
-            href: https://api.fieldguide.io/v1/comments/5919b6e8-9ea9-4cf0-9598-3a44cad3c7f7
-            title: Fetch this Comment
-            example: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
+        file:
+          type: string
+          format: binary
       required:
-      - self
-    RequestUpdate:
+      - file
+    RequestCommentBulkCreate:
       type: object
       properties:
-        status:
-          allOf:
-          - $ref: '#/components/schemas/RequestStatus'
+        comments:
+          minItems: 1
+          maxItems: 50
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestCommentBulkCreateItem'
+      required:
+      - comments
+    RequestCommentBulkCreateItem:
+      type: object
+      properties:
+        request_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        content:
+          type: string
+          example: <p>The comment text in HTML format</p>
+          minLength: 1
+        mentioned_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: edbf4962-20eb-499e-a7fa-eaff50c81630
+          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
+      required:
+      - request_uuid
+      - content
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
     ControlReadLinks:
       type: object
       properties:
@@ -968,6 +1040,19 @@ components:
           example:
             href: https://app.fieldguide.io/controls?client=2&id=09f7eeab-5318-4aff-a2bc-98b21dbe8b60&open=true
             title: View the Control in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    RequestReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Request within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/inbox?open=true&id=47923
+            title: View this Request in Fieldguide
             type: text/html
           allOf:
           - $ref: '#/components/schemas/HalLink'
@@ -991,14 +1076,30 @@ components:
       - uuid
       - keys
       - _links
-    FileCreate:
+    RequestStatus:
+      type: string
+      enum:
+      - Open
+      - Update Requested
+      - Complete
+      - Ready For Review
+      - Draft
+      description: The request's current status in the evidence-collection workflow.
+    FileUploadRead:
       type: object
       properties:
-        file:
+        uuid:
           type: string
-          format: binary
+          format: uuid
+          example: 3e11fc6d-ecd0-4673-8a90-aa787ed391ec
       required:
-      - file
+      - uuid
+    RequestUpdate:
+      type: object
+      properties:
+        status:
+          allOf:
+          - $ref: '#/components/schemas/RequestStatus'
     CommentCreate:
       type: object
       properties:
@@ -1015,26 +1116,6 @@ components:
           description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
       required:
       - content
-    FileUploadRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 3e11fc6d-ecd0-4673-8a90-aa787ed391ec
-      required:
-      - uuid
-    RequestCommentBulkCreate:
-      type: object
-      properties:
-        comments:
-          minItems: 1
-          maxItems: 50
-          type: array
-          items:
-            $ref: '#/components/schemas/RequestCommentBulkCreateItem'
-      required:
-      - comments
     FileRead:
       type: object
       properties:
@@ -1082,100 +1163,19 @@ components:
       - uuid
       - created_at
       - updated_at
-    RequestStatus:
-      type: string
-      enum:
-      - Open
-      - Update Requested
-      - Complete
-      - Ready For Review
-      - Draft
-      description: The request's current status in the evidence-collection workflow.
-    SheetReadLinks:
+    CommentReadLinks:
       type: object
       properties:
-        fieldguide:
-          description: A URL the user can visit to view the Sheet within the Fieldguide web application
+        self:
+          description: A URL the user can fetch the Comment
           example:
-            href: https://app.fieldguide.io/engagements/82027/workplan/3
-            title: View the Sheet in Fieldguide
-            type: text/html
+            href: https://api.fieldguide.io/v1/comments/5919b6e8-9ea9-4cf0-9598-3a44cad3c7f7
+            title: Fetch this Comment
+            example: application/json
           allOf:
           - $ref: '#/components/schemas/HalLink'
       required:
-      - fieldguide
-    RequestReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Request within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/inbox?open=true&id=47923
-            title: View this Request in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
-    RequestCommentBulkCreateItem:
-      type: object
-      properties:
-        request_uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        content:
-          type: string
-          example: <p>The comment text in HTML format</p>
-          minLength: 1
-        mentioned_user_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-            example: edbf4962-20eb-499e-a7fa-eaff50c81630
-          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
-      required:
-      - request_uuid
-      - content
-    ControlRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        description:
-          type: string
-          example: Organizational charts are in place to communicate key areas of authority, responsibility, and appropriate lines of reporting to personnel.
-        key:
-          type: string
-          example: FG-6
-        _links:
-          $ref: '#/components/schemas/ControlReadLinks'
-      required:
-      - uuid
-      - description
-      - key
-      - _links
-    HalLink:
-      type: object
-      properties:
-        href:
-          type: string
-          example: https://example.com/resource/or/path
-          format: uri
-        title:
-          type: string
-          description: A human-readable title for the link
-          example: A description for the link
-        type:
-          type: string
-          description: The content-type
-          example: text/html
-      required:
-      - href
-      - type
+      - self
   securitySchemes:
     bearer:
       scheme: bearer

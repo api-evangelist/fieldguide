@@ -106,6 +106,18 @@ paths:
       - insights:read
 components:
   schemas:
+    JobSubmittedRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: The UUID of the job that was submitted
+        _links:
+          $ref: '#/components/schemas/JobSubmittedReadLinks'
+      required:
+      - uuid
+      - _links
     TimeTrackingFileRead:
       type: object
       properties:
@@ -172,18 +184,6 @@ components:
       required:
       - report_start
       - report_end
-    JobSubmittedRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          description: The UUID of the job that was submitted
-        _links:
-          $ref: '#/components/schemas/JobSubmittedReadLinks'
-      required:
-      - uuid
-      - _links
     HalLink:
       type: object
       properties:

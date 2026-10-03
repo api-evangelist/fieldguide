@@ -269,19 +269,6 @@ paths:
       - comments:read
 components:
   schemas:
-    CommentContextReadLinks:
-      type: object
-      properties:
-        context_object:
-          description: A URL the user can fetch the Comment's Context
-          example:
-            href: https://api.fieldguide.io/v1/requests/9ddae459-8b25-41ef-a30d-d4c35d5915c9
-            title: Fetch the Request this comment was left on
-            example: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - context_object
     CommentRead:
       type: object
       properties:
@@ -313,35 +300,6 @@ components:
       - created_at
       - updated_at
       - _links
-    CommentReadLinks:
-      type: object
-      properties:
-        self:
-          description: A URL the user can fetch the Comment
-          example:
-            href: https://api.fieldguide.io/v1/comments/5919b6e8-9ea9-4cf0-9598-3a44cad3c7f7
-            title: Fetch this Comment
-            example: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - self
-    CommentCreate:
-      type: object
-      properties:
-        content:
-          type: string
-          example: <p>The comment text in HTML format</p>
-          minLength: 1
-        mentioned_user_uuids:
-          type: array
-          items:
-            type: string
-            format: uuid
-            example: edbf4962-20eb-499e-a7fa-eaff50c81630
-          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
-      required:
-      - content
     RequestCommentBulkCreate:
       type: object
       properties:
@@ -353,6 +311,37 @@ components:
             $ref: '#/components/schemas/RequestCommentBulkCreateItem'
       required:
       - comments
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    CommentContextReadLinks:
+      type: object
+      properties:
+        context_object:
+          description: A URL the user can fetch the Comment's Context
+          example:
+            href: https://api.fieldguide.io/v1/requests/9ddae459-8b25-41ef-a30d-d4c35d5915c9
+            title: Fetch the Request this comment was left on
+            example: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - context_object
     RequestCommentBulkCreateItem:
       type: object
       properties:
@@ -374,6 +363,22 @@ components:
       required:
       - request_uuid
       - content
+    CommentCreate:
+      type: object
+      properties:
+        content:
+          type: string
+          example: <p>The comment text in HTML format</p>
+          minLength: 1
+        mentioned_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: edbf4962-20eb-499e-a7fa-eaff50c81630
+          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
+      required:
+      - content
     CommentContextRead:
       type: object
       properties:
@@ -393,24 +398,19 @@ components:
       - uuid
       - type
       - _links
-    HalLink:
+    CommentReadLinks:
       type: object
       properties:
-        href:
-          type: string
-          example: https://example.com/resource/or/path
-          format: uri
-        title:
-          type: string
-          description: A human-readable title for the link
-          example: A description for the link
-        type:
-          type: string
-          description: The content-type
-          example: text/html
+        self:
+          description: A URL the user can fetch the Comment
+          example:
+            href: https://api.fieldguide.io/v1/comments/5919b6e8-9ea9-4cf0-9598-3a44cad3c7f7
+            title: Fetch this Comment
+            example: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
       required:
-      - href
-      - type
+      - self
   securitySchemes:
     bearer:
       scheme: bearer

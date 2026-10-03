@@ -21,9 +21,7 @@
     "fieldguide-users-api-openapi.yml",
     "fieldguide-webhooks-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -33,11 +31,9 @@
     "fieldguide-openapi-original.json: tagged paths GET /v1/token -> Token",
     "fieldguide-openapi-original.json: declared missing tag: Scopes",
     "fieldguide-openapi-original.json: declared missing tag: Token",
-    "superseded outputs removed: fieldguide-api-api-openapi.yml",
-    "apis.yml register: written (+2 apis, 16 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
-    "fieldguide-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fieldguide-comments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fieldguide-companies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fieldguide-controls-api-openapi.yml: previously refined output, superseded by openapi/_original/",
@@ -47,9 +43,11 @@
     "fieldguide-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fieldguide-milestones-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fieldguide-requests-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-scopes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fieldguide-sheet-columns-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fieldguide-sheet-rows-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fieldguide-sheets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fieldguide-token-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fieldguide-users-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fieldguide-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]

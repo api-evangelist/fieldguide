@@ -34,23 +34,6 @@ paths:
       - Scopes
 components:
   schemas:
-    ScopeRead:
-      type: object
-      properties:
-        scope:
-          type: string
-          example: engagements:read
-        resource:
-          description: The API resource this scope grants access to.
-          allOf:
-          - $ref: '#/components/schemas/ApiResource'
-        description:
-          type: string
-          example: Can read engagement metadata
-      required:
-      - scope
-      - resource
-      - description
     ApiResource:
       type: string
       enum:
@@ -70,6 +53,23 @@ components:
       - milestones
       - folders
       description: The API resource this scope grants access to.
+    ScopeRead:
+      type: object
+      properties:
+        scope:
+          type: string
+          example: engagements:read
+        resource:
+          description: The API resource this scope grants access to.
+          allOf:
+          - $ref: '#/components/schemas/ApiResource'
+        description:
+          type: string
+          example: Can read engagement metadata
+      required:
+      - scope
+      - resource
+      - description
   securitySchemes:
     bearer:
       scheme: bearer
