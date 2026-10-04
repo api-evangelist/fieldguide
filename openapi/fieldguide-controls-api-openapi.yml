@@ -124,19 +124,6 @@ paths:
       - controls:read
 components:
   schemas:
-    ControlReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Controls within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/controls?client=2&id=09f7eeab-5318-4aff-a2bc-98b21dbe8b60&open=true
-            title: View the Control in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
     HalLink:
       type: object
       properties:
@@ -175,6 +162,19 @@ components:
       - description
       - key
       - _links
+    ControlReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Controls within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/controls?client=2&id=09f7eeab-5318-4aff-a2bc-98b21dbe8b60&open=true
+            title: View the Control in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
   securitySchemes:
     bearer:
       scheme: bearer

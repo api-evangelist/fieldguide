@@ -90,23 +90,6 @@ paths:
       - Jobs
 components:
   schemas:
-    JobRead:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - Running
-          - Finished
-          - Failed
-          description: Current status of the job
-        reason:
-          type: string
-          description: Human-readable error message when job has failed
-        _links:
-          $ref: '#/components/schemas/JobReadLinks'
-      required:
-      - status
     HalLink:
       type: object
       properties:
@@ -138,6 +121,23 @@ components:
           - $ref: '#/components/schemas/HalLink'
       required:
       - results
+    JobRead:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Running
+          - Finished
+          - Failed
+          description: Current status of the job
+        reason:
+          type: string
+          description: Human-readable error message when job has failed
+        _links:
+          $ref: '#/components/schemas/JobReadLinks'
+      required:
+      - status
   securitySchemes:
     bearer:
       scheme: bearer

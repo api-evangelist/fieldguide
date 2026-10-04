@@ -189,6 +189,11 @@ paths:
       - milestones:read
 components:
   schemas:
+    MilestoneSortBy:
+      type: string
+      enum:
+      - created_at
+      - sequence
     MilestoneAssociatedEngagementStatus:
       type: string
       enum:
@@ -275,6 +280,24 @@ components:
       - created_at
       - updated_at
       - _links
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
     MilestoneReadLinks:
       type: object
       properties:
@@ -315,29 +338,6 @@ components:
       - collection
       - engagement
       - fieldguide
-    HalLink:
-      type: object
-      properties:
-        href:
-          type: string
-          example: https://example.com/resource/or/path
-          format: uri
-        title:
-          type: string
-          description: A human-readable title for the link
-          example: A description for the link
-        type:
-          type: string
-          description: The content-type
-          example: text/html
-      required:
-      - href
-      - type
-    MilestoneSortBy:
-      type: string
-      enum:
-      - created_at
-      - sequence
   securitySchemes:
     bearer:
       scheme: bearer

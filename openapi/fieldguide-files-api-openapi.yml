@@ -526,6 +526,74 @@ components:
       - uuid
       - created_at
       - updated_at
+    EngagementFolderRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The unique identifier for the resource
+        parent_folder_uuid:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          example: 721e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The folder that contains this one
+        engagement_uuid:
+          type: string
+          format: uuid
+          example: 921e8d9e-d2a8-480f-9187-5a685d3d0d71
+          description: The Engagement this Folder belongs to
+        name:
+          type: string
+          example: Documents
+          description: The name of the Folder
+        path:
+          type: string
+          example: /grandparent/parent
+          description: The path to the Folder from the Engagement root
+        created_at:
+          format: date-time
+          type: string
+          example: '2024-03-19T12:00:00Z'
+          description: Timestamp of when the Folder was created
+        _links:
+          $ref: '#/components/schemas/EngagementFolderReadLinks'
+      required:
+      - uuid
+      - parent_folder_uuid
+      - engagement_uuid
+      - name
+      - path
+      - created_at
+      - _links
+    FileCreate:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+      required:
+      - file
+    FileContextRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        type:
+          type: string
+          enum:
+          - engagement
+          - request
+          example: engagement
+          description: The kind of object this file is attached to.
+      required:
+      - uuid
+      - type
     EngagementFileRead:
       type: object
       properties:
@@ -588,12 +656,16 @@ components:
       - engagement_uuid
       - folder_uuid
       - _links
-    FileCreate:
+    EngagementFileCreate:
       type: object
       properties:
         file:
           type: string
           format: binary
+        folder_uuid:
+          type: string
+          description: The Folder UUID of the Engagement this File is associated with
+          format: uuid
       required:
       - file
     EngagementFileReadLinks:
@@ -609,23 +681,28 @@ components:
           - $ref: '#/components/schemas/HalLink'
       required:
       - fieldguide
-    FileContextRead:
+    EngagementFolderReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Engagement Folder within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/123/documents?folder=abc-123
+            title: View this Engagement Folder in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    FileUploadRead:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        type:
-          type: string
-          enum:
-          - engagement
-          - request
-          example: engagement
-          description: The kind of object this file is attached to.
+          example: 3e11fc6d-ecd0-4673-8a90-aa787ed391ec
       required:
       - uuid
-      - type
     HalLink:
       type: object
       properties:
@@ -644,83 +721,6 @@ components:
       required:
       - href
       - type
-    EngagementFileCreate:
-      type: object
-      properties:
-        file:
-          type: string
-          format: binary
-        folder_uuid:
-          type: string
-          description: The Folder UUID of the Engagement this File is associated with
-          format: uuid
-      required:
-      - file
-    FileUploadRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 3e11fc6d-ecd0-4673-8a90-aa787ed391ec
-      required:
-      - uuid
-    EngagementFolderRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
-          description: The unique identifier for the resource
-        parent_folder_uuid:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          example: 721e8d9e-d2a8-480f-9187-5a685d3d0d71
-          description: The folder that contains this one
-        engagement_uuid:
-          type: string
-          format: uuid
-          example: 921e8d9e-d2a8-480f-9187-5a685d3d0d71
-          description: The Engagement this Folder belongs to
-        name:
-          type: string
-          example: Documents
-          description: The name of the Folder
-        path:
-          type: string
-          example: /grandparent/parent
-          description: The path to the Folder from the Engagement root
-        created_at:
-          format: date-time
-          type: string
-          example: '2024-03-19T12:00:00Z'
-          description: Timestamp of when the Folder was created
-        _links:
-          $ref: '#/components/schemas/EngagementFolderReadLinks'
-      required:
-      - uuid
-      - parent_folder_uuid
-      - engagement_uuid
-      - name
-      - path
-      - created_at
-      - _links
-    EngagementFolderReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Engagement Folder within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/engagements/123/documents?folder=abc-123
-            title: View this Engagement Folder in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
   securitySchemes:
     bearer:
       scheme: bearer

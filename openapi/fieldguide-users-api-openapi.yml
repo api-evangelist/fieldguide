@@ -474,6 +474,57 @@ paths:
       - users:read
 components:
   schemas:
+    EngagementUserDelete:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The UUID of the user to remove from the Engagement Team
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+      required:
+      - uuid
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    EngagementUserCreate:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The UUID of the user to add to the engagement
+          format: uuid
+          example: 3699af0f-9b92-410d-945c-bb0bf39da904
+      required:
+      - uuid
+    UserReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the User within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/settings/admin/users/1
+            title: View this User in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
     UserRead:
       type: object
       properties:
@@ -523,44 +574,6 @@ components:
       - _links
       - status
       - invite_last_resent_at
-    EngagementUserDelete:
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: The UUID of the user to remove from the Engagement Team
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-      required:
-      - uuid
-    EngagementUserCreate:
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: The UUID of the user to add to the engagement
-          format: uuid
-          example: 3699af0f-9b92-410d-945c-bb0bf39da904
-      required:
-      - uuid
-    HalLink:
-      type: object
-      properties:
-        href:
-          type: string
-          example: https://example.com/resource/or/path
-          format: uri
-        title:
-          type: string
-          description: A human-readable title for the link
-          example: A description for the link
-        type:
-          type: string
-          description: The content-type
-          example: text/html
-      required:
-      - href
-      - type
     EngagementUserRead:
       type: object
       properties:
@@ -589,19 +602,6 @@ components:
       - last_name
       - email
       - company_uuid
-    UserReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the User within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/settings/admin/users/1
-            title: View this User in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
   securitySchemes:
     bearer:
       scheme: bearer

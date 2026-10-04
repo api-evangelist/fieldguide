@@ -124,26 +124,6 @@ paths:
       - sheets:read
 components:
   schemas:
-    SheetColumnReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Sheet Column within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/engagements/165/workplan/183
-            title: View the Sheet for this Sheet Column in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
-    SheetColumnFormat:
-      type: string
-      enum:
-      - text
-      - number
-      - list
-      description: The data type of values stored in this column.
     HalLink:
       type: object
       properties:
@@ -194,6 +174,26 @@ components:
       - created_at
       - updated_at
       - _links
+    SheetColumnFormat:
+      type: string
+      enum:
+      - text
+      - number
+      - list
+      description: The data type of values stored in this column.
+    SheetColumnReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Sheet Column within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/165/workplan/183
+            title: View the Sheet for this Sheet Column in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
   securitySchemes:
     bearer:
       scheme: bearer

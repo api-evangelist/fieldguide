@@ -37,6 +37,31 @@ paths:
       - Token
 components:
   schemas:
+    JwtTokenRead:
+      type: object
+      properties:
+        user_uuid:
+          type: string
+          format: uuid
+          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        expires_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+        type:
+          type: string
+          enum:
+          - jwt
+          example: jwt
+      required:
+      - user_uuid
+      - created_at
+      - expires_at
+      - type
     ApiTokenRead:
       type: object
       properties:
@@ -105,31 +130,6 @@ components:
       - name
       - scopes
       - provisioned_for
-    JwtTokenRead:
-      type: object
-      properties:
-        user_uuid:
-          type: string
-          format: uuid
-          example: 821e8d9e-d2a8-480f-9187-5a685d3d0d71
-        created_at:
-          format: date-time
-          type: string
-          example: '2023-01-01T12:30:00.000Z'
-        expires_at:
-          format: date-time
-          type: string
-          example: '2023-01-01T12:30:00.000Z'
-        type:
-          type: string
-          enum:
-          - jwt
-          example: jwt
-      required:
-      - user_uuid
-      - created_at
-      - expires_at
-      - type
   securitySchemes:
     bearer:
       scheme: bearer
