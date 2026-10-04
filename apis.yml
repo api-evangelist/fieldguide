@@ -323,6 +323,8 @@ apis:
   humanURL: https://www.fieldguide.io/developers
   baseURL: https://api.fieldguide.io
   tags:
+  - Tokens
+  tags_raw:
   - Token
   properties:
   - type: OpenAPI
@@ -338,6 +340,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/fieldguide-capability-edges.yml
+  name: Fieldguide Business Capability Map
 - type: TrustCenter
   url: security/fieldguide-trust-center.yml
 - type: DomainSecurity
