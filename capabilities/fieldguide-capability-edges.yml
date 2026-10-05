@@ -1,0 +1,37 @@
+slug: fieldguide
+provider: Fieldguide
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Engagements
+  spec_file: fieldguide-engagements-api-openapi.yml
+  capability_id: BC-140
+  capability_id_l1: BC-140
+  capability_name: Internal Audit Management
+  confidence: 0.75
+  evidence: '"Create a new Engagement from a template", "Export an Engagement binder", "List the Engagement
+    Team on an Engagement", "List Requests that belong to the specified Engagement"'
+  reason: Engagement lifecycle, team staffing, workpaper/binder export and linked requests and sheets
+    are the core of running audit engagements on this audit-and-advisory platform. Left at L1 because
+    the surface spans planning, execution and reporting rather than one sub-capability.
+- tag: Requests
+  spec_file: fieldguide-requests-api-openapi.yml
+  capability_id: BC-140.20
+  capability_id_l1: BC-140
+  capability_name: Audit Execution Management
+  confidence: 0.75
+  evidence: '"List Requests that belong to the specified Engagement", "List Controls that belong to the
+    specified Request", "Upload a File to the specified Request"'
+  reason: Requests are the evidence/PBC items of an audit engagement, linked to controls, workpaper sheet
+    rows and uploaded files — this is audit fieldwork and evidence gathering, the core execution capability
+    of the platform.
