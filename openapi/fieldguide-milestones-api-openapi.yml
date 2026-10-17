@@ -194,14 +194,6 @@ components:
       enum:
       - created_at
       - sequence
-    MilestoneAssociatedEngagementStatus:
-      type: string
-      enum:
-      - Pending
-      - In Progress
-      - Complete
-      - Archived
-      description: An optional association to an Engagement lifecycle phase. It does not represent the Engagement's current status or determine Milestone completion.
     MilestoneRead:
       type: object
       properties:
@@ -280,6 +272,14 @@ components:
       - created_at
       - updated_at
       - _links
+    MilestoneAssociatedEngagementStatus:
+      type: string
+      enum:
+      - Pending
+      - In Progress
+      - Complete
+      - Archived
+      description: An optional association to an Engagement lifecycle phase. It does not represent the Engagement's current status or determine Milestone completion.
     HalLink:
       type: object
       properties:

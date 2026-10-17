@@ -415,6 +415,50 @@ paths:
       - sheets:write
 components:
   schemas:
+    SheetRowCellRead:
+      type: object
+      properties:
+        column_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        value:
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type:
+            - number
+            - 'null'
+      required:
+      - column_uuid
+      - value
+    RequestReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Request within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/inbox?open=true&id=47923
+            title: View this Request in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
+    SheetReadLinks:
+      type: object
+      properties:
+        fieldguide:
+          description: A URL the user can visit to view the Sheet within the Fieldguide web application
+          example:
+            href: https://app.fieldguide.io/engagements/82027/workplan/3
+            title: View the Sheet in Fieldguide
+            type: text/html
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - fieldguide
     RequestStatus:
       type: string
       enum:
@@ -442,37 +486,6 @@ components:
       - uuid
       - keys
       - _links
-    SheetReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Sheet within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/engagements/82027/workplan/3
-            title: View the Sheet in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
-    SheetRowCellUpdate:
-      type: object
-      properties:
-        column_uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        value:
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type:
-            - number
-            - 'null'
-      required:
-      - column_uuid
-      - value
     RequestRead:
       type: object
       properties:
@@ -545,6 +558,24 @@ components:
       - tags
       - engagement_uuids
       - _links
+    SheetRowCellUpdate:
+      type: object
+      properties:
+        column_uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        value:
+          oneOf:
+          - type:
+            - string
+            - 'null'
+          - type:
+            - number
+            - 'null'
+      required:
+      - column_uuid
+      - value
     HalLink:
       type: object
       properties:
@@ -563,37 +594,6 @@ components:
       required:
       - href
       - type
-    SheetRowCellRead:
-      type: object
-      properties:
-        column_uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        value:
-          oneOf:
-          - type:
-            - string
-            - 'null'
-          - type:
-            - number
-            - 'null'
-      required:
-      - column_uuid
-      - value
-    RequestReadLinks:
-      type: object
-      properties:
-        fieldguide:
-          description: A URL the user can visit to view the Request within the Fieldguide web application
-          example:
-            href: https://app.fieldguide.io/inbox?open=true&id=47923
-            title: View this Request in Fieldguide
-            type: text/html
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - fieldguide
   securitySchemes:
     bearer:
       scheme: bearer

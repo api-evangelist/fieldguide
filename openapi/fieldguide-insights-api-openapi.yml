@@ -106,18 +106,6 @@ paths:
       - insights:read
 components:
   schemas:
-    JobSubmittedRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          description: The UUID of the job that was submitted
-        _links:
-          $ref: '#/components/schemas/JobSubmittedReadLinks'
-      required:
-      - uuid
-      - _links
     TimeTrackingFileRead:
       type: object
       properties:
@@ -159,6 +147,31 @@ components:
       - url_expiration
       - report_data_processed_at
       - record_count
+    JobSubmittedReadLinks:
+      type: object
+      properties:
+        status:
+          description: An API endpoint to retrieve the status of the job
+          example:
+            href: https://api.fieldguide.io/jobs/2d2e102e-f4af-4534-9749-4d9249eca6cc
+            title: Get the status of this job
+            type: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - status
+    TimeTrackingFileCreate:
+      type: object
+      properties:
+        report_start:
+          type: string
+          example: '2025-01-01T12:30:00.000Z'
+        report_end:
+          type: string
+          example: '2025-01-01T12:30:00.000Z'
+      required:
+      - report_start
+      - report_end
     HalLink:
       type: object
       properties:
@@ -177,31 +190,18 @@ components:
       required:
       - href
       - type
-    TimeTrackingFileCreate:
+    JobSubmittedRead:
       type: object
       properties:
-        report_start:
+        uuid:
           type: string
-          example: '2025-01-01T12:30:00.000Z'
-        report_end:
-          type: string
-          example: '2025-01-01T12:30:00.000Z'
+          format: uuid
+          description: The UUID of the job that was submitted
+        _links:
+          $ref: '#/components/schemas/JobSubmittedReadLinks'
       required:
-      - report_start
-      - report_end
-    JobSubmittedReadLinks:
-      type: object
-      properties:
-        status:
-          description: An API endpoint to retrieve the status of the job
-          example:
-            href: https://api.fieldguide.io/jobs/2d2e102e-f4af-4534-9749-4d9249eca6cc
-            title: Get the status of this job
-            type: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - status
+      - uuid
+      - _links
   securitySchemes:
     bearer:
       scheme: bearer

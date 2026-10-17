@@ -269,45 +269,6 @@ paths:
       - sheets:read
 components:
   schemas:
-    SheetRowRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        keys:
-          type: array
-          items:
-            type: string
-            example: 1.1.1
-        _links:
-          $ref: '#/components/schemas/SheetReadLinks'
-      required:
-      - uuid
-      - keys
-      - _links
-    SheetRead:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
-        name:
-          type: string
-          example: PCI DSS ROC v3.2.1 6. Findings and Observations
-        _links:
-          $ref: '#/components/schemas/SheetReadLinks'
-        created_at:
-          format: date-time
-          type: string
-          example: '2023-01-01T12:30:00.000Z'
-      required:
-      - uuid
-      - name
-      - _links
-      - created_at
     SheetReadLinks:
       type: object
       properties:
@@ -356,6 +317,24 @@ components:
       - url
       - url_expiration
       - uuid
+    SheetRowRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        keys:
+          type: array
+          items:
+            type: string
+            example: 1.1.1
+        _links:
+          $ref: '#/components/schemas/SheetReadLinks'
+      required:
+      - uuid
+      - keys
+      - _links
     HalLink:
       type: object
       properties:
@@ -374,6 +353,27 @@ components:
       required:
       - href
       - type
+    SheetRead:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          example: 4d50d252-be0c-4d69-b77a-5bbdfef83f54
+        name:
+          type: string
+          example: PCI DSS ROC v3.2.1 6. Findings and Observations
+        _links:
+          $ref: '#/components/schemas/SheetReadLinks'
+        created_at:
+          format: date-time
+          type: string
+          example: '2023-01-01T12:30:00.000Z'
+      required:
+      - uuid
+      - name
+      - _links
+      - created_at
   securitySchemes:
     bearer:
       scheme: bearer

@@ -269,35 +269,17 @@ paths:
       - comments:read
 components:
   schemas:
-    CommentReadLinks:
+    RequestCommentBulkCreate:
       type: object
       properties:
-        self:
-          description: A URL the user can fetch the Comment
-          example:
-            href: https://api.fieldguide.io/v1/comments/5919b6e8-9ea9-4cf0-9598-3a44cad3c7f7
-            title: Fetch this Comment
-            example: application/json
-          allOf:
-          - $ref: '#/components/schemas/HalLink'
-      required:
-      - self
-    CommentCreate:
-      type: object
-      properties:
-        content:
-          type: string
-          example: <p>The comment text in HTML format</p>
-          minLength: 1
-        mentioned_user_uuids:
+        comments:
+          minItems: 1
+          maxItems: 50
           type: array
           items:
-            type: string
-            format: uuid
-            example: edbf4962-20eb-499e-a7fa-eaff50c81630
-          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
+            $ref: '#/components/schemas/RequestCommentBulkCreateItem'
       required:
-      - content
+      - comments
     CommentRead:
       type: object
       properties:
@@ -348,17 +330,6 @@ components:
       - uuid
       - type
       - _links
-    RequestCommentBulkCreate:
-      type: object
-      properties:
-        comments:
-          minItems: 1
-          maxItems: 50
-          type: array
-          items:
-            $ref: '#/components/schemas/RequestCommentBulkCreateItem'
-      required:
-      - comments
     CommentContextReadLinks:
       type: object
       properties:
@@ -372,24 +343,6 @@ components:
           - $ref: '#/components/schemas/HalLink'
       required:
       - context_object
-    HalLink:
-      type: object
-      properties:
-        href:
-          type: string
-          example: https://example.com/resource/or/path
-          format: uri
-        title:
-          type: string
-          description: A human-readable title for the link
-          example: A description for the link
-        type:
-          type: string
-          description: The content-type
-          example: text/html
-      required:
-      - href
-      - type
     RequestCommentBulkCreateItem:
       type: object
       properties:
@@ -411,6 +364,53 @@ components:
       required:
       - request_uuid
       - content
+    HalLink:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://example.com/resource/or/path
+          format: uri
+        title:
+          type: string
+          description: A human-readable title for the link
+          example: A description for the link
+        type:
+          type: string
+          description: The content-type
+          example: text/html
+      required:
+      - href
+      - type
+    CommentCreate:
+      type: object
+      properties:
+        content:
+          type: string
+          example: <p>The comment text in HTML format</p>
+          minLength: 1
+        mentioned_user_uuids:
+          type: array
+          items:
+            type: string
+            format: uuid
+            example: edbf4962-20eb-499e-a7fa-eaff50c81630
+          description: User UUIDs to mention and notify. Plain-text @Name text does not create mention notifications.
+      required:
+      - content
+    CommentReadLinks:
+      type: object
+      properties:
+        self:
+          description: A URL the user can fetch the Comment
+          example:
+            href: https://api.fieldguide.io/v1/comments/5919b6e8-9ea9-4cf0-9598-3a44cad3c7f7
+            title: Fetch this Comment
+            example: application/json
+          allOf:
+          - $ref: '#/components/schemas/HalLink'
+      required:
+      - self
   securitySchemes:
     bearer:
       scheme: bearer
